@@ -3,7 +3,13 @@ project(Spritter)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(Spritter STATIC library.cpp)
+add_library(Spritter STATIC library.cpp
+        src/Game.cpp
+        include/Spritter/Game.h
+        src/Window.cpp
+        include/Spritter/Window.h)
+
+target_include_directories(Spritter PUBLIC include)
 
 # ---------- SDL ----------
 
