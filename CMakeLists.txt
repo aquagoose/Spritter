@@ -3,7 +3,7 @@ project(Spritter)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_library(Spritter STATIC library.cpp
+add_library(Spritter STATIC
         src/Game.cpp
         include/Spritter/Game.h
         src/Window.cpp
@@ -27,3 +27,8 @@ target_link_libraries(Spritter PUBLIC SDL3::SDL3)
 
 add_subdirectory(lib/glad)
 target_link_libraries(Spritter PUBLIC glad)
+
+# ----- TEST -----
+
+add_executable(SpTest tests/main.cpp)
+target_link_libraries(SpTest PRIVATE Spritter)

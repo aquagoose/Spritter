@@ -9,6 +9,7 @@ namespace Spritter
     {
     private:
         SDL_Window* _window;
+        SDL_GLContext _context;
 
     public:
         Window();
