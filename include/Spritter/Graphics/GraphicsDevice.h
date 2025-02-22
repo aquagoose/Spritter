@@ -11,7 +11,7 @@ namespace Spritter::Graphics
     class GraphicsDevice
     {
     public:
-        virtual ~GraphicsDevice() = 0;
+        virtual ~GraphicsDevice() = default;
 
         virtual std::unique_ptr<Renderable> CreateRenderable(const RenderableDefinition& definition) = 0;
 

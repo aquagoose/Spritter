@@ -9,7 +9,7 @@ namespace Spritter::Graphics
         void* Vertices;
         uint32_t NumVertices;
 
-        void* Indices;
+        uint32_t* Indices;
         uint32_t NumIndices;
 
         bool Dynamic;

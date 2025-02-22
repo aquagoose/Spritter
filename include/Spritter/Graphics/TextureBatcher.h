@@ -7,7 +7,5 @@ namespace Spritter::Graphics
     public:
         virtual void Begin();
         virtual void End();
-
-        virtual void
     };
 }

@@ -42,3 +42,4 @@ target_link_libraries(Spritter PUBLIC glad)
 
 add_executable(SpTest tests/main.cpp)
 target_link_libraries(SpTest PRIVATE Spritter)
+target_link_libraries(SpTest PRIVATE stdc++)

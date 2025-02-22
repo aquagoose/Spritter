@@ -2,11 +2,18 @@
 
 #include <glad/glad.h>
 
+#include "GLRenderable.h"
+
 namespace Spritter::Graphics::GL
 {
     GLGraphicsDevice::GLGraphicsDevice(SDL_Window* window) : _window(window)
     {
         gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress));
+    }
+
+    std::unique_ptr<Renderable> GLGraphicsDevice::CreateRenderable(const RenderableDefinition& definition)
+    {
+        return std::make_unique<GLRenderable>(definition);
     }
 
     void GLGraphicsDevice::Clear(const Math::Color& color)
