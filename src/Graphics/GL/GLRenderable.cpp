@@ -16,6 +16,8 @@ namespace Spritter::Graphics::GL
         glGenBuffers(1, &_ebo);
         glBindBuffer(GL_ARRAY_BUFFER, _ebo);
         glBufferData(GL_ARRAY_BUFFER, definition.NumIndices, definition.Indices, usage);
+
+        Shader = dynamic_cast<GLShader*>(definition.Shader);
     }
 
     GLRenderable::~GLRenderable()

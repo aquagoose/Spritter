@@ -19,6 +19,7 @@ add_library(Spritter STATIC
         src/Graphics/GL/GLRenderable.h
         src/Graphics/GL/GLShader.cpp
         src/Graphics/GL/GLShader.h
+        include/Spritter/Graphics/Shader.h
 )
 
 target_include_directories(Spritter PUBLIC include)

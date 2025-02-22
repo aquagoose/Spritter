@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "Shader.h"
+
 namespace Spritter::Graphics
 {
     struct RenderableDefinition
@@ -11,6 +13,8 @@ namespace Spritter::Graphics
 
         uint32_t* Indices;
         uint32_t NumIndices;
+
+        Graphics::Shader* Shader;
 
         bool Dynamic;
     };

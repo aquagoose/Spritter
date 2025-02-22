@@ -65,6 +65,7 @@ class TestGame : public Game
             sizeof(vertices),
             indices,
             sizeof(indices),
+            _shader.get(),
             false
         };
 

@@ -2,7 +2,7 @@
 
 #include <glad/glad.h>
 
-#include "Spritter/Graphics/GraphicsDevice.h"
+#include "Spritter/Graphics/Shader.h"
 
 namespace Spritter::Graphics::GL
 {
@@ -12,6 +12,6 @@ namespace Spritter::Graphics::GL
         GLuint Program;
 
         GLShader(ShaderAttachment* attachments, int numAttachments);
-        ~GLShader();
+        ~GLShader() override;
     };
 }

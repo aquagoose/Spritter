@@ -1,28 +1,13 @@
 #pragma once
 
 #include <memory>
-#include <string>
 
 #include "Renderable.h"
+#include "Shader.h"
 #include "../Math/Color.h"
-#include "TextureBatcher.h"
 
 namespace Spritter::Graphics
 {
-    enum class ShaderStage
-    {
-        Vertex,
-        Pixel
-    };
-
-    struct ShaderAttachment
-    {
-        ShaderStage Stage;
-        std::string Code;
-    };
-
-    class Shader {};
-
     class GraphicsDevice
     {
     public:
