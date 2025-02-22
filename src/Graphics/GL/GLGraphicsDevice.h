@@ -14,7 +14,7 @@ namespace Spritter::Graphics::GL
     public:
         explicit GLGraphicsDevice(SDL_Window* window);
 
-        void Clear() override;
+        void Clear(const Math::Color& color) override;
 
         void Present() override;
     };

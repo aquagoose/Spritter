@@ -11,7 +11,8 @@ add_library(Spritter STATIC
         include/Spritter/Math/Size.h
         include/Spritter/Graphics/GraphicsDevice.h
         src/Graphics/GL/GLGraphicsDevice.cpp
-        src/Graphics/GL/GLGraphicsDevice.h)
+        src/Graphics/GL/GLGraphicsDevice.h
+        include/Spritter/Math/Color.h)
 
 target_include_directories(Spritter PUBLIC include)
 

@@ -9,9 +9,9 @@ namespace Spritter::Graphics::GL
         gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress));
     }
 
-    void GLGraphicsDevice::Clear()
+    void GLGraphicsDevice::Clear(const Math::Color& color)
     {
-        glClearColor(1.0f, 0.5f, 0.25f, 1.0f);
+        glClearColor(color.R, color.G, color.B, color.A);
         glClear(GL_COLOR_BUFFER_BIT);
     }
 
