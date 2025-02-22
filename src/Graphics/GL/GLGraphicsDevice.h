@@ -14,6 +14,8 @@ namespace Spritter::Graphics::GL
     public:
         explicit GLGraphicsDevice(SDL_Window* window);
 
+        std::unique_ptr<Renderable> CreateRenderable(const RenderableDefinition& definition) override;
+
         void Clear(const Math::Color& color) override;
 
         void Present() override;
