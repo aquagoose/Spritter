@@ -1,11 +1,13 @@
+#include <utility>
+
 #include "Spritter/Game.h"
 
 namespace Spritter {
-    Game::Game() = default;
+    Game::Game(GameOptions options) : _options(std::move(options)) {}
 
     void Game::Run()
     {
-        _window = std::make_unique<Spritter::Window>();
+        _window = std::make_unique<Window_>(_options.Name, _options.Size);
 
         _alive = true;
         while (_alive)
@@ -23,7 +25,12 @@ namespace Spritter {
         }
     }
 
-    Spritter::Window* Game::Window() const
+    void Game::Close()
+    {
+        _alive = false;
+    }
+
+    Window* Game::Window() const
     {
         return _window.get();
     }

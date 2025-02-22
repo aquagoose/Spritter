@@ -7,7 +7,8 @@ add_library(Spritter STATIC
         src/Game.cpp
         include/Spritter/Game.h
         src/Window.cpp
-        include/Spritter/Window.h)
+        include/Spritter/Window.h
+        include/Spritter/Math/Size.h)
 
 target_include_directories(Spritter PUBLIC include)
 

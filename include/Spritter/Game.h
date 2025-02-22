@@ -1,25 +1,33 @@
 #pragma once
 
 #include <memory>
+#include <string>
 
 #include "Window.h"
+#include "Math/Size.h"
 
 namespace Spritter
 {
+    struct GameOptions
+    {
+        std::string Name;
+        Math::Size Size;
+    };
 
     class Game
     {
-    private:
-        bool _alive{};
+        using Window_ = Spritter::Window;
 
-        std::unique_ptr<Spritter::Window> _window{};
+        GameOptions _options;
+        bool _alive{};
+        std::unique_ptr<Window_> _window{};
 
     public:
-        Game();
+        explicit Game(GameOptions  options);
 
         void Run();
+        void Close();
 
-        Spritter::Window* Window() const;
+        [[nodiscard]] Window_* Window() const;
     };
-
 }

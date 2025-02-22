@@ -1,7 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+
+#include "Math/Size.h"
 
 namespace Spritter
 {
@@ -12,7 +16,7 @@ namespace Spritter
         SDL_GLContext _context;
 
     public:
-        Window();
+        Window(const std::string& title, const Math::Size& size);
         ~Window();
     };
 }
