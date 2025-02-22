@@ -3,12 +3,18 @@
 #include <glad/glad.h>
 
 #include "GLRenderable.h"
+#include "GLShader.h"
 
 namespace Spritter::Graphics::GL
 {
     GLGraphicsDevice::GLGraphicsDevice(SDL_Window* window) : _window(window)
     {
         gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress));
+    }
+
+    std::unique_ptr<Shader> GLGraphicsDevice::CreateShader(ShaderAttachment* attachments, int numAttachments)
+    {
+        return std::make_unique<GLShader>(attachments, numAttachments);
     }
 
     std::unique_ptr<Renderable> GLGraphicsDevice::CreateRenderable(const RenderableDefinition& definition)
