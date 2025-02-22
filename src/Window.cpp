@@ -25,7 +25,7 @@ namespace Spritter
         SDL_Quit();
     }
 
-    SDL_Window* Window::Handle()
+    SDL_Window* Window::Handle() const
     {
         return _window;
     }
