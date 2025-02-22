@@ -18,5 +18,7 @@ namespace Spritter
     public:
         Window(const std::string& title, const Math::Size& size);
         ~Window();
+
+        SDL_Window* Handle();
     };
 }

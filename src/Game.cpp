@@ -1,13 +1,15 @@
 #include <utility>
 
 #include "Spritter/Game.h"
+#include "Graphics/GL/GLGraphicsDevice.h"
 
 namespace Spritter {
-    Game::Game(GameOptions options) : _options(std::move(options)) {}
-
-    void Game::run()
+    void Game::Run(const GameOptions& options)
     {
-        _window = std::make_unique<Window>(_options.name, _options.size);
+        _window = std::make_unique<Spritter::Window>(options.Name, options.Size);
+        _device = std::make_unique<Graphics::GL::GLGraphicsDevice>(_window->Handle());
+
+        Initialize();
 
         _alive = true;
         while (_alive)
@@ -22,16 +24,26 @@ namespace Spritter {
                         break;
                 }
             }
+
+            Update(1.0f / 60.0f);
+            Draw();
+
+            _device->Present();
         }
     }
 
-    void Game::close()
+    void Game::Close()
     {
         _alive = false;
     }
 
-    Window* Game::window() const
+    Window* Game::Window() const
     {
         return _window.get();
+    }
+
+    Graphics::GraphicsDevice* Game::GraphicsDevice() const
+    {
+        return _device.get();
     }
 }

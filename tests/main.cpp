@@ -1,5 +1,13 @@
 #include <Spritter/Game.h>
 
+class TestGame : public Spritter::Game
+{
+    void Draw() override
+    {
+        GraphicsDevice()->Clear();
+    }
+};
+
 int main(int argc, char* argv[])
 {
     Spritter::GameOptions options
@@ -8,9 +16,8 @@ int main(int argc, char* argv[])
         { 1280, 720 }
     };
 
-    Spritter::Game game(options);
-
-    game.run();
+    TestGame game;
+    game.Run(options);
 
     return 0;
 }

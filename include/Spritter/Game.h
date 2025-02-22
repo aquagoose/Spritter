@@ -4,28 +4,34 @@
 #include <string>
 
 #include "Window.h"
+#include "Graphics/GraphicsDevice.h"
 #include "Math/Size.h"
 
 namespace Spritter
 {
     struct GameOptions
     {
-        std::string name;
-        Math::Size size;
+        std::string Name;
+        Math::Size Size;
     };
 
     class Game
     {
-        GameOptions _options;
         bool _alive{};
-        std::unique_ptr<Window> _window{};
+
+        std::unique_ptr<Spritter::Window> _window{};
+        std::unique_ptr<Graphics::GraphicsDevice> _device;
+
+    protected:
+        virtual void Initialize() {}
+        virtual void Update(float dt) {}
+        virtual void Draw() {}
 
     public:
-        explicit Game(GameOptions options);
+        void Run(const GameOptions& options);
+        void Close();
 
-        void run();
-        void close();
-
-        [[nodiscard]] Window* window() const;
+        [[nodiscard]] Spritter::Window* Window() const;
+        [[nodiscard]] Graphics::GraphicsDevice* GraphicsDevice() const;
     };
 }

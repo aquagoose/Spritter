@@ -5,14 +5,14 @@ namespace Spritter::Math
 {
     struct Size
     {
-        int32_t width;
+        int32_t Width;
 
-        int32_t height;
+        int32_t Height;
 
         Size(const int32_t width, const int32_t height)
         {
-            this->width = width;
-            this->height = height;
+            Width = width;
+            Height = height;
         }
     };
 }
