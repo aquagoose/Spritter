@@ -5,9 +5,9 @@
 namespace Spritter {
     Game::Game(GameOptions options) : _options(std::move(options)) {}
 
-    void Game::Run()
+    void Game::run()
     {
-        _window = std::make_unique<Window_>(_options.Name, _options.Size);
+        _window = std::make_unique<Window>(_options.name, _options.size);
 
         _alive = true;
         while (_alive)
@@ -25,12 +25,12 @@ namespace Spritter {
         }
     }
 
-    void Game::Close()
+    void Game::close()
     {
         _alive = false;
     }
 
-    Window* Game::Window() const
+    Window* Game::window() const
     {
         return _window.get();
     }

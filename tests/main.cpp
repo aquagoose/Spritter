@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 
     Spritter::Game game(options);
 
-    game.Run();
+    game.run();
 
     return 0;
 }

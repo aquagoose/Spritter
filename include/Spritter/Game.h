@@ -10,24 +10,22 @@ namespace Spritter
 {
     struct GameOptions
     {
-        std::string Name;
-        Math::Size Size;
+        std::string name;
+        Math::Size size;
     };
 
     class Game
     {
-        using Window_ = Spritter::Window;
-
         GameOptions _options;
         bool _alive{};
-        std::unique_ptr<Window_> _window{};
+        std::unique_ptr<Window> _window{};
 
     public:
-        explicit Game(GameOptions  options);
+        explicit Game(GameOptions options);
 
-        void Run();
-        void Close();
+        void run();
+        void close();
 
-        [[nodiscard]] Window_* Window() const;
+        [[nodiscard]] Window* window() const;
     };
 }
