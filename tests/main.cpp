@@ -70,7 +70,7 @@ class TestGame : public Game
             vertices,
             sizeof(vertices),
             indices,
-            sizeof(indices),
+            sizeof(indices) / sizeof(uint32_t),
             _shader.get(),
             attributes,
             2,

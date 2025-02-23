@@ -6,6 +6,10 @@ namespace Spritter::Graphics::GL
 {
     GLRenderable::GLRenderable(const RenderableDefinition& definition)
     {
+        _stride = definition.ShaderStride;
+        _numDraws = definition.NumIndices;
+        _shader = dynamic_cast<GLShader*>(definition.Shader);
+
         glGenVertexArrays(1, &_vao);
         glBindVertexArray(_vao);
 
@@ -16,11 +20,8 @@ namespace Spritter::Graphics::GL
         glBufferData(GL_ARRAY_BUFFER, definition.NumVertices, definition.Vertices, usage);
 
         glGenBuffers(1, &_ebo);
-        glBindBuffer(GL_ARRAY_BUFFER, _ebo);
-        glBufferData(GL_ARRAY_BUFFER, definition.NumIndices, definition.Indices, usage);
-
-        _shader = dynamic_cast<GLShader*>(definition.Shader);
-        _stride = definition.ShaderStride;
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(definition.NumIndices * sizeof(uint32_t)), definition.Indices, usage);
 
         auto program = _shader->Program;
         glUseProgram(program);
@@ -68,6 +69,6 @@ namespace Spritter::Graphics::GL
     {
         glBindVertexArray(_vao);
         glUseProgram(_shader->Program);
-        glDrawElements(GL_TRIANGLES, _numDraws, GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(_numDraws), GL_UNSIGNED_INT, nullptr);
     }
 }
