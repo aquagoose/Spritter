@@ -94,6 +94,18 @@ namespace Spritter::Math
                 Vector4<T>::UnitW(),
             };
         }
+
+        static Matrix OrthographicProjectionOffCenter(const float left, const float right, const float bottom,
+                                                      const float top, const float nearPlane, const float farPlane)
+        {
+            return
+            {
+                { 2.0 / (right - left), 0, 0, 0 },
+                { 0, 2.0 / (top - bottom), 0, 0 },
+                { 0, 0, 1.0 / (farPlane - nearPlane), 0 },
+                { (left + right) / (left - right), (top + bottom) / (bottom - top), nearPlane / (nearPlane - farPlane), 1 }
+            };
+        }
     };
 
     using Matrixf = Matrix<float>;
