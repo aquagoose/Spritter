@@ -31,6 +31,19 @@ namespace Spritter::Graphics
         uint32_t ByteOffset;
     };
 
+    enum class UniformType
+    {
+        ConstantBuffer,
+        Texture
+    };
+
+    struct ShaderUniform
+    {
+        UniformType Type;
+        std::string Name;
+        uint32_t BufferSize;
+    };
+
     class Shader
     {
     public:

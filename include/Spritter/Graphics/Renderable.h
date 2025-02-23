@@ -15,11 +15,13 @@ namespace Spritter::Graphics
         uint32_t NumIndices;
 
         Graphics::Shader* Shader;
+        uint32_t ShaderStride;
 
         ShaderAttribute* ShaderLayout;
         int NumAttributes;
 
-        uint32_t ShaderStride;
+        ShaderUniform* Uniforms;
+        int NumUniforms;
 
         bool Dynamic;
     };

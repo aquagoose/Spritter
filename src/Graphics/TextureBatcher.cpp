@@ -10,9 +10,15 @@ in vec4 aTint;
 out vec2 frag_TexCoord;
 out vec4 frag_Tint;
 
+layout (std140) uniform CameraMatrices
+{
+    mat4 Projection;
+    mat4 Transform;
+};
+
 void main()
 {
-    gl_Position = vec4(aPosition, 0.0, 1.0);
+    gl_Position = Projection * Transform * vec4(aPosition, 0.0, 1.0);
     frag_TexCoord = aTexCoord;
     frag_Tint = aTint;
 }
@@ -32,6 +38,12 @@ void main()
 }
 )";
 
+struct CameraMatrices
+{
+    Matrixf Projection;
+    Matrixf Transform;
+};
+
 namespace Spritter::Graphics
 {
     TextureBatcher::TextureBatcher(GraphicsDevice* device)
@@ -50,6 +62,15 @@ namespace Spritter::Graphics
             { "aTint", AttributeType::Float4, offsetof(Vertex, Tint) }
         };
 
+        ShaderUniform uniforms[]
+        {
+            {
+                UniformType::ConstantBuffer,
+                "CameraMatrices",
+                sizeof(CameraMatrices)
+            }
+        };
+
         RenderableDefinition definition
         {
             nullptr,
@@ -57,9 +78,11 @@ namespace Spritter::Graphics
             nullptr,
             MaxIndices,
             _defaultShader.get(),
+            sizeof(Vertex),
             attributes,
             3,
-            sizeof(Vertex),
+            uniforms,
+            1,
             true
         };
         _renderable = device->CreateRenderable(definition);

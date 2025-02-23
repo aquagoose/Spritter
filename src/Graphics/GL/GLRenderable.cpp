@@ -26,7 +26,7 @@ namespace Spritter::Graphics::GL
         glUseProgram(program);
         for (int i = 0; i < definition.NumAttributes; i++)
         {
-            auto attrib = &definition.ShaderLayout[i];
+            const auto attrib = &definition.ShaderLayout[i];
 
             GLint location = glGetAttribLocation(program, attrib->Name);
             glEnableVertexAttribArray(location);
@@ -54,6 +54,19 @@ namespace Spritter::Graphics::GL
             }
 
             glVertexAttribPointer(location, size, type, normalized, static_cast<GLsizei>(_stride), reinterpret_cast<void*>(attrib->ByteOffset));
+        }
+
+        for (int i = 0; i < definition.NumUniforms; i++)
+        {
+            const auto uniform = &definition.Uniforms[i];
+
+            switch (uniform->Type)
+            {
+                case UniformType::ConstantBuffer:
+                    const auto index = glGetUniformBlockIndex(program, uniform->Name.c_str());
+                    glUniformBlockBinding()
+                    break;
+            }
         }
     }
 

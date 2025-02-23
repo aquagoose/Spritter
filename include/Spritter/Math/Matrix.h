@@ -95,8 +95,8 @@ namespace Spritter::Math
             };
         }
 
-        static Matrix OrthographicProjectionOffCenter(const float left, const float right, const float bottom,
-                                                      const float top, const float nearPlane, const float farPlane)
+        static Matrix OrthographicProjection(const float left, const float right, const float bottom, const float top,
+                                             const float nearPlane, const float farPlane)
         {
             return
             {
