@@ -7,7 +7,6 @@ namespace Spritter::Graphics::GL
     GLRenderable::GLRenderable(const RenderableDefinition& definition)
     {
         _stride = definition.ShaderStride;
-        _numDraws = definition.NumIndices;
         _shader = dynamic_cast<GLShader*>(definition.Shader);
 
         glGenVertexArrays(1, &_vao);
@@ -65,10 +64,21 @@ namespace Spritter::Graphics::GL
         glDeleteVertexArrays(1, &_vao);
     }
 
-    void GLRenderable::Draw()
+    void GLRenderable::Update(const RenderableUpdateInfo& info)
+    {
+        glBindVertexArray(_vao);
+
+        if (info.NumVertices > 0)
+            glBufferSubData(GL_ARRAY_BUFFER, 0, info.NumVertices, info.Vertices);
+
+        if (info.NumIndices > 0)
+            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, static_cast<GLsizeiptr>(info.NumIndices * sizeof(uint32_t)), info.Indices);
+    }
+
+    void GLRenderable::Draw(uint32_t numDraws)
     {
         glBindVertexArray(_vao);
         glUseProgram(_shader->Program);
-        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(_numDraws), GL_UNSIGNED_INT, nullptr);
+        glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(numDraws), GL_UNSIGNED_INT, nullptr);
     }
 }

@@ -29,6 +29,8 @@ namespace Spritter
         virtual void Draw() {}
 
     public:
+        virtual ~Game() = default;
+
         void Run(const GameOptions& options);
         void Close();
     };

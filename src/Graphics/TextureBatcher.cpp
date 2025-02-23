@@ -64,4 +64,63 @@ namespace Spritter::Graphics
         };
         _renderable = device->CreateRenderable(definition);
     }
+
+    void TextureBatcher::Draw(const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft,
+        const Vector2f& bottomRight, const Color& tint)
+    {
+        _items.push_back({ topLeft, topRight, bottomLeft, bottomRight, tint });
+    }
+
+    void TextureBatcher::Render()
+    {
+        if (_items.empty())
+            return;
+
+        uint32_t currentItem = 0;
+        for (const auto& item : _items)
+        {
+            if (currentItem >= SP_TEXTUREBATCHER_MAXDRAWS)
+            {
+                Flush(currentItem);
+                currentItem = 0;
+            }
+
+            const uint32_t vOffset = NumVertices * currentItem;
+            const uint32_t iOffset = NumIndices * currentItem;
+
+            _vertices[vOffset + 0] = { item.TopLeft, { 0, 0 }, item.Tint };
+            _vertices[vOffset + 1] = { item.TopRight, { 1, 0 }, item.Tint };
+            _vertices[vOffset + 2] = { item.BottomRight, { 1, 1 }, item.Tint };
+            _vertices[vOffset + 3] = { item.BottomLeft, { 0, 1 }, item.Tint };
+
+            _indices[iOffset + 0] = 0 + vOffset;
+            _indices[iOffset + 1] = 1 + vOffset;
+            _indices[iOffset + 2] = 3 + vOffset;
+            _indices[iOffset + 3] = 1 + vOffset;
+            _indices[iOffset + 4] = 2 + vOffset;
+            _indices[iOffset + 5] = 3 + vOffset;
+
+            currentItem++;
+        }
+
+        Flush(currentItem);
+        _items.clear();
+    }
+
+    void TextureBatcher::Flush(uint32_t numDraws)
+    {
+        if (numDraws == 0)
+            return;
+
+        RenderableUpdateInfo updateInfo
+        {
+            _vertices.data(),
+            static_cast<uint32_t>(numDraws * NumVertices * sizeof(Vertex)),
+            _indices.data(),
+            numDraws * NumIndices
+        };
+        _renderable->Update(updateInfo);
+
+        _renderable->Draw(numDraws * NumIndices);
+    }
 }

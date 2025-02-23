@@ -5,6 +5,7 @@
 #endif
 
 #include <array>
+#include <vector>
 
 #include "GraphicsDevice.h"
 #include "Spritter/Math/Math.h"
@@ -28,13 +29,31 @@ namespace Spritter::Graphics
             Color Tint;
         };
 
+        struct BatchItem
+        {
+            Vector2f TopLeft;
+            Vector2f TopRight;
+            Vector2f BottomLeft;
+            Vector2f BottomRight;
+            Color Tint;
+        };
+
         std::array<Vertex, MaxVertices> _vertices{};
         std::array<uint32_t, MaxIndices> _indices{};
 
         std::unique_ptr<Shader> _defaultShader;
         std::unique_ptr<Renderable> _renderable;
 
+        std::vector<BatchItem> _items;
+
     public:
         explicit TextureBatcher(GraphicsDevice* device);
+
+        void Draw(const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft, const Vector2f& bottomRight, const Color& tint);
+
+        void Render();
+
+    private:
+        void Flush(uint32_t numDraws);
     };
 }

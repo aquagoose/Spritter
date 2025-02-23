@@ -4,7 +4,7 @@
 using namespace Spritter;
 using namespace Spritter::Graphics;
 
-class TestGame : public Game
+class TestGame final : public Game
 {
     std::unique_ptr<TextureBatcher> _batcher;
 
@@ -16,6 +16,10 @@ class TestGame : public Game
     void Draw() override
     {
         GraphicsDevice->Clear({ 0.25f, 0.5f, 1.0f });
+
+        _batcher->Draw({ 0, 0 }, { 1, 0 },  { 0, 1 }, { 1, 1 }, { 1.0f, 1.0f, 1.0f });
+        _batcher->Draw({ -1, 0 }, { 1, 0 },  { 0, 1 }, { 1, 1 }, { 1.0f, 1.0f, 1.0f });
+        _batcher->Render();
     }
 };
 

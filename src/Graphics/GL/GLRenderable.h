@@ -11,8 +11,6 @@ namespace Spritter::Graphics::GL
     class GLRenderable : public Renderable
     {
     private:
-        uint32_t _numDraws;
-
         GLuint _vao;
         GLuint _vbo;
         GLuint _ebo;
@@ -24,6 +22,8 @@ namespace Spritter::Graphics::GL
         explicit GLRenderable(const RenderableDefinition& definition);
         ~GLRenderable() override;
 
-        void Draw() override;
+        void Update(const RenderableUpdateInfo& info) override;
+
+        void Draw(uint32_t numDraws) override;
     };
 }
