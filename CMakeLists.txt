@@ -23,6 +23,7 @@ add_library(Spritter STATIC
         include/Spritter/Math/Vector2.h
         include/Spritter/Math/Math.h
         src/Graphics/TextureBatcher.cpp
+        include/Spritter/Math/Vector4.h
 )
 
 target_include_directories(Spritter PUBLIC include)
