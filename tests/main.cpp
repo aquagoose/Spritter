@@ -14,7 +14,8 @@ class TestGame final : public Game
     void Initialize() override
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
-        auto matrix = Matrixf::Identity();
+
+        auto matrix = Matrixf::Identity() * Matrixf::Identity();
         std::cout << matrix.Row0.X << std::endl;
     }
 

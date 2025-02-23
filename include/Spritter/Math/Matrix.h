@@ -28,6 +28,62 @@ namespace Spritter::Math
             Row3 = row3;
         }
 
+        [[nodiscard]] Vector4<T> Column0() const
+        {
+            return { Row0.X, Row1.X, Row2.X, Row3.X };
+        }
+
+        [[nodiscard]] Vector4<T> Column1() const
+        {
+            return { Row0.Y, Row1.Y, Row2.Y, Row3.Y };
+        }
+
+        [[nodiscard]] Vector4<T> Column2() const
+        {
+            return { Row0.Z, Row1.Z, Row2.Z, Row3.Z };
+        }
+
+        [[nodiscard]] Vector4<T> Column3() const
+        {
+            return { Row0.W, Row1.W, Row2.W, Row3.W };
+        }
+
+        Matrix operator *(const Matrix& other)
+        {
+            const auto col0 = other.Column0();
+            const auto col1 = other.Column1();
+            const auto col2 = other.Column2();
+            const auto col3 = other.Column3();
+
+            return
+            {
+                {
+                    Vector4<T>::Dot(Row0, col0),
+                    Vector4<T>::Dot(Row0, col1),
+                    Vector4<T>::Dot(Row0, col2),
+                    Vector4<T>::Dot(Row0, col3),
+                },
+                {
+                    Vector4<T>::Dot(Row1, col0),
+                    Vector4<T>::Dot(Row1, col1),
+                    Vector4<T>::Dot(Row1, col2),
+                    Vector4<T>::Dot(Row1, col3),
+                },
+                {
+                    Vector4<T>::Dot(Row2, col0),
+                    Vector4<T>::Dot(Row2, col1),
+                    Vector4<T>::Dot(Row2, col2),
+                    Vector4<T>::Dot(Row2, col3),
+                },
+                {
+                    Vector4<T>::Dot(Row3, col0),
+                    Vector4<T>::Dot(Row3, col1),
+                    Vector4<T>::Dot(Row3, col2),
+                    Vector4<T>::Dot(Row3, col3),
+                }
+            };
+        }
+
         static Matrix Identity()
         {
             return
