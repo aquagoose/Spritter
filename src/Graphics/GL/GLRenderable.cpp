@@ -1,5 +1,7 @@
 #include "GLRenderable.h"
 
+#include <stdexcept>
+
 namespace Spritter::Graphics::GL
 {
     GLRenderable::GLRenderable(const RenderableDefinition& definition)
@@ -17,7 +19,42 @@ namespace Spritter::Graphics::GL
         glBindBuffer(GL_ARRAY_BUFFER, _ebo);
         glBufferData(GL_ARRAY_BUFFER, definition.NumIndices, definition.Indices, usage);
 
-        Shader = dynamic_cast<GLShader*>(definition.Shader);
+        _shader = dynamic_cast<GLShader*>(definition.Shader);
+        _stride = definition.ShaderStride;
+
+        auto program = _shader->Program;
+        glUseProgram(program);
+        for (int i = 0; i < definition.NumAttributes; i++)
+        {
+            auto attrib = &definition.ShaderLayout[i];
+
+            GLint location = glGetAttribLocation(program, attrib->Name);
+            glEnableVertexAttribArray(location);
+
+            int size;
+            GLenum type = GL_FLOAT;
+            bool normalized = false;
+
+            switch (attrib->Type)
+            {
+                case AttributeType::Float:
+                    size = 1;
+                    break;
+                case AttributeType::Float2:
+                    size = 2;
+                    break;
+                case AttributeType::Float3:
+                    size = 3;
+                    break;
+                case AttributeType::Float4:
+                    size = 4;
+                    break;
+                default:
+                    throw std::runtime_error("Invalid attribute type.");
+            }
+
+            glVertexAttribPointer(location, size, type, normalized, static_cast<GLsizei>(_stride), reinterpret_cast<void*>(attrib->ByteOffset));
+        }
     }
 
     GLRenderable::~GLRenderable()
@@ -25,5 +62,12 @@ namespace Spritter::Graphics::GL
         glDeleteBuffers(1, &_ebo);
         glDeleteBuffers(1, &_vbo);
         glDeleteVertexArrays(1, &_vao);
+    }
+
+    void GLRenderable::Draw()
+    {
+        glBindVertexArray(_vao);
+        glUseProgram(_shader->Program);
+        glDrawElements(GL_TRIANGLES, _numDraws, GL_UNSIGNED_INT, nullptr);
     }
 }

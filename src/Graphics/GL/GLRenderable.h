@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <glad/glad.h>
 
 #include "Spritter/Graphics/Renderable.h"
@@ -10,14 +11,19 @@ namespace Spritter::Graphics::GL
     class GLRenderable : public Renderable
     {
     private:
+        uint32_t _numDraws;
+
         GLuint _vao;
         GLuint _vbo;
         GLuint _ebo;
 
-        GLShader* Shader;
+        GLShader* _shader;
+        uint32_t _stride;
 
     public:
         explicit GLRenderable(const RenderableDefinition& definition);
-        ~GLRenderable();
+        ~GLRenderable() override;
+
+        void Draw() override;
     };
 }

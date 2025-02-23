@@ -16,11 +16,19 @@ namespace Spritter::Graphics
 
         Graphics::Shader* Shader;
 
+        ShaderAttribute* ShaderLayout;
+        int NumAttributes;
+
+        uint32_t ShaderStride;
+
         bool Dynamic;
     };
 
     class Renderable
     {
+    public:
+        virtual ~Renderable() = default;
 
+        virtual void Draw() = 0;
     };
 }

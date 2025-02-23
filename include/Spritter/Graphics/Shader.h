@@ -16,6 +16,21 @@ namespace Spritter::Graphics
         std::string Code;
     };
 
+    enum class AttributeType
+    {
+        Float,
+        Float2,
+        Float3,
+        Float4
+    };
+
+    struct ShaderAttribute
+    {
+        const char* Name;
+        AttributeType Type;
+        uint32_t ByteOffset;
+    };
+
     class Shader
     {
     public:

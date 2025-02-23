@@ -59,6 +59,12 @@ class TestGame : public Game
         };
         _shader = GraphicsDevice()->CreateShader(attachments, 2);
 
+        ShaderAttribute attributes[]
+        {
+            { "aPosition", AttributeType::Float2, 0 },
+            { "aColor", AttributeType::Float3, 8 }
+        };
+
         RenderableDefinition definition
         {
             vertices,
@@ -66,6 +72,9 @@ class TestGame : public Game
             indices,
             sizeof(indices),
             _shader.get(),
+            attributes,
+            2,
+            5 * sizeof(float),
             false
         };
 
@@ -75,6 +84,8 @@ class TestGame : public Game
     void Draw() override
     {
         GraphicsDevice()->Clear({ 0.25f, 0.5f, 1.0f });
+
+        _renderable->Draw();
     }
 };
 
