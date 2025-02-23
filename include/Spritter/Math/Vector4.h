@@ -36,6 +36,36 @@ namespace Spritter::Math
             W = w;
         }
 
+        static Vector4 Zero()
+        {
+            return Vector4(0);
+        }
+
+        static Vector4 One()
+        {
+            return Vector4(1);
+        }
+
+        static Vector4 UnitX()
+        {
+            return Vector4(1, 0, 0, 0);
+        }
+
+        static Vector4 UnitY()
+        {
+            return Vector4(0, 1, 0, 0);
+        }
+
+        static Vector4 UnitZ()
+        {
+            return Vector4(0, 0, 1, 0);
+        }
+
+        static Vector4 UnitW()
+        {
+            return Vector4(0, 0, 0, 1);
+        }
+
         static T Dot(const Vector4& a, const Vector4& b)
         {
             return a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;

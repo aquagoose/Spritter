@@ -1,8 +1,11 @@
+#include <iostream>
+
 #include <Spritter/Game.h>
 #include <Spritter/Graphics/TextureBatcher.h>
 
 using namespace Spritter;
 using namespace Spritter::Graphics;
+using namespace Spritter::Math;
 
 class TestGame final : public Game
 {
@@ -11,6 +14,8 @@ class TestGame final : public Game
     void Initialize() override
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
+        auto matrix = Matrixf::Identity();
+        std::cout << matrix.Row0.X << std::endl;
     }
 
     void Draw() override
