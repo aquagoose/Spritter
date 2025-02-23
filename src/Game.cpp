@@ -6,8 +6,8 @@
 namespace Spritter {
     void Game::Run(const GameOptions& options)
     {
-        _window = std::make_unique<Spritter::Window>(options.Name, options.Size);
-        _device = std::make_unique<Graphics::GL::GLGraphicsDevice>(_window->Handle());
+        Window = std::make_unique<Spritter::Window>(options.Name, options.Size);
+        GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
 
         Initialize();
 
@@ -28,22 +28,12 @@ namespace Spritter {
             Update(1.0f / 60.0f);
             Draw();
 
-            _device->Present();
+            GraphicsDevice->Present();
         }
     }
 
     void Game::Close()
     {
         _alive = false;
-    }
-
-    Window* Game::Window() const
-    {
-        return _window.get();
-    }
-
-    Graphics::GraphicsDevice* Game::GraphicsDevice() const
-    {
-        return _device.get();
     }
 }

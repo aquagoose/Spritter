@@ -11,6 +11,14 @@ namespace Spritter::Math
         float B;
         float A;
 
+        Color()
+        {
+            R = 0;
+            G = 0;
+            B = 0;
+            A = 0;
+        }
+
         Color(const float r, const float g, const float b, const float a = 1.0f)
         {
             R = r;

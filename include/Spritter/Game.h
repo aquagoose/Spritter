@@ -19,8 +19,9 @@ namespace Spritter
     {
         bool _alive{};
 
-        std::unique_ptr<Spritter::Window> _window{};
-        std::unique_ptr<Graphics::GraphicsDevice> _device;
+    public:
+        std::unique_ptr<Spritter::Window> Window{};
+        std::unique_ptr<Graphics::GraphicsDevice> GraphicsDevice;
 
     protected:
         virtual void Initialize() {}
@@ -30,8 +31,5 @@ namespace Spritter
     public:
         void Run(const GameOptions& options);
         void Close();
-
-        [[nodiscard]] Spritter::Window* Window() const;
-        [[nodiscard]] Graphics::GraphicsDevice* GraphicsDevice() const;
     };
 }

@@ -20,6 +20,9 @@ add_library(Spritter STATIC
         src/Graphics/GL/GLShader.cpp
         src/Graphics/GL/GLShader.h
         include/Spritter/Graphics/Shader.h
+        include/Spritter/Math/Vector2.h
+        include/Spritter/Math/Math.h
+        src/Graphics/TextureBatcher.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)
