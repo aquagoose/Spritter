@@ -18,6 +18,7 @@ namespace Spritter
     class Game
     {
         bool _alive{};
+        static Game* _current;
 
     public:
         std::unique_ptr<Spritter::Window> Window{};
@@ -25,13 +26,16 @@ namespace Spritter
 
     protected:
         virtual void Initialize() {}
-        virtual void Update(float dt) {}
+        virtual void Update(const float dt) {}
         virtual void Draw() {}
 
     public:
+        Game();
         virtual ~Game() = default;
 
         void Run(const GameOptions& options);
         void Close();
+
+        static Game* Current();
     };
 }

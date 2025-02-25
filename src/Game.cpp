@@ -4,6 +4,11 @@
 #include "Graphics/GL/GLGraphicsDevice.h"
 
 namespace Spritter {
+    Game::Game()
+    {
+        _current = this;
+    }
+
     void Game::Run(const GameOptions& options)
     {
         Window = std::make_unique<Spritter::Window>(options.Name, options.Size);
@@ -35,5 +40,11 @@ namespace Spritter {
     void Game::Close()
     {
         _alive = false;
+    }
+
+    Game* Game::_current;
+    Game* Game::Current()
+    {
+        return _current;
     }
 }

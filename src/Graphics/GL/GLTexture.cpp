@@ -6,6 +6,8 @@ namespace Spritter::Graphics::GL
 {
     GLTexture::GLTexture(uint32_t width, uint32_t height, PixelFormat format, void* data)
     {
+        _size = { static_cast<int32_t>(width), static_cast<int32_t>(height) };
+
         glGenTextures(1, &Texture);
         glBindTexture(GL_TEXTURE_2D, Texture);
 
@@ -39,5 +41,10 @@ namespace Spritter::Graphics::GL
     GLTexture::~GLTexture()
     {
         glDeleteTextures(1, &Texture);
+    }
+
+    Math::Size GLTexture::Size() const
+    {
+        return _size;
     }
 }

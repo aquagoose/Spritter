@@ -27,6 +27,11 @@ namespace Spritter::Math
             X = x;
             Y = y;
         }
+
+        friend Vector2 operator +(const Vector2& left, const Vector2& right)
+        {
+            return { left.X + right.X, left.Y + right.Y };
+        }
     };
 
     using Vector2f = Vector2<float>;

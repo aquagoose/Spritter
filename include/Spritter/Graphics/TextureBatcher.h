@@ -6,6 +6,7 @@
 
 #include <array>
 #include <vector>
+#include <optional>
 
 #include "GraphicsDevice.h"
 #include "Spritter/Math/Math.h"
@@ -36,6 +37,7 @@ namespace Spritter::Graphics
             Vector2f TopRight;
             Vector2f BottomLeft;
             Vector2f BottomRight;
+            std::optional<Rectangle> Source;
             Color Tint;
         };
 
@@ -50,7 +52,10 @@ namespace Spritter::Graphics
     public:
         explicit TextureBatcher(GraphicsDevice* device);
 
-        void Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft, const Vector2f& bottomRight, const Color& tint);
+        void Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft,
+                  const Vector2f& bottomRight, const std::optional<Rectangle>& source, const Color& tint);
+        void Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source, const Color& tint);
+        void Draw(Texture* texture, const Vector2f& position);
 
         void Render();
 

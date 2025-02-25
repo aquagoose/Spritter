@@ -97,9 +97,28 @@ namespace Spritter::Graphics
     }
 
     void TextureBatcher::Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight,
-                              const Vector2f& bottomLeft, const Vector2f& bottomRight, const Color& tint)
+                              const Vector2f& bottomLeft, const Vector2f& bottomRight,
+                              const std::optional<Rectangle>& source, const Color& tint)
     {
-        _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, tint });
+        _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
+    }
+
+    void TextureBatcher::Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source,
+        const Color& tint)
+    {
+        const Size size = texture->Size();
+
+        const Vector2f topLeft = position;
+        const Vector2f topRight = position + Vector2f(static_cast<float>(size.Width), 0);
+        const Vector2f bottomLeft = position + Vector2f(0, static_cast<float>(size.Height));
+        const Vector2f bottomRight = position + Vector2f(static_cast<float>(size.Width), static_cast<float>(size.Height));
+
+        _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
+    }
+
+    void TextureBatcher::Draw(Texture* texture, const Vector2f& position)
+    {
+        Draw(texture, position, {}, { 1.0f, 1.0f, 1.0f })
     }
 
     void TextureBatcher::Render()

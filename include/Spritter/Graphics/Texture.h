@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Spritter/Math/Math.h"
+
 namespace Spritter::Graphics
 {
     enum class PixelFormat
@@ -11,5 +13,7 @@ namespace Spritter::Graphics
     {
     public:
         virtual ~Texture() = default;
+
+        [[nodiscard]] virtual Math::Size Size() const = 0;
     };
 }

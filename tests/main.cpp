@@ -12,18 +12,25 @@ class TestGame final : public Game
     std::unique_ptr<TextureBatcher> _batcher;
     std::unique_ptr<Texture> _texture;
 
+    Vector2f _position{};
+
     void Initialize() override
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
-        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/awesomeface.png");
+        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/m a r k.png");
+    }
+
+    void Update(const float dt) override
+    {
+        _position.X += 10 * dt;
     }
 
     void Draw() override
     {
         GraphicsDevice->Clear({ 0.25f, 0.5f, 1.0f });
 
-        _batcher->Draw(_texture.get(), { 0, 0 }, { 100, 0 },  { 0, 100 }, { 200, 100 }, { 1.0f, 1.0f, 1.0f });
+        _batcher->Draw(_texture.get(), _position);
         _batcher->Render();
     }
 };
