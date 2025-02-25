@@ -27,6 +27,8 @@ add_library(Spritter STATIC
         include/Spritter/Math/Matrix.h
         include/Spritter/Graphics/Texture.h
         src/Graphics/GraphicsDevice.cpp
+        src/Graphics/GL/GLTexture.cpp
+        src/Graphics/GL/GLTexture.h
 )
 
 target_include_directories(Spritter PUBLIC include)

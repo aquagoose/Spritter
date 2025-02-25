@@ -4,6 +4,7 @@
 
 #include "GLRenderable.h"
 #include "GLShader.h"
+#include "GLTexture.h"
 
 namespace Spritter::Graphics::GL
 {
@@ -31,6 +32,12 @@ namespace Spritter::Graphics::GL
     std::unique_ptr<Renderable> GLGraphicsDevice::CreateRenderable(const RenderableDefinition& definition)
     {
         return std::make_unique<GLRenderable>(definition);
+    }
+
+    std::unique_ptr<Texture> GLGraphicsDevice::CreateTexture(uint32_t width, uint32_t height, PixelFormat format,
+        void* data)
+    {
+        return std::make_unique<GLTexture>(width, height, format, data);
     }
 
     void GLGraphicsDevice::Clear(const Math::Color& color)

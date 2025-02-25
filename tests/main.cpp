@@ -10,13 +10,13 @@ using namespace Spritter::Math;
 class TestGame final : public Game
 {
     std::unique_ptr<TextureBatcher> _batcher;
+    std::unique_ptr<Texture> _texture;
 
     void Initialize() override
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
-        auto matrix = Matrixf::Identity() * Matrixf::Identity();
-        std::cout << matrix.Row0.X << std::endl;
+        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/awesomeface.png");
     }
 
     void Draw() override
