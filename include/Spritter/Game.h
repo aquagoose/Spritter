@@ -21,6 +21,7 @@ namespace Spritter
     {
         bool _alive{};
         std::unordered_set<Key> _keysDown{};
+        std::unordered_set<Key> _keysPressed{};
 
         static Game* _current;
 
@@ -41,6 +42,7 @@ namespace Spritter
         void Close();
 
         [[nodiscard]] bool IsKeyDown(Key key) const;
+        [[nodiscard]] bool IsKeyPressed(Key key) const;
 
         static Game* Current();
     };

@@ -33,6 +33,12 @@ class TestGame final : public Game
             _position.X -= moveSpeed;
         if (IsKeyDown(Key::Right))
             _position.X += moveSpeed;
+
+        if (IsKeyPressed(Key::Space))
+            std::cout << "Space" << std::endl;
+
+        if (IsKeyPressed(Key::Escape))
+            Close();
     }
 
     void Draw() override

@@ -19,6 +19,8 @@ namespace Spritter {
         _alive = true;
         while (_alive)
         {
+            _keysPressed.clear();
+
             SDL_Event event;
             while (SDL_PollEvent(&event))
             {
@@ -30,8 +32,11 @@ namespace Spritter {
                     case SDL_EVENT_KEY_DOWN:
                     {
                         Key key = SDLUtils::KeycodeToKey(event.key.key);
-                        if (event.key.down)
+                        if (event.key.down && !event.key.repeat)
+                        {
                             _keysDown.emplace(key);
+                            _keysPressed.emplace(key);
+                        }
 
                         break;
                     }
@@ -39,6 +44,7 @@ namespace Spritter {
                     {
                         Key key = SDLUtils::KeycodeToKey(event.key.key);
                         _keysDown.erase(key);
+                        _keysPressed.erase(key);
                         break;
                     }
                 }
@@ -59,6 +65,11 @@ namespace Spritter {
     bool Game::IsKeyDown(const Key key) const
     {
         return _keysDown.count(key);
+    }
+
+    bool Game::IsKeyPressed(const Key key) const
+    {
+        return _keysPressed.count(key);
     }
 
     Game* Game::_current;
