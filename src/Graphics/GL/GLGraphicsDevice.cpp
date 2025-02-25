@@ -10,6 +10,17 @@ namespace Spritter::Graphics::GL
     GLGraphicsDevice::GLGraphicsDevice(SDL_Window* window) : _window(window)
     {
         gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress));
+        _vsync = true;
+    }
+
+    bool GLGraphicsDevice::VSyncMode()
+    {
+        return _vsync;
+    }
+
+    void GLGraphicsDevice::SetVSyncMode(bool vsync)
+    {
+        _vsync = vsync;
     }
 
     std::unique_ptr<Shader> GLGraphicsDevice::CreateShader(ShaderAttachment* attachments, int numAttachments)
@@ -30,7 +41,7 @@ namespace Spritter::Graphics::GL
 
     void GLGraphicsDevice::Present()
     {
-        SDL_GL_SetSwapInterval(1);
+        SDL_GL_SetSwapInterval(_vsync ? 1 : 0);
         SDL_GL_SwapWindow(_window);
     }
 }

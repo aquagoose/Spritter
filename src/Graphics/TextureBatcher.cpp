@@ -72,7 +72,7 @@ namespace Spritter::Graphics
             }
         };
 
-        RenderableDefinition definition
+        const RenderableDefinition definition
         {
             nullptr,
             MaxVertices,
@@ -143,7 +143,7 @@ namespace Spritter::Graphics
         if (numDraws == 0)
             return;
 
-        RenderableUpdateInfo updateInfo
+        const RenderableUpdateInfo updateInfo
         {
             _vertices.data(),
             static_cast<uint32_t>(numDraws * NumVertices * sizeof(Vertex)),

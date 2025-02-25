@@ -10,9 +10,13 @@ namespace Spritter::Graphics::GL
     {
     private:
         SDL_Window* _window;
+        bool _vsync{};
 
     public:
         explicit GLGraphicsDevice(SDL_Window* window);
+
+        bool VSyncMode() override;
+        void SetVSyncMode(bool vsync) override;
 
         std::unique_ptr<Shader> CreateShader(ShaderAttachment* attachments, int numAttachments) override;
 
