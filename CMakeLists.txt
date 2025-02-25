@@ -25,6 +25,8 @@ add_library(Spritter STATIC
         src/Graphics/TextureBatcher.cpp
         include/Spritter/Math/Vector4.h
         include/Spritter/Math/Matrix.h
+        include/Spritter/Graphics/Texture.h
+        src/Graphics/GraphicsDevice.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)
@@ -45,6 +47,11 @@ target_link_libraries(Spritter PUBLIC SDL3::SDL3)
 
 add_subdirectory(lib/glad)
 target_link_libraries(Spritter PUBLIC glad)
+
+# ---------- STB ----------
+
+add_subdirectory(lib/stb)
+target_link_libraries(Spritter PUBLIC stb)
 
 # ----- TEST -----
 
