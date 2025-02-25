@@ -28,7 +28,7 @@ class TestGame final : public Game
 
     void Draw() override
     {
-        GraphicsDevice->Clear({ 0.25f, 0.5f, 1.0f });
+        GraphicsDevice->Clear(Color::RebeccaPurple());
 
         _batcher->Draw(_texture.get(), _position);
         _batcher->Render();

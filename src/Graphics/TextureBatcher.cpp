@@ -118,7 +118,7 @@ namespace Spritter::Graphics
 
     void TextureBatcher::Draw(Texture* texture, const Vector2f& position)
     {
-        Draw(texture, position, {}, { 1.0f, 1.0f, 1.0f })
+        Draw(texture, position, {}, Color::White());
     }
 
     void TextureBatcher::Render()
