@@ -18,19 +18,19 @@ class TestGame final : public Game
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
-        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/m a r k.png");
+        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/DEBUG.png");
     }
 
     void Update(const float dt) override
     {
-        _position.X += 10 * dt;
+        //_position.X += 10 * dt;
     }
 
     void Draw() override
     {
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
-        _batcher->Draw(_texture.get(), _position);
+        _batcher->Draw(_texture.get(), _position, {}, Color::White());
         _batcher->Render();
     }
 };

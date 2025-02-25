@@ -36,7 +36,7 @@ uniform sampler2D uTexture;
 
 void main()
 {
-    out_Color = texture(uTexture, frag_TexCoord);
+    out_Color = texture(uTexture, frag_TexCoord) * frag_Tint;
 }
 )";
 
@@ -106,7 +106,11 @@ namespace Spritter::Graphics
     void TextureBatcher::Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source,
         const Color& tint)
     {
-        const Size size = texture->Size();
+        Size size;
+        if (source.has_value())
+            size = source.value().Size;
+        else
+            size = texture->Size();
 
         const Vector2f topLeft = position;
         const Vector2f topRight = position + Vector2f(static_cast<float>(size.Width), 0);
@@ -148,10 +152,18 @@ namespace Spritter::Graphics
             const uint32_t vOffset = NumVertices * currentItem;
             const uint32_t iOffset = NumIndices * currentItem;
 
-            _vertices[vOffset + 0] = { item.TopLeft, { 0, 0 }, item.Tint };
-            _vertices[vOffset + 1] = { item.TopRight, { 1, 0 }, item.Tint };
-            _vertices[vOffset + 2] = { item.BottomRight, { 1, 1 }, item.Tint };
-            _vertices[vOffset + 3] = { item.BottomLeft, { 0, 1 }, item.Tint };
+            const Size texSize = item.Texture->Size();
+            const Rectangle source = item.Source.value_or(Rectangle(0, 0, texSize.Width, texSize.Height));
+
+            const float texX = static_cast<float>(source.X()) / static_cast<float>(texSize.Width);
+            const float texY = static_cast<float>(source.Y()) / static_cast<float>(texSize.Height);
+            const float texW = static_cast<float>(source.Width()) / static_cast<float>(texSize.Width);
+            const float texH = static_cast<float>(source.Height()) / static_cast<float>(texSize.Height);
+
+            _vertices[vOffset + 0] = { item.TopLeft, { texX, texY }, item.Tint };
+            _vertices[vOffset + 1] = { item.TopRight, { texX + texW, texY }, item.Tint };
+            _vertices[vOffset + 2] = { item.BottomRight, { texX + texW, texY + texH }, item.Tint };
+            _vertices[vOffset + 3] = { item.BottomLeft, { texX, texY + texH }, item.Tint };
 
             _indices[iOffset + 0] = 0 + vOffset;
             _indices[iOffset + 1] = 1 + vOffset;

@@ -10,6 +10,12 @@ namespace Spritter::Math
         Vector2i Position;
         Math::Size Size;
 
+        Rectangle()
+        {
+            Position = {};
+            Size = {};
+        }
+
         Rectangle(const Vector2i& position, const Math::Size& size)
         {
             Position = position;
