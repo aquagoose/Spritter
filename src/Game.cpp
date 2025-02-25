@@ -12,6 +12,8 @@ namespace Spritter {
     void Game::Run(const GameOptions& options)
     {
         Window = std::make_unique<Spritter::Window>(options.Name, options.Size);
+        Window->OnClose.Subscribe([this] { _alive = false; } );
+
         GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
 
         Initialize();
@@ -21,7 +23,9 @@ namespace Spritter {
         {
             _keysPressed.clear();
 
-            SDL_Event event;
+            Window->ProcessEvents();
+
+            /*SDL_Event event;
             while (SDL_PollEvent(&event))
             {
                 switch (event.type)
@@ -48,7 +52,7 @@ namespace Spritter {
                         break;
                     }
                 }
-            }
+            }*/
 
             Update(1.0f / 60.0f);
             Draw();

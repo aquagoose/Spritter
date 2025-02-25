@@ -1,5 +1,6 @@
 #include "Spritter/Window.h"
 
+#include <iostream>
 #include <stdexcept>
 
 namespace Spritter
@@ -32,5 +33,19 @@ namespace Spritter
     SDL_Window* Window::Handle() const
     {
         return _window;
+    }
+
+    void Window::ProcessEvents()
+    {
+        SDL_Event event;
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
+                    OnClose.Invoke();
+                    break;
+            }
+        }
     }
 }

@@ -33,6 +33,7 @@ add_library(Spritter STATIC
         include/Spritter/Input.h
         src/SDLUtils.cpp
         src/SDLUtils.h
+        include/Spritter/Event.h
 )
 
 target_include_directories(Spritter PUBLIC include)
