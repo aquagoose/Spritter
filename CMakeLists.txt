@@ -30,6 +30,9 @@ add_library(Spritter STATIC
         src/Graphics/GL/GLTexture.cpp
         src/Graphics/GL/GLTexture.h
         include/Spritter/Math/Rectangle.h
+        include/Spritter/Input.h
+        src/SDLUtils.cpp
+        src/SDLUtils.h
 )
 
 target_include_directories(Spritter PUBLIC include)

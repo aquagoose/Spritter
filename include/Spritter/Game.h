@@ -2,8 +2,10 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 
 #include "Window.h"
+#include "Input.h"
 #include "Graphics/GraphicsDevice.h"
 #include "Math/Size.h"
 
@@ -18,6 +20,8 @@ namespace Spritter
     class Game
     {
         bool _alive{};
+        std::unordered_set<Key> _keysDown{};
+
         static Game* _current;
 
     public:
@@ -35,6 +39,8 @@ namespace Spritter
 
         void Run(const GameOptions& options);
         void Close();
+
+        [[nodiscard]] bool IsKeyDown(Key key) const;
 
         static Game* Current();
     };

@@ -1,6 +1,6 @@
-#include <utility>
-
 #include "Spritter/Game.h"
+
+#include "SDLUtils.h"
 #include "Graphics/GL/GLGraphicsDevice.h"
 
 namespace Spritter {
@@ -27,6 +27,20 @@ namespace Spritter {
                     case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
                         _alive = false;
                         break;
+                    case SDL_EVENT_KEY_DOWN:
+                    {
+                        Key key = SDLUtils::KeycodeToKey(event.key.key);
+                        if (event.key.down)
+                            _keysDown.emplace(key);
+
+                        break;
+                    }
+                    case SDL_EVENT_KEY_UP:
+                    {
+                        Key key = SDLUtils::KeycodeToKey(event.key.key);
+                        _keysDown.erase(key);
+                        break;
+                    }
                 }
             }
 
@@ -40,6 +54,11 @@ namespace Spritter {
     void Game::Close()
     {
         _alive = false;
+    }
+
+    bool Game::IsKeyDown(const Key key) const
+    {
+        return _keysDown.count(key);
     }
 
     Game* Game::_current;

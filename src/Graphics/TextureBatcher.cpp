@@ -82,7 +82,7 @@ namespace Spritter::Graphics
         const RenderableDefinition definition
         {
             nullptr,
-            MaxVertices,
+            MaxVertices * sizeof(Vertex),
             nullptr,
             MaxIndices,
             _defaultShader.get(),

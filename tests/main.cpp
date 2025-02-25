@@ -23,7 +23,16 @@ class TestGame final : public Game
 
     void Update(const float dt) override
     {
-        //_position.X += 10 * dt;
+        const float moveSpeed = 100 * dt;
+
+        if (IsKeyDown(Key::Up))
+            _position.Y -= moveSpeed;
+        if (IsKeyDown(Key::Down))
+            _position.Y += moveSpeed;
+        if (IsKeyDown(Key::Left))
+            _position.X -= moveSpeed;
+        if (IsKeyDown(Key::Right))
+            _position.X += moveSpeed;
     }
 
     void Draw() override
