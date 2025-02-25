@@ -67,6 +67,7 @@ namespace Spritter::Graphics
             {
                 UniformType::ConstantBuffer,
                 "CameraMatrices",
+                0,
                 sizeof(CameraMatrices)
             }
         };
@@ -96,6 +97,13 @@ namespace Spritter::Graphics
 
     void TextureBatcher::Render()
     {
+        CameraMatrices matrices
+        {
+            Matrixf::OrthographicProjection(0, 1280, 720, 0, -1, 1),
+            Matrixf::Identity()
+        };
+        _renderable->PushUniformData(0, sizeof(CameraMatrices), &matrices);
+
         if (_items.empty())
             return;
 

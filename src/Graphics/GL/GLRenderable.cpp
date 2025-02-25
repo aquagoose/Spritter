@@ -63,9 +63,23 @@ namespace Spritter::Graphics::GL
             switch (uniform->Type)
             {
                 case UniformType::ConstantBuffer:
+                {
                     const auto index = glGetUniformBlockIndex(program, uniform->Name.c_str());
-                    glUniformBlockBinding()
+                    glUniformBlockBinding(program, index, uniform->BindPoint);
+
+                    GLuint uniformBuffer;
+                    glGenBuffers(1, &uniformBuffer);
+                    glBindBuffer(GL_UNIFORM_BUFFER, uniformBuffer);
+                    glBufferData(GL_UNIFORM_BUFFER, uniform->BufferSize, nullptr, GL_DYNAMIC_DRAW);
+                    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+                    _uniformBuffers.emplace(uniform->BindPoint, uniformBuffer);
                     break;
+                }
+                case UniformType::Texture:
+                    break;
+                default:
+                    throw std::runtime_error("Invalid uniform type.");
             }
         }
     }
@@ -75,6 +89,13 @@ namespace Spritter::Graphics::GL
         glDeleteBuffers(1, &_ebo);
         glDeleteBuffers(1, &_vbo);
         glDeleteVertexArrays(1, &_vao);
+    }
+
+    void GLRenderable::PushUniformData(uint32_t bindPoint, uint32_t dataSize, void* data)
+    {
+        glBindBuffer(GL_UNIFORM_BUFFER, _uniformBuffers[bindPoint]);
+        glBufferSubData(GL_UNIFORM_BUFFER, 0, dataSize, data);
+        glBindBuffer(GL_UNIFORM_BUFFER, 0);
     }
 
     void GLRenderable::Update(const RenderableUpdateInfo& info)
@@ -92,6 +113,10 @@ namespace Spritter::Graphics::GL
     {
         glBindVertexArray(_vao);
         glUseProgram(_shader->Program);
+
+        for (const auto& buffer : _uniformBuffers)
+            glBindBufferBase(GL_UNIFORM_BUFFER, buffer.first, buffer.second);
+
         glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(numDraws), GL_UNSIGNED_INT, nullptr);
     }
 }

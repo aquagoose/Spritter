@@ -42,6 +42,8 @@ namespace Spritter::Graphics
 
         virtual void Update(const RenderableUpdateInfo& info) = 0;
 
+        virtual void PushUniformData(uint32_t bindPoint, uint32_t dataSize, void* data) = 0;
+
         virtual void Draw(uint32_t numDraws) = 0;
     };
 }

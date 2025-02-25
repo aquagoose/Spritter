@@ -41,6 +41,7 @@ namespace Spritter::Graphics
     {
         UniformType Type;
         std::string Name;
+        uint32_t BindPoint;
         uint32_t BufferSize;
     };
 
