@@ -257,4 +257,23 @@ namespace Spritter
                 return Key::Unknown;
         }
     }
+
+    MouseButton SDLUtils::ButtonFlagsToButton(const SDL_MouseButtonFlags button)
+    {
+        switch (button)
+        {
+            case SDL_BUTTON_LEFT:
+                return MouseButton::Left;
+            case SDL_BUTTON_RIGHT:
+                return MouseButton::Right;
+            case SDL_BUTTON_MIDDLE:
+                return MouseButton::Middle;
+            case SDL_BUTTON_X1:
+                return MouseButton::Button3;
+            case SDL_BUTTON_X2:
+                return MouseButton::Button4;
+            default:
+                return MouseButton::Unknown;
+        }
+    }
 }
