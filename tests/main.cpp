@@ -23,7 +23,7 @@ class TestGame final : public Game
     {
         GraphicsDevice->Clear({ 0.25f, 0.5f, 1.0f });
 
-        _batcher->Draw({ 0, 0 }, { 100, 0 },  { 0, 100 }, { 100, 100 }, { 1.0f, 1.0f, 1.0f });
+        _batcher->Draw(_texture.get(), { 0, 0 }, { 100, 0 },  { 0, 100 }, { 200, 100 }, { 1.0f, 1.0f, 1.0f });
         _batcher->Render();
     }
 };

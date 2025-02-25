@@ -31,6 +31,7 @@ namespace Spritter::Graphics
 
         struct BatchItem
         {
+            Graphics::Texture* Texture;
             Vector2f TopLeft;
             Vector2f TopRight;
             Vector2f BottomLeft;
@@ -49,11 +50,11 @@ namespace Spritter::Graphics
     public:
         explicit TextureBatcher(GraphicsDevice* device);
 
-        void Draw(const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft, const Vector2f& bottomRight, const Color& tint);
+        void Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft, const Vector2f& bottomRight, const Color& tint);
 
         void Render();
 
     private:
-        void Flush(uint32_t numDraws);
+        void Flush(Texture* texture, uint32_t numDraws);
     };
 }

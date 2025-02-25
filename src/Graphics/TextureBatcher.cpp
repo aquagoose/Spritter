@@ -32,9 +32,11 @@ in vec4 frag_Tint;
 
 out vec4 out_Color;
 
+uniform sampler2D uTexture;
+
 void main()
 {
-    out_Color = frag_Tint;
+    out_Color = texture(uTexture, frag_TexCoord);
 }
 )";
 
@@ -69,6 +71,11 @@ namespace Spritter::Graphics
                 "CameraMatrices",
                 0,
                 sizeof(CameraMatrices)
+            },
+            {
+                UniformType::Texture,
+                "uTexture",
+                0
             }
         };
 
@@ -89,10 +96,10 @@ namespace Spritter::Graphics
         _renderable = device->CreateRenderable(definition);
     }
 
-    void TextureBatcher::Draw(const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft,
-        const Vector2f& bottomRight, const Color& tint)
+    void TextureBatcher::Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight,
+                              const Vector2f& bottomLeft, const Vector2f& bottomRight, const Color& tint)
     {
-        _items.push_back({ topLeft, topRight, bottomLeft, bottomRight, tint });
+        _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, tint });
     }
 
     void TextureBatcher::Render()
@@ -108,13 +115,16 @@ namespace Spritter::Graphics
             return;
 
         uint32_t currentItem = 0;
+        Texture* currentTexture = nullptr;
         for (const auto& item : _items)
         {
-            if (currentItem >= SP_TEXTUREBATCHER_MAXDRAWS)
+            if (item.Texture != currentTexture || currentItem >= SP_TEXTUREBATCHER_MAXDRAWS)
             {
-                Flush(currentItem);
+                Flush(currentTexture, currentItem);
                 currentItem = 0;
             }
+
+            currentTexture = item.Texture;
 
             const uint32_t vOffset = NumVertices * currentItem;
             const uint32_t iOffset = NumIndices * currentItem;
@@ -134,11 +144,11 @@ namespace Spritter::Graphics
             currentItem++;
         }
 
-        Flush(currentItem);
+        Flush(currentTexture, currentItem);
         _items.clear();
     }
 
-    void TextureBatcher::Flush(uint32_t numDraws)
+    void TextureBatcher::Flush(Texture* texture, uint32_t numDraws)
     {
         if (numDraws == 0)
             return;
@@ -151,6 +161,7 @@ namespace Spritter::Graphics
             numDraws * NumIndices
         };
         _renderable->Update(updateInfo);
+        _renderable->PushTexture(0, texture);
 
         _renderable->Draw(numDraws * NumIndices);
     }

@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#include "GLTexture.h"
+
 namespace Spritter::Graphics::GL
 {
     GLRenderable::GLRenderable(const RenderableDefinition& definition)
@@ -77,7 +79,11 @@ namespace Spritter::Graphics::GL
                     break;
                 }
                 case UniformType::Texture:
+                {
+                    const auto location = glGetUniformLocation(program, uniform->Name.c_str());
+                    glUniform1ui(location, uniform->BindPoint);
                     break;
+                }
                 default:
                     throw std::runtime_error("Invalid uniform type.");
             }
@@ -96,6 +102,14 @@ namespace Spritter::Graphics::GL
         glBindBuffer(GL_UNIFORM_BUFFER, _uniformBuffers[bindPoint]);
         glBufferSubData(GL_UNIFORM_BUFFER, 0, dataSize, data);
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    }
+
+    void GLRenderable::PushTexture(uint32_t bindPoint, Texture* texture)
+    {
+        auto glTexture = dynamic_cast<GLTexture*>(texture);
+
+        glActiveTexture(GL_TEXTURE0 + bindPoint);
+        glBindTexture(GL_TEXTURE_2D, glTexture->Texture);
     }
 
     void GLRenderable::Update(const RenderableUpdateInfo& info)

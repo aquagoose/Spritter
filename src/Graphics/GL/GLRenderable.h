@@ -29,6 +29,8 @@ namespace Spritter::Graphics::GL
 
         void PushUniformData(uint32_t bindPoint, uint32_t dataSize, void* data) override;
 
+        void PushTexture(uint32_t bindPoint, Texture* texture) override;
+
         void Draw(uint32_t numDraws) override;
     };
 }
