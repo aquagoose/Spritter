@@ -33,7 +33,8 @@ add_library(Spritter STATIC
         include/Spritter/Input.h
         src/SDLUtils.cpp
         src/SDLUtils.h
-        include/Spritter/Event.h
+        src/Input.cpp
+        include/Spritter/Spritter.h
 )
 
 target_include_directories(Spritter PUBLIC include)
@@ -67,4 +68,4 @@ target_link_libraries(Spritter PUBLIC stb)
 
 add_executable(SpTest tests/main.cpp)
 target_link_libraries(SpTest PRIVATE Spritter)
-#target_link_libraries(SpTest PRIVATE stdc++)
+target_link_libraries(SpTest PRIVATE stdc++)

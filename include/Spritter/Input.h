@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 namespace Spritter
 {
     enum class Key
@@ -159,5 +161,66 @@ namespace Spritter
         Button7,
         Button8,
         Button9,
+    };
+
+    class Input
+    {
+        inline static std::unordered_set<Key> _keysDown;
+        inline static std::unordered_set<Key> _keysPressed;
+
+        inline static std::unordered_set<MouseButton> _buttonsDown;
+        inline static std::unordered_set<MouseButton> _buttonsPressed;
+
+    public:
+        /// Check if the given key is currently being held down.
+        /// @param key The key to check.
+        /// @return True, if the key is currently being held down.
+        static bool IsKeyDown(const Key key)
+        {
+            return _keysDown.count(key);
+        }
+
+        /// Check if the given key was pressed on this frame.
+        /// @param key The key to check.
+        /// @return True, if the key was pressed on this frame.
+        static bool IsKeyPressed(const Key key)
+        {
+            return _keysPressed.count(key);
+        }
+
+        /// Check if the given mouse button is currently being held down.
+        /// @param button The mouse button to check.
+        /// @return True, if the mouse button is currently being held down.
+        static bool IsMouseButtonDown(const MouseButton button)
+        {
+            return _buttonsDown.count(button);
+        }
+
+        /// Check if the given mouse button was pressed on this frame.
+        /// @param button The mouse button to check.
+        /// @return True, if the mouse button was pressed on this frame.
+        static bool IsMouseButtonPressed(const MouseButton button)
+        {
+            return _buttonsPressed.count(button);
+        }
+
+        /// Set the given key's state to down.
+        /// @param key The key to set.
+        static void PushKeyDown(const Key key)
+        {
+            _keysDown.emplace(key);
+            _keysPressed.emplace(key);
+        }
+
+        /// Set the given key's state to up.
+        /// @param key The key to set.
+        static void PushKeyUp(const Key key)
+        {
+            _keysDown.erase(key);
+            _keysPressed.erase(key);
+        }
+
+        /// Intended for internal use only.
+        static void Update();
     };
 }

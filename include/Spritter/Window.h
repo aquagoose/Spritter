@@ -4,8 +4,6 @@
 
 #include <SDL3/SDL.h>
 
-#include "Event.h"
-#include "Input.h"
 #include "Math/Size.h"
 
 namespace Spritter
@@ -17,16 +15,11 @@ namespace Spritter
         SDL_GLContext _context;
 
     public:
-        Event<> OnClose;
-        Event<Math::Size> OnResize;
-        Event<Key> OnKeyDown;
-        Event<Key> OnKeyUp;
-
         Window(const std::string& title, const Math::Size& size);
         ~Window();
 
+        /// Get the native handle for the window.
+        /// @return The native SDL window handle for the window.
         [[nodiscard]] SDL_Window* Handle() const;
-
-        void ProcessEvents();
     };
 }

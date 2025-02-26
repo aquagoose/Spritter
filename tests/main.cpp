@@ -1,7 +1,6 @@
 #include <iostream>
 
-#include <Spritter/Game.h>
-#include <Spritter/Graphics/TextureBatcher.h>
+#include <Spritter/Spritter.h>
 
 using namespace Spritter;
 using namespace Spritter::Graphics;
@@ -18,26 +17,26 @@ class TestGame final : public Game
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
-        _texture = GraphicsDevice->CreateTexture(R"(D:\home\aqua\Pictures\awesomeface.png)");
+        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/DEBUG.png");
     }
 
     void Update(const float dt) override
     {
         const float moveSpeed = 100 * dt;
 
-        if (IsKeyDown(Key::Up))
+        if (Input::IsKeyDown(Key::Up))
             _position.Y -= moveSpeed;
-        if (IsKeyDown(Key::Down))
+        if (Input::IsKeyDown(Key::Down))
             _position.Y += moveSpeed;
-        if (IsKeyDown(Key::Left))
+        if (Input::IsKeyDown(Key::Left))
             _position.X -= moveSpeed;
-        if (IsKeyDown(Key::Right))
+        if (Input::IsKeyDown(Key::Right))
             _position.X += moveSpeed;
 
-        if (IsKeyPressed(Key::Space))
+        if (Input::IsKeyPressed(Key::Space))
             std::cout << "Space" << std::endl;
 
-        if (IsKeyPressed(Key::Escape))
+        if (Input::IsKeyPressed(Key::Escape))
             Close();
     }
 
