@@ -36,6 +36,11 @@ class TestGame final : public Game
         if (Input::IsKeyPressed(Key::Space))
             std::cout << "Space" << std::endl;
 
+        if (Input::IsMouseButtonDown(MouseButton::Left))
+            _position += Input::MouseDelta();
+        if (Input::IsMouseButtonPressed(MouseButton::Right))
+            _position = Input::MousePosition();
+
         if (Input::IsKeyPressed(Key::Escape))
             Close();
     }

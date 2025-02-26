@@ -2,6 +2,8 @@
 
 #include <unordered_set>
 
+#include "Math/Vector2.h"
+
 namespace Spritter
 {
     enum class Key
@@ -171,6 +173,9 @@ namespace Spritter
         inline static std::unordered_set<MouseButton> _buttonsDown;
         inline static std::unordered_set<MouseButton> _buttonsPressed;
 
+        inline static Math::Vector2f _mousePos;
+        inline static Math::Vector2f _deltaMousePos;
+
     public:
         /// Check if the given key is currently being held down.
         /// @param key The key to check.
@@ -204,6 +209,20 @@ namespace Spritter
             return _buttonsPressed.count(button);
         }
 
+        /// Get the current position of the mouse, in pixels, relative to the top left coordinate of the window.
+        /// @return The current mouse position.
+        static Math::Vector2f MousePosition()
+        {
+            return _mousePos;
+        }
+
+        /// Get the change in the mouse position, in pixels, since the last frame.
+        /// @return The delta mouse position.
+        static Math::Vector2f MouseDelta()
+        {
+            return _deltaMousePos;
+        }
+
         /// Set the given key's state to down.
         /// @param key The key to set.
         static void PushKeyDown(const Key key)
@@ -218,6 +237,24 @@ namespace Spritter
         {
             _keysDown.erase(key);
             _keysPressed.erase(key);
+        }
+
+        static void PushMouseButtonDown(const MouseButton button)
+        {
+            _buttonsDown.emplace(button);
+            _buttonsPressed.emplace(button);
+        }
+
+        static void PushMouseButtonUp(const MouseButton button)
+        {
+            _buttonsDown.erase(button);
+            _buttonsPressed.erase(button);
+        }
+
+        static void PushMouseMovement(const Math::Vector2f& position, const Math::Vector2f& delta)
+        {
+            _mousePos = position;
+            _deltaMousePos += delta;
         }
 
         /// Intended for internal use only.

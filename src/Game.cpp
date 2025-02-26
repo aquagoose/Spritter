@@ -17,6 +17,8 @@ namespace Spritter {
         _alive = true;
         while (_alive)
         {
+            Input::Update();
+
             SDL_Event event;
             while (SDL_PollEvent(&event))
             {
@@ -38,6 +40,25 @@ namespace Spritter {
                         const Key key = SDLUtils::KeycodeToKey(event.key.key);
                         Input::PushKeyUp(key);
                         break;
+                    }
+                    case SDL_EVENT_MOUSE_BUTTON_DOWN:
+                    {
+                        const MouseButton button = SDLUtils::ButtonIndexToButton(event.button.button);
+                        Input::PushMouseButtonDown(button);
+                        break;
+                    }
+                    case SDL_EVENT_MOUSE_BUTTON_UP:
+                    {
+                        const MouseButton button = SDLUtils::ButtonIndexToButton(event.button.button);
+                        Input::PushMouseButtonUp(button);
+                        break;
+                    }
+                    case SDL_EVENT_MOUSE_MOTION:
+                    {
+                        const Math::Vector2f position { event.motion.x, event.motion.y };
+                        const Math::Vector2f delta { event.motion.xrel, event.motion.yrel };
+
+                        Input::PushMouseMovement(position, delta);
                     }
                 }
             }

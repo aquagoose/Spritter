@@ -28,9 +28,22 @@ namespace Spritter::Math
             Y = y;
         }
 
+        Vector2& operator +=(const Vector2& delta)
+        {
+            this->X += delta.X;
+            this->Y += delta.Y;
+
+            return *this;
+        }
+
         friend Vector2 operator +(const Vector2& left, const Vector2& right)
         {
             return { left.X + right.X, left.Y + right.Y };
+        }
+
+        static Vector2 Zero()
+        {
+            return { 0, 0 };
         }
     };
 
