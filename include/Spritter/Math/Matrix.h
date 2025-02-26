@@ -95,14 +95,17 @@ namespace Spritter::Math
             };
         }
 
-        static Matrix OrthographicProjection(const float left, const float right, const float bottom, const float top,
-                                             const float nearPlane, const float farPlane)
+        static Matrix OrthographicProjection(const T left, const T right, const T bottom, const T top,
+                                             const T nearPlane, const T farPlane)
         {
+            constexpr T one = static_cast<T>(1.0);
+            constexpr T two = static_cast<T>(2.0);
+
             return
             {
-                { 2.0 / (right - left), 0, 0, 0 },
-                { 0, 2.0 / (top - bottom), 0, 0 },
-                { 0, 0, 1.0 / (farPlane - nearPlane), 0 },
+                { two / (right - left), 0, 0, 0 },
+                { 0, two / (top - bottom), 0, 0 },
+                { 0, 0, one / (farPlane - nearPlane), 0 },
                 { (left + right) / (left - right), (top + bottom) / (bottom - top), nearPlane / (nearPlane - farPlane), 1 }
             };
         }

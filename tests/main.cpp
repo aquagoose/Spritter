@@ -18,7 +18,7 @@ class TestGame final : public Game
     {
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
-        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/DEBUG.png");
+        _texture = GraphicsDevice->CreateTexture(R"(D:\home\aqua\Pictures\awesomeface.png)");
     }
 
     void Update(const float dt) override

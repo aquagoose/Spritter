@@ -3,7 +3,6 @@
 #include <string>
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_main.h>
 
 #include "Event.h"
 #include "Input.h"

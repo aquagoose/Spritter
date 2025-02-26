@@ -40,10 +40,13 @@ target_include_directories(Spritter PUBLIC include)
 
 # ---------- SDL ----------
 
-option(SDL_VENDORED "Use vendored SDL" OFF)
-
-if (SDL_VENDORED)
+if (WIN32)
     add_subdirectory(lib/SDL)
+    add_custom_command(
+            TARGET Spritter POST_BUILD
+            COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:Spritter>
+            VERBATIM
+    )
 else()
     find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
 endif()
@@ -64,4 +67,4 @@ target_link_libraries(Spritter PUBLIC stb)
 
 add_executable(SpTest tests/main.cpp)
 target_link_libraries(SpTest PRIVATE Spritter)
-target_link_libraries(SpTest PRIVATE stdc++)
+#target_link_libraries(SpTest PRIVATE stdc++)
