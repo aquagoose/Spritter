@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cmath>
+#include <string>
+
 #include "Vector4.h"
 
 namespace Spritter::Math
@@ -46,6 +49,11 @@ namespace Spritter::Math
         [[nodiscard]] Vector4<T> Column3() const
         {
             return { Row0.W, Row1.W, Row2.W, Row3.W };
+        }
+
+        [[nodiscard]] std::string ToString() const
+        {
+            return "{ Row0: " + Row0.ToString() + ", Row1: " + Row1.ToString() + ", Row2: " + Row2.ToString() + ", Row3: " + Row3.ToString() + " }";
         }
 
         Matrix operator *(const Matrix& other)
@@ -108,6 +116,31 @@ namespace Spritter::Math
                 { 0, 0, one / (farPlane - nearPlane), 0 },
                 { (left + right) / (left - right), (top + bottom) / (bottom - top), nearPlane / (nearPlane - farPlane), 1 }
             };
+        }
+
+        static Matrix Translate(const T x, const T y, const T z)
+        {
+            auto matrix = Identity();
+
+            matrix.Row3.X = x;
+            matrix.Row3.Y = y;
+            matrix.Row3.Z = z;
+
+            return matrix;
+        }
+
+        static Matrix RotateZ(const T theta)
+        {
+            const auto sinTheta = std::sin(theta);
+            const auto cosTheta = std::cos(theta);
+
+            auto matrix = Identity();
+            matrix.Row0.X = cosTheta;
+            matrix.Row1.X = -sinTheta;
+            matrix.Row0.Y = sinTheta;
+            matrix.Row1.Y = cosTheta;
+
+            return matrix;
         }
     };
 

@@ -1,5 +1,7 @@
 #include "Spritter/Graphics/TextureBatcher.h"
 
+#include <iostream>
+
 const char* TBVertexShader = R"(
 #version 330 core
 
@@ -112,17 +114,33 @@ namespace Spritter::Graphics
         else
             size = texture->Size();
 
+        const Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
+
         const Vector2f topLeft = position;
-        const Vector2f topRight = position + Vector2f(static_cast<float>(size.Width), 0);
-        const Vector2f bottomLeft = position + Vector2f(0, static_cast<float>(size.Height));
-        const Vector2f bottomRight = position + Vector2f(static_cast<float>(size.Width), static_cast<float>(size.Height));
+        const Vector2f topRight = position + Vector2f(fSize.X, 0);
+        const Vector2f bottomLeft = position + Vector2f(0, fSize.Y);
+        const Vector2f bottomRight = position + fSize;
 
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Vector2f& position)
+    void TextureBatcher::Draw(Texture* texture, const Matrixf& matrix, const std::optional<Rectangle>& source,
+        const Color& tint)
     {
-        Draw(texture, position, {}, Color::White());
+        Size size;
+        if (source.has_value())
+            size = source.value().Size;
+        else
+            size = texture->Size();
+
+        const Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
+
+        const Vector2f topLeft = Vector2f::Zero() * matrix;
+        const Vector2f topRight = Vector2f(fSize.X, 0) * matrix;
+        const Vector2f bottomLeft = Vector2f(0, fSize.Y) * matrix;
+        const Vector2f bottomRight = fSize * matrix;
+
+        _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
     void TextureBatcher::Render()

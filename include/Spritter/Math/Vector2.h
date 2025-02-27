@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
+
+#include "Matrix.h"
 
 namespace Spritter::Math
 {
@@ -39,6 +42,25 @@ namespace Spritter::Math
         friend Vector2 operator +(const Vector2& left, const Vector2& right)
         {
             return { left.X + right.X, left.Y + right.Y };
+        }
+
+        friend Vector2 operator *(const Vector2& left, const Vector2& right)
+        {
+            return { left.X * right.X, left.Y * right.Y};
+        }
+
+        friend Vector2 operator *(const Vector2& left, const T right)
+        {
+            return { left.X * right, left.Y * right };
+        }
+
+        friend Vector2 operator *(const Vector2& vector, const Matrix<T>& matrix)
+        {
+            return
+            {
+                vector.X * matrix.Row0.X + vector.Y * matrix.Row1.X + matrix.Row3.X,
+                vector.X * matrix.Row0.Y + vector.Y * matrix.Row1.Y + matrix.Row3.Y,
+            };
         }
 
         static Vector2 Zero()

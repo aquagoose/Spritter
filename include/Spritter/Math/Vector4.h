@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace Spritter::Math
 {
@@ -34,6 +35,11 @@ namespace Spritter::Math
             Y = y;
             Z = z;
             W = w;
+        }
+
+        [[nodiscard]] std::string ToString() const
+        {
+            return "{ X: " + std::to_string(X) + ", Y: " + std::to_string(Y) + ", Z: " + std::to_string(Z) + ", W: " + std::to_string(W) + " }";
         }
 
         static Vector4 Zero()

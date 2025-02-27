@@ -12,6 +12,7 @@ class TestGame final : public Game
     std::unique_ptr<Texture> _texture;
 
     Vector2f _position{};
+    float _rot{};
 
     void Initialize() override
     {
@@ -43,13 +44,15 @@ class TestGame final : public Game
 
         if (Input::IsKeyPressed(Key::Escape))
             Close();
+
+        _rot += dt;
     }
 
     void Draw() override
     {
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
-        _batcher->Draw(_texture.get(), _position, {}, Color::White());
+        _batcher->Draw(_texture.get(), Matrixf::RotateZ(_rot) * Matrixf::Translate(_position.X, _position.Y, 0));
         _batcher->Render();
     }
 };
