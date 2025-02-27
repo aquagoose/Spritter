@@ -24,6 +24,19 @@ namespace Spritter::Graphics::GL
         _vsync = vsync;
     }
 
+    Math::Rectangle GLGraphicsDevice::Viewport()
+    {
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT, viewport);
+
+        return { viewport[0], viewport[1], viewport[2], viewport[3] };
+    }
+
+    void GLGraphicsDevice::SetViewport(const Math::Rectangle& viewport)
+    {
+        glViewport(viewport.X(), viewport.Y(), viewport.Width(), viewport.Height());
+    }
+
     std::unique_ptr<Shader> GLGraphicsDevice::CreateShader(ShaderAttachment* attachments, int numAttachments)
     {
         return std::make_unique<GLShader>(attachments, numAttachments);

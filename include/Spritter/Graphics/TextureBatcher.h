@@ -41,6 +41,8 @@ namespace Spritter::Graphics
             Color Tint;
         };
 
+        GraphicsDevice* _device;
+
         std::array<Vertex, MaxVertices> _vertices{};
         std::array<uint32_t, MaxIndices> _indices{};
 

@@ -52,6 +52,8 @@ namespace Spritter::Graphics
 {
     TextureBatcher::TextureBatcher(GraphicsDevice* device)
     {
+        _device = device;
+
         ShaderAttachment attachments[]
         {
             { ShaderStage::Vertex, TBVertexShader },
@@ -145,10 +147,12 @@ namespace Spritter::Graphics
 
     void TextureBatcher::Render()
     {
+        Rectangle viewport = _device->Viewport();
+
         CameraMatrices matrices
         {
             // TODO: Make adjust to viewport size
-            Matrixf::OrthographicProjection(0, 1280, 720, 0, -1, 1),
+            Matrixf::OrthographicProjection(0, static_cast<float>(viewport.Width()), static_cast<float>(viewport.Height()), 0, -1, 1),
             Matrixf::Identity()
         };
         _renderable->PushUniformData(0, sizeof(CameraMatrices), &matrices);

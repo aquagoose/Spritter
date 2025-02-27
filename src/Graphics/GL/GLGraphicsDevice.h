@@ -18,6 +18,9 @@ namespace Spritter::Graphics::GL
         bool VSyncMode() override;
         void SetVSyncMode(bool vsync) override;
 
+        Math::Rectangle Viewport() override;
+        void SetViewport(const Math::Rectangle& viewport) override;
+
         std::unique_ptr<Shader> CreateShader(ShaderAttachment* attachments, int numAttachments) override;
 
         std::unique_ptr<Renderable> CreateRenderable(const RenderableDefinition& definition) override;

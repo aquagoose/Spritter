@@ -18,6 +18,9 @@ namespace Spritter::Graphics
         virtual bool VSyncMode() = 0;
         virtual void SetVSyncMode(bool vsync) = 0;
 
+        virtual Math::Rectangle Viewport() = 0;
+        virtual void SetViewport(const Math::Rectangle& viewport) = 0;
+
         virtual std::unique_ptr<Shader> CreateShader(ShaderAttachment* attachments, int numAttachments) = 0;
 
         virtual std::unique_ptr<Renderable> CreateRenderable(const RenderableDefinition& definition) = 0;
