@@ -54,9 +54,20 @@ namespace Spritter::Graphics
 
         void Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft,
                   const Vector2f& bottomRight, const std::optional<Rectangle>& source, const Color& tint);
+
         void Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source = {}, const Color& tint = Color::White());
 
         void Draw(Texture* texture, const Matrixf& matrix, const std::optional<Rectangle>& source = {}, const Color& tint = Color::White());
+
+        void Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source, const Color& tint, float rotation, const Vector2f& scale = Vector2f::One(), const Vector2f& origin = Vector2f::Zero())
+        {
+            Draw(texture, Matrixf::Translate(-origin.X, -origin.Y, 0) * Matrixf::Scale(scale.X, scale.Y, 0) * Matrixf::RotateZ(rotation) * Matrixf::Translate(position.X, position.Y, 0), source, tint);
+        }
+
+        void Draw(Texture* texture, const Vector2f& position, const float rotation, const Vector2f& scale = Vector2f::One(), const Vector2f& origin = Vector2f::Zero())
+        {
+            Draw(texture, position, {}, Color::White(), rotation, scale, origin);
+        }
 
         void Render();
 

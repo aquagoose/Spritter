@@ -52,7 +52,7 @@ class TestGame final : public Game
     {
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
-        _batcher->Draw(_texture.get(), Matrixf::RotateZ(_rot) * Matrixf::Translate(_position.X, _position.Y, 0));
+        _batcher->Draw(_texture.get(), _position, _rot, Vector2f(2, 1), Vector2f(192.0f / 2.0f));
         _batcher->Render();
     }
 };

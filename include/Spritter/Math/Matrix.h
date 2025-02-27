@@ -129,6 +129,17 @@ namespace Spritter::Math
             return matrix;
         }
 
+        static Matrix Scale(const T x, const T y, const T z)
+        {
+            auto matrix = Identity();
+
+            matrix.Row0.X = x;
+            matrix.Row1.Y = y;
+            matrix.Row2.Z = z;
+
+            return matrix;
+        }
+
         static Matrix RotateZ(const T theta)
         {
             const auto sinTheta = std::sin(theta);

@@ -147,6 +147,7 @@ namespace Spritter::Graphics
     {
         CameraMatrices matrices
         {
+            // TODO: Make adjust to viewport size
             Matrixf::OrthographicProjection(0, 1280, 720, 0, -1, 1),
             Matrixf::Identity()
         };

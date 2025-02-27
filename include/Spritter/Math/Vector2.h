@@ -67,6 +67,11 @@ namespace Spritter::Math
         {
             return { 0, 0 };
         }
+
+        static Vector2 One()
+        {
+            return { 1, 1 };
+        }
     };
 
     using Vector2f = Vector2<float>;
