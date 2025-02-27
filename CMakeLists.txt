@@ -35,6 +35,8 @@ add_library(Spritter STATIC
         src/SDLUtils.h
         src/Input.cpp
         include/Spritter/Spritter.h
+        include/Spritter/Time.h
+        src/Time.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)

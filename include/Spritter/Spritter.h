@@ -3,6 +3,7 @@
 #include "Window.h"
 #include "Game.h"
 #include "Input.h"
+#include "Time.h"
 
 #include "Graphics/GraphicsDevice.h"
 #include "Graphics/TextureBatcher.h"

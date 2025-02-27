@@ -4,6 +4,7 @@
 
 #include "SDLUtils.h"
 #include "Graphics/GL/GLGraphicsDevice.h"
+#include "Spritter/Time.h"
 
 namespace Spritter {
     void Game::Run(const GameOptions& options)
@@ -17,6 +18,9 @@ namespace Spritter {
         _alive = true;
         while (_alive)
         {
+            if (Time::Update(GraphicsDevice->VSyncMode()))
+                continue;
+
             Input::Update();
 
             SDL_Event event;
@@ -63,7 +67,9 @@ namespace Spritter {
                 }
             }
 
-            Update(1.0f / 60.0f);
+            const double dt = Time::DeltaTime();
+
+            Update(static_cast<float>(dt));
             Draw();
 
             GraphicsDevice->Present();

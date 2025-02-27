@@ -19,7 +19,7 @@ namespace Spritter::Graphics::GL
         return _vsync;
     }
 
-    void GLGraphicsDevice::SetVSyncMode(bool vsync)
+    void GLGraphicsDevice::SetVSyncMode(const bool vsync)
     {
         _vsync = vsync;
     }

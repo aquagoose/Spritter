@@ -16,6 +16,9 @@ class TestGame final : public Game
 
     void Initialize() override
     {
+        //Time::SetTargetFPS(10);
+        //GraphicsDevice->SetVSyncMode(false);
+
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
         _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/DEBUG.png");
@@ -23,6 +26,8 @@ class TestGame final : public Game
 
     void Update(const float dt) override
     {
+        std::cout << Time::TotalFrames() << std::endl;
+
         const float moveSpeed = 100 * dt;
 
         if (Input::IsKeyDown(Key::Up))
