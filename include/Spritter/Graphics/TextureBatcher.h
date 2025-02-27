@@ -71,7 +71,7 @@ namespace Spritter::Graphics
             Draw(texture, position, {}, Color::White(), rotation, scale, origin);
         }
 
-        void Render();
+        void Render(const Matrixf& transform = Matrixf::Identity());
 
     private:
         void Flush(Texture* texture, uint32_t numDraws);

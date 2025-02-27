@@ -51,13 +51,52 @@ namespace Spritter::Math
         {
             this->X += delta.X;
             this->Y += delta.Y;
+            return *this;
+        }
 
+        Vector2& operator -=(const Vector2& delta)
+        {
+            this->X -= delta.X;
+            this->Y -= delta.Y;
+            return *this;
+        }
+
+        Vector2& operator *=(const Vector2& delta)
+        {
+            this->X *= delta.X;
+            this->Y *= delta.Y;
+            return *this;
+        }
+
+        Vector2& operator *=(const T delta)
+        {
+            this->X *= delta;
+            this->Y *= delta;
+            return *this;
+        }
+
+        Vector2& operator /=(const Vector2& delta)
+        {
+            this->X /= delta.X;
+            this->Y /= delta.Y;
+            return *this;
+        }
+
+        Vector2& operator /=(const T delta)
+        {
+            this->X /= delta;
+            this->Y /= delta;
             return *this;
         }
 
         friend Vector2 operator +(const Vector2& left, const Vector2& right)
         {
             return { left.X + right.X, left.Y + right.Y };
+        }
+
+        friend Vector2 operator -(const Vector2& left, const Vector2& right)
+        {
+            return { left.X - right.X, left.Y - right.Y };
         }
 
         friend Vector2 operator *(const Vector2& left, const Vector2& right)

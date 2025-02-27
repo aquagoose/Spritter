@@ -145,15 +145,15 @@ namespace Spritter::Graphics
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Render()
+    void TextureBatcher::Render(const Matrixf& transform)
     {
-        Rectangle viewport = _device->Viewport();
+        const Rectangle viewport = _device->Viewport();
 
         CameraMatrices matrices
         {
             // TODO: Make adjust to viewport size
             Matrixf::OrthographicProjection(0, static_cast<float>(viewport.Width()), static_cast<float>(viewport.Height()), 0, -1, 1),
-            Matrixf::Identity()
+            transform
         };
         _renderable->PushUniformData(0, sizeof(CameraMatrices), &matrices);
 
