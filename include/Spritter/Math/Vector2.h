@@ -31,6 +31,22 @@ namespace Spritter::Math
             Y = y;
         }
 
+        template <typename TOther>
+        Vector2<TOther> As()
+        {
+            return { static_cast<TOther>(X), static_cast<TOther>(Y) };
+        }
+
+        T Length() const
+        {
+            return Magnitude(this);
+        }
+
+        Vector2 Normalized() const
+        {
+            return Normalize(this);
+        }
+
         Vector2& operator +=(const Vector2& delta)
         {
             this->X += delta.X;
@@ -63,6 +79,16 @@ namespace Spritter::Math
             };
         }
 
+        friend Vector2 operator /(const Vector2& left, const Vector2& right)
+        {
+            return { left.X / right.X, left.Y / right.Y };
+        }
+
+        friend Vector2 operator /(const Vector2& left, const T right)
+        {
+            return { left.X / right, left.Y / right };
+        }
+
         static Vector2 Zero()
         {
             return { 0, 0 };
@@ -71,6 +97,36 @@ namespace Spritter::Math
         static Vector2 One()
         {
             return { 1, 1 };
+        }
+
+        static Vector2 UnitX()
+        {
+            return { 1, 0 };
+        }
+
+        static Vector2 UnitY()
+        {
+            return { 0, 1 };
+        }
+
+        static T Dot(const Vector2& a, const Vector2& b)
+        {
+            return a.X * b.X + a.Y * b.Y;
+        }
+
+        static T MagnitudeSquared(const Vector2& vector)
+        {
+            return Dot(vector, vector);
+        }
+
+        static T Magnitude(const Vector2& vector)
+        {
+            return std::sqrt(Dot(vector));
+        }
+
+        static Vector2 Normalize(const Vector2& vector)
+        {
+            return vector / Magnitude(vector);
         }
     };
 
