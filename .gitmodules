@@ -4,3 +4,6 @@
 [submodule "lib/stb"]
 	path = lib/stb
 	url = https://github.com/Aquatic-Games/stb
+[submodule "lib/grabs.Native"]
+	path = lib/grabs.Native
+	url = https://github.com/aquagoose/grabs.Native

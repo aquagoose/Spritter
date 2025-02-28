@@ -37,9 +37,13 @@ add_library(Spritter STATIC
         include/Spritter/Spritter.h
         include/Spritter/Time.h
         src/Time.cpp
+        src/Graphics/grabs/GrabsGraphicsDevice.cpp
+        src/Graphics/grabs/GrabsGraphicsDevice.h
 )
 
 target_include_directories(Spritter PUBLIC include)
+
+option(SPRITTER_USE_GRABS "Use the experimental GRABS API" ON)
 
 # ---------- SDL ----------
 
@@ -55,6 +59,13 @@ else()
 endif()
 
 target_link_libraries(Spritter PUBLIC SDL3::SDL3)
+
+# ---------- GRABS ----------
+if (SPRITTER_USE_GRABS)
+    add_compile_definitions(SP_ENABLE_GRABS)
+    add_subdirectory(lib/grabs.Native)
+    target_link_libraries(Spritter PUBLIC grabs)
+endif()
 
 # ---------- GLAD ----------
 

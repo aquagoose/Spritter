@@ -1,10 +1,14 @@
 #include "Spritter/Game.h"
 
 #include "Spritter/Input.h"
-
 #include "SDLUtils.h"
-#include "Graphics/GL/GLGraphicsDevice.h"
 #include "Spritter/Time.h"
+
+#ifdef SP_ENABLE_GRABS
+#include "Graphics/grabs/GrabsGraphicsDevice.h"
+#else
+#include "Graphics/GL/GLGraphicsDevice.h"
+#endif
 
 namespace Spritter {
     void Game::Run(const GameOptions& options)
@@ -12,7 +16,11 @@ namespace Spritter {
         Window = std::make_unique<Spritter::Window>(options.Name, options.Size);
         Window->SetResizable(options.Resizable);
 
+#ifdef SP_ENABLE_GRABS
+        GraphicsDevice = std::make_unique<Graphics::Grabs::GrabsGraphicsDevice>(Window->Handle());
+#else
         GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
+#endif
         GraphicsDevice->SetVSyncMode(options.VSync);
         GraphicsDevice->SetFullscreenMode(options.FullscreenMode);
 
