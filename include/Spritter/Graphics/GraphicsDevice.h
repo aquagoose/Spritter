@@ -10,6 +10,13 @@
 
 namespace Spritter::Graphics
 {
+    enum class FullscreenMode
+    {
+        Windowed,
+        BorderlessFullscreen,
+        //ExclusiveFullscreen
+    };
+
     class GraphicsDevice
     {
     public:
@@ -17,6 +24,9 @@ namespace Spritter::Graphics
 
         virtual bool VSyncMode() = 0;
         virtual void SetVSyncMode(bool vsync) = 0;
+
+        virtual Graphics::FullscreenMode FullscreenMode() = 0;
+        virtual void SetFullscreenMode(Graphics::FullscreenMode mode) = 0;
 
         virtual Math::Rectangle Viewport() = 0;
         virtual void SetViewport(const Math::Rectangle& viewport) = 0;
@@ -32,5 +42,7 @@ namespace Spritter::Graphics
         virtual void Clear(const Math::Color& color) = 0;
 
         virtual void Present() = 0;
+
+        virtual void ResizeSwapchain(const Math::Size& size) = 0;
     };
 }

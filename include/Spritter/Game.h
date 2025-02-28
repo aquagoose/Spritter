@@ -9,10 +9,17 @@
 
 namespace Spritter
 {
+    // TODO: WindowOptions, GraphicsOptions, etc.
     struct GameOptions
     {
-        std::string Name;
-        Math::Size Size;
+        std::string Name = "Spritter";
+        Math::Size Size = { 1280, 720 };
+
+        bool Resizable = false;
+        Graphics::FullscreenMode FullscreenMode = Graphics::FullscreenMode::Windowed;
+
+        bool VSync = true;
+        uint32_t TargetFPS = 0;
     };
 
     class Game

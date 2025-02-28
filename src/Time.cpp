@@ -16,7 +16,7 @@ namespace Spritter
     void Time::SetTargetFPS(const uint32_t fps)
     {
         _targetFps = fps;
-        _targetDelta = 1.0 / static_cast<double>(fps);
+        _targetDelta = fps == 0 ? 0.0 : 1.0 / static_cast<double>(fps);
     }
 
     bool Time::Update(bool ignoreFpsLimit)

@@ -10,13 +10,18 @@ namespace Spritter::Graphics::GL
     {
     private:
         SDL_Window* _window;
+        SDL_GLContext _context;
         bool _vsync{};
 
     public:
         explicit GLGraphicsDevice(SDL_Window* window);
+        ~GLGraphicsDevice() override;
 
         bool VSyncMode() override;
         void SetVSyncMode(bool vsync) override;
+
+        Graphics::FullscreenMode FullscreenMode() override;
+        void SetFullscreenMode(Graphics::FullscreenMode mode) override;
 
         Math::Rectangle Viewport() override;
         void SetViewport(const Math::Rectangle& viewport) override;
@@ -30,5 +35,7 @@ namespace Spritter::Graphics::GL
         void Clear(const Math::Color& color) override;
 
         void Present() override;
+
+        void ResizeSwapchain(const Math::Size& size) override;
     };
 }

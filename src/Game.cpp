@@ -10,8 +10,13 @@ namespace Spritter {
     void Game::Run(const GameOptions& options)
     {
         Window = std::make_unique<Spritter::Window>(options.Name, options.Size);
+        Window->SetResizable(options.Resizable);
 
         GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
+        GraphicsDevice->SetVSyncMode(options.VSync);
+        GraphicsDevice->SetFullscreenMode(options.FullscreenMode);
+
+        Time::SetTargetFPS(options.TargetFPS);
 
         Initialize();
 
@@ -31,6 +36,12 @@ namespace Spritter {
                     case SDL_EVENT_WINDOW_CLOSE_REQUESTED:
                         _alive = false;
                         break;
+                    case SDL_EVENT_WINDOW_RESIZED:
+                        {
+                            Math::Size size = Window->Size();
+                            GraphicsDevice->ResizeSwapchain(size);
+                            break;
+                        }
                     case SDL_EVENT_KEY_DOWN:
                     {
                         const Key key = SDLUtils::KeycodeToKey(event.key.key);
