@@ -10,6 +10,7 @@ class TestGame final : public Game
 {
     std::unique_ptr<TextureBatcher> _batcher;
     std::unique_ptr<Texture> _texture;
+    std::unique_ptr<Font> _font;
 
     Vector2f _position{};
     float _rot{};
@@ -20,8 +21,8 @@ class TestGame final : public Game
         //GraphicsDevice->SetVSyncMode(false);
 
         _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
-
         _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
+        _font = std::make_unique<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
     }
 
     void Update(const float dt) override

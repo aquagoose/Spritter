@@ -39,24 +39,31 @@ add_library(Spritter STATIC
         include/Spritter/Spritter.h
         include/Spritter/Time.h
         src/Time.cpp
+        include/Spritter/Graphics/Font.h
+        src/Graphics/Font.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)
 
 # ---------- SDL ----------
 
-if (WIN32)
+#if (WIN32)
     add_subdirectory(lib/SDL)
     add_custom_command(
             TARGET Spritter POST_BUILD
             COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:SDL3::SDL3-shared> "${CMAKE_BINARY_DIR}"
             VERBATIM
     )
-else()
-    find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
-endif()
+#else()
+    #find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
+#endif()
 
 target_link_libraries(Spritter PUBLIC SDL3::SDL3)
+
+# ---------- FreeType ----------
+add_subdirectory(lib/freetype)
+target_link_libraries(Spritter PUBLIC freetype)
+
 
 # ---------- GRABS ----------
 if (SP_USE_GRABS)
