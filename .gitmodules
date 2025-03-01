@@ -7,3 +7,6 @@
 [submodule "lib/grabs.Native"]
 	path = lib/grabs.Native
 	url = https://github.com/aquagoose/grabs.Native
+[submodule "lib/freetype"]
+	path = lib/freetype
+	url = https://github.com/freetype/freetype/
