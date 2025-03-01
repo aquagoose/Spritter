@@ -15,5 +15,7 @@ namespace Spritter::Graphics
         virtual ~Texture() = default;
 
         [[nodiscard]] virtual Math::Size Size() const = 0;
+
+        virtual void Update(const Math::Rectangle& region, void* data) = 0;
     };
 }

@@ -12,22 +12,20 @@ namespace Spritter::Graphics::GL
         glBindTexture(GL_TEXTURE_2D, Texture);
 
         GLint internalFormat;
-        GLint glFormat;
-        GLint pixelType;
 
         switch (format)
         {
             case PixelFormat::R8G8B8A8_UNorm:
                 internalFormat = GL_RGBA8;
-                glFormat = GL_RGBA;
-                pixelType = GL_UNSIGNED_BYTE;
+                _pixelFormat = GL_RGBA;
+                _pixelType = GL_UNSIGNED_BYTE;
                 break;
             default:
                 throw std::runtime_error("Invalid pixel format.");
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, static_cast<GLsizei>(width), static_cast<GLsizei>(height), 0,
-                     glFormat, pixelType, data);
+                     _pixelFormat, _pixelType, data);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -46,5 +44,12 @@ namespace Spritter::Graphics::GL
     Math::Size GLTexture::Size() const
     {
         return _size;
+    }
+
+    void GLTexture::Update(const Math::Rectangle& region, void* data)
+    {
+        glBindTexture(GL_TEXTURE_2D, Texture);
+        glTexSubImage2D(GL_TEXTURE_2D, 0, region.X(), region.Y(), region.Width(), region.Height(), _pixelFormat,
+                        _pixelType, data);
     }
 }

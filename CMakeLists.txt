@@ -39,8 +39,6 @@ add_library(Spritter STATIC
         include/Spritter/Spritter.h
         include/Spritter/Time.h
         src/Time.cpp
-        #src/Graphics/grabs/GrabsGraphicsDevice.h
-        #src/Graphics/grabs/GrabsGraphicsDevice.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)
