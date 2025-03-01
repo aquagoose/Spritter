@@ -17,7 +17,7 @@ namespace Spritter {
         Window->SetResizable(options.Resizable);
 
 #ifdef SP_ENABLE_GRABS
-        GraphicsDevice = std::make_unique<Graphics::Grabs::GrabsGraphicsDevice>(Window->Handle());
+        GraphicsDevice = std::make_unique<Graphics::Grabs::GrabsGraphicsDevice>(Window->Handle(), Window->Size());
 #else
         GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
 #endif

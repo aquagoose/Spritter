@@ -1,7 +1,7 @@
 #pragma once
 
 #include <grabs/grabs.h>
-#include <SDL2/SDL_video.h>
+#include <SDL3/SDL.h>
 
 #include "Spritter/Graphics/GraphicsDevice.h"
 
@@ -15,9 +15,12 @@ namespace Spritter::Graphics::Grabs
         GsDevice _device{};
         GsSurface _surface{};
         GsSwapchain _swapchain{};
+        GsCommandList _commandList{};
+        GsTexture _currentSwapchainTexture{};
+        bool _isInRenderPass{};
 
     public:
-        explicit GrabsGraphicsDevice(SDL_Window* window);
+        explicit GrabsGraphicsDevice(SDL_Window* window, const Math::Size& windowSize);
         ~GrabsGraphicsDevice() override;
 
         bool VSyncMode() override;

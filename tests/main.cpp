@@ -19,9 +19,9 @@ class TestGame final : public Game
         //Time::SetTargetFPS(120);
         //GraphicsDevice->SetVSyncMode(false);
 
-        _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
+        //_batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
 
-        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
+        //_texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
     }
 
     void Update(const float dt) override
@@ -57,8 +57,8 @@ class TestGame final : public Game
     {
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
-        _batcher->Draw(_texture.get(), _position);
-        _batcher->Render();
+        //_batcher->Draw(_texture.get(), _position);
+        //_batcher->Render();
     }
 };
 
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
         /* Name: */ "Spritter Test",
         /* Size: */ { 1280, 720 },
 
-        /* Resizable: */true,
+        /* Resizable: */ false,
         /* FullscreenMode: */ FullscreenMode::Windowed,
 
         /* VSync: */ true,

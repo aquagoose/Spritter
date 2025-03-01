@@ -3,6 +3,8 @@ project(Spritter)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(SP_USE_GRABS "Use the experimental GRABS API" OFF)
+
 add_library(Spritter STATIC
         src/Game.cpp
         include/Spritter/Game.h
@@ -37,13 +39,11 @@ add_library(Spritter STATIC
         include/Spritter/Spritter.h
         include/Spritter/Time.h
         src/Time.cpp
-        src/Graphics/grabs/GrabsGraphicsDevice.cpp
-        src/Graphics/grabs/GrabsGraphicsDevice.h
+        #src/Graphics/grabs/GrabsGraphicsDevice.h
+        #src/Graphics/grabs/GrabsGraphicsDevice.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)
-
-option(SPRITTER_USE_GRABS "Use the experimental GRABS API" ON)
 
 # ---------- SDL ----------
 
@@ -51,7 +51,7 @@ if (WIN32)
     add_subdirectory(lib/SDL)
     add_custom_command(
             TARGET Spritter POST_BUILD
-            COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:Spritter>
+            COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:SDL3::SDL3-shared> "${CMAKE_BINARY_DIR}"
             VERBATIM
     )
 else()
@@ -61,7 +61,7 @@ endif()
 target_link_libraries(Spritter PUBLIC SDL3::SDL3)
 
 # ---------- GRABS ----------
-if (SPRITTER_USE_GRABS)
+if (SP_USE_GRABS)
     add_compile_definitions(SP_ENABLE_GRABS)
     add_subdirectory(lib/grabs.Native)
     target_link_libraries(Spritter PUBLIC grabs)
