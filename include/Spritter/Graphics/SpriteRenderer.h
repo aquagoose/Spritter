@@ -13,7 +13,7 @@
 
 namespace Spritter::Graphics
 {
-    class TextureBatcher
+    class SpriteRenderer
     {
         static constexpr uint32_t NumVertices = 4;
         static constexpr uint32_t NumIndices = 6;
@@ -50,7 +50,7 @@ namespace Spritter::Graphics
         std::vector<BatchItem> _items;
 
     public:
-        explicit TextureBatcher(GraphicsDevice& device);
+        explicit SpriteRenderer(GraphicsDevice& device);
 
         void Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
                   const Math::Vector2f& bottomLeft, const Math::Vector2f& bottomRight,

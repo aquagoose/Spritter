@@ -8,3 +8,4 @@ function(add_example name)
 endfunction()
 
 add_example(01-ClearScreen)
+add_example(02-Sprite)

@@ -1,4 +1,4 @@
-#include "Spritter/Graphics/TextureBatcher.h"
+#include "Spritter/Graphics/SpriteRenderer.h"
 
 #include <iostream>
 
@@ -50,7 +50,7 @@ struct CameraMatrices
 
 namespace Spritter::Graphics
 {
-    TextureBatcher::TextureBatcher(GraphicsDevice& device) : _device(device)
+    SpriteRenderer::SpriteRenderer(GraphicsDevice& device) : _device(device)
     {
         ShaderAttachment attachments[]
         {
@@ -98,14 +98,14 @@ namespace Spritter::Graphics
         _renderable = device.CreateRenderable(definition);
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
+    void SpriteRenderer::Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
                               const Math::Vector2f& bottomLeft, const Math::Vector2f& bottomRight,
                               const std::optional<Math::Rectangle>& source, const Math::Color& tint)
     {
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
+    void SpriteRenderer::Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
         const Math::Color& tint)
     {
         Math::Size size;
@@ -124,7 +124,7 @@ namespace Spritter::Graphics
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source,
+    void SpriteRenderer::Draw(Texture* texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source,
         const Math::Color& tint)
     {
         Math::Size size;
@@ -143,7 +143,7 @@ namespace Spritter::Graphics
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Render(const Math::Matrixf& transform)
+    void SpriteRenderer::Render(const Math::Matrixf& transform)
     {
         const Math::Rectangle viewport = _device.Viewport();
 
@@ -200,7 +200,7 @@ namespace Spritter::Graphics
         _items.clear();
     }
 
-    void TextureBatcher::Flush(Texture* texture, uint32_t numDraws)
+    void SpriteRenderer::Flush(Texture* texture, uint32_t numDraws)
     {
         if (numDraws == 0)
             return;

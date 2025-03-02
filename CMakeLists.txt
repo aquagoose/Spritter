@@ -15,7 +15,7 @@ add_library(Spritter STATIC
         src/Graphics/GL/GLGraphicsDevice.cpp
         src/Graphics/GL/GLGraphicsDevice.h
         include/Spritter/Math/Color.h
-        include/Spritter/Graphics/TextureBatcher.h
+        include/Spritter/Graphics/SpriteRenderer.h
         include/Spritter/Graphics/Renderable.h
         src/Graphics/GL/GLRenderable.cpp
         src/Graphics/GL/GLRenderable.h
@@ -24,7 +24,7 @@ add_library(Spritter STATIC
         include/Spritter/Graphics/Shader.h
         include/Spritter/Math/Vector2.h
         include/Spritter/Math/Math.h
-        src/Graphics/TextureBatcher.cpp
+        src/Graphics/SpriteRenderer.cpp
         include/Spritter/Math/Vector4.h
         include/Spritter/Math/Matrix.h
         include/Spritter/Graphics/Texture.h

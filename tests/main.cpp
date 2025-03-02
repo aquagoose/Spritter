@@ -8,7 +8,7 @@ using namespace Spritter::Math;
 
 class TestGame final : public Game
 {
-    std::unique_ptr<TextureBatcher> _batcher;
+    std::unique_ptr<SpriteRenderer> _renderer;
     std::unique_ptr<Texture> _texture;
     std::unique_ptr<Font> _font;
 
@@ -20,7 +20,7 @@ class TestGame final : public Game
         //Time::SetTargetFPS(120);
         //GraphicsDevice->SetVSyncMode(false);
 
-        _batcher = std::make_unique<TextureBatcher>(*GraphicsDevice);
+        _renderer = std::make_unique<SpriteRenderer>(*GraphicsDevice);
         _texture = GraphicsDevice->CreateTexture("Content/DEBUG.png");
         _font = std::make_unique<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
     }
@@ -58,11 +58,11 @@ class TestGame final : public Game
     {
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
-        _batcher->Draw(_texture.get(), _position);
+        _renderer->Draw(_texture.get(), _position);
 
-        _font->Draw(*_batcher, { 0, 0 }, "Hello!", 32);
+        _font->Draw(*_renderer, { 0, 0 }, "Hello!", 32);
 
-        _batcher->Render();
+        _renderer->Render();
     }
 };
 

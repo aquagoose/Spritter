@@ -8,7 +8,7 @@
 #include FT_FREETYPE_H
 
 #include "GraphicsDevice.h"
-#include "TextureBatcher.h"
+#include "SpriteRenderer.h"
 
 #define SP_FONT_TEXTURE_SIZE 1024
 
@@ -59,7 +59,7 @@ namespace Spritter::Graphics
         Font(GraphicsDevice& device, const std::string& path);
         ~Font();
 
-        void Draw(TextureBatcher& batcher, const Math::Vector2f& position, const std::string& text, uint32_t size,
+        void Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::string& text, uint32_t size,
                   const Math::Color& color = Math::Color::White());
 
     private:
