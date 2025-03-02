@@ -60,7 +60,7 @@ class TestGame final : public Game
 
         _batcher->Draw(_texture.get(), _position);
 
-        _font->Draw(*_batcher, { 0, 0 }, "hello", 24);
+        _font->Draw(*_batcher, { 0, 0 }, "hello", 256);
 
         _batcher->Render();
     }

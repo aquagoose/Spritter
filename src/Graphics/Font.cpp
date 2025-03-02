@@ -43,12 +43,18 @@ namespace Spritter::Graphics
     {
         const std::u32string str(text.begin(), text.end());
 
+        Vector2f pos = position + Vector2f(0, size);
+
         for (const auto c : str)
         {
-            Character character = GetCharacter(c, size);
-        }
+            const Character character = GetCharacter(c, size);
+            Texture* texture = _textures[character.TextureIndex].get();
 
-        batcher.Draw(_textures[0].get(), position);
+            Vector2f drawPos = pos + Vector2i(character.Bearing.X, -character.Bearing.Y).As<float>();
+            batcher.Draw(texture, drawPos, character.Source);
+
+            pos.X += character.Advance;
+        }
     }
 
     Font::Character Font::GetCharacter(const uint32_t c, const uint32_t size)

@@ -32,7 +32,7 @@ namespace Spritter::Math
         }
 
         template <typename TOther>
-        Vector2<TOther> As()
+        Vector2<TOther> As() const
         {
             return { static_cast<TOther>(X), static_cast<TOther>(Y) };
         }
