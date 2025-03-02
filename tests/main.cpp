@@ -59,6 +59,9 @@ class TestGame final : public Game
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
         _batcher->Draw(_texture.get(), _position);
+
+        _font->Draw(*_batcher, { 0, 0 }, "hello", 24);
+
         _batcher->Render();
     }
 };

@@ -22,6 +22,13 @@ namespace Spritter::Graphics::GL
 
         gladLoadGLLoader(reinterpret_cast<GLADloadproc>(SDL_GL_GetProcAddress));
         _vsync = true;
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_CULL_FACE);
+        glFrontFace(GL_CW);
+        glCullFace(GL_BACK);
     }
 
     GLGraphicsDevice::~GLGraphicsDevice()
