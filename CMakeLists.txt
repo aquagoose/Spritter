@@ -86,10 +86,10 @@ target_link_libraries(Spritter PUBLIC stb)
 
 function(spritter_set_content target srcdir destdir)
     add_custom_target(
-            SpContentCopy ALL
-            COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_SOURCE_DIR}/${srcdir}" "${CMAKE_BINARY_DIR}/${destdir}"
+            SpContentCopyFor${target} ALL
+            COMMAND "${CMAKE_COMMAND}" -E copy_directory "${srcdir}" "${destdir}"
     )
-    add_dependencies(${target} SpContentCopy)
+    add_dependencies(${target} SpContentCopyFor${target})
 endfunction()
 
 # ----- Example -----

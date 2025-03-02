@@ -30,7 +30,7 @@ class MyGame final : public Game
 int main(int argc, char* argv[])
 {
     // Describes how the game will be created.
-    GameOptions options
+    const GameOptions options
     {
         /* Name: */ "01 - Clear Screen",
         /* Size: */ { 1280, 720 },
