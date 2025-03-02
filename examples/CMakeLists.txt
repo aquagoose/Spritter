@@ -13,3 +13,6 @@ endfunction()
 
 add_example(01-ClearScreen)
 add_example(02-Sprite)
+add_example(03-Transforms)
+add_example(04-Input)
+add_example(05-Text)

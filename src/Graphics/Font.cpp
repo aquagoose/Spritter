@@ -40,21 +40,21 @@ namespace Spritter::Graphics
         }
     }
 
-    void Font::Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::string& text,
+    void Font::Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::u32string& text,
         uint32_t size, const Math::Color& color)
     {
-        const std::u32string str(text.begin(), text.end());
+        //const std::u32string str(text.begin(), text.end());
 
         // TODO: Work out a way to align the text properly to the position.
         Math::Vector2f pos = position + Math::Vector2f(0, _face->size->metrics.ascender >> 6);
 
-        for (const auto c : str)
+        for (const auto c : text)
         {
             const Character character = GetCharacter(c, size);
             Texture* texture = _textures[character.TextureIndex].get();
 
             Math::Vector2f drawPos = pos + Math::Vector2i(character.Bearing.X, -character.Bearing.Y).As<float>();
-            batcher.Draw(texture, drawPos, character.Source);
+            batcher.Draw(texture, drawPos, character.Source, color);
 
             pos.X += character.Advance;
         }
