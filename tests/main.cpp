@@ -60,7 +60,7 @@ class TestGame final : public Game
 
         _batcher->Draw(_texture.get(), _position);
 
-        _font->Draw(*_batcher, { 0, 0 }, "hello", 256);
+        _font->Draw(*_batcher, { 0, 0 }, "oh dear.", 512);
 
         _batcher->Render();
     }
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         /* Size: */ { 1280, 720 },
 
         /* Resizable: */ true,
-        /* FullscreenMode: */ FullscreenMode::Windowed,
+        /* FullscreenMode: */ FullscreenMode::BorderlessFullscreen,
 
         /* VSync: */ true,
         /* TargetFPS: */ 0 // Unlimited FPS, ignored if VSync enabled

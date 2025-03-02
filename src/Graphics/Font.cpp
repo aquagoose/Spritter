@@ -43,6 +43,7 @@ namespace Spritter::Graphics
     {
         const std::u32string str(text.begin(), text.end());
 
+        // TODO: Work out a way to align the text properly to the position.
         Vector2f pos = position + Vector2f(0, size);
 
         for (const auto c : str)
@@ -71,7 +72,6 @@ namespace Spritter::Graphics
         const FT_GlyphSlot glyph = _face->glyph;
         const FT_Bitmap bitmap = glyph->bitmap;
 
-        const size_t texIndex = _textures.size() - 1;
         const Math::Size texSize = { static_cast<int32_t>(bitmap.width), static_cast<int32_t>(bitmap.rows) };
         const Math::Vector2i bearing = { glyph->bitmap_left, glyph->bitmap_top };
         const int32_t advance = static_cast<int32_t>(glyph->advance.x >> 6);
@@ -83,10 +83,19 @@ namespace Spritter::Graphics
             _maxHeightOnThisLine = 0;
         }
 
+        if (_currentPosition.Y + texSize.Height >= SP_FONT_TEXTURE_SIZE)
+        {
+            _currentPosition = Vector2i::Zero();
+            _maxHeightOnThisLine = 0;
+            std::cout << "Texture full, creating new texture" << std::endl;
+            _textures.push_back(_device.CreateTexture(SP_FONT_TEXTURE_SIZE, SP_FONT_TEXTURE_SIZE, PixelFormat::R8G8B8A8_UNorm, nullptr));
+        }
+
         if (size > _maxHeightOnThisLine)
             _maxHeightOnThisLine = size;
 
         const Math::Rectangle source = { _currentPosition, texSize };
+        const size_t texIndex = _textures.size() - 1;
 
         // Convert to RGBA bitmap.
         const auto bytes = new uint8_t[texSize.Width * texSize.Height * 4];
