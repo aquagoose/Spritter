@@ -21,7 +21,7 @@ class TestGame final : public Game
         //GraphicsDevice->SetVSyncMode(false);
 
         _batcher = std::make_unique<TextureBatcher>(*GraphicsDevice);
-        _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
+        _texture = GraphicsDevice->CreateTexture("Content/DEBUG.png");
         _font = std::make_unique<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
     }
 

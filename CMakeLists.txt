@@ -82,8 +82,22 @@ target_link_libraries(Spritter PUBLIC glad)
 add_subdirectory(lib/stb)
 target_link_libraries(Spritter PUBLIC stb)
 
+# ---------- Content ----------
+
+function(spritter_set_content target srcdir destdir)
+    add_custom_target(
+            SpContentCopy ALL
+            COMMAND "${CMAKE_COMMAND}" -E copy_directory "${CMAKE_SOURCE_DIR}/${srcdir}" "${CMAKE_BINARY_DIR}/${destdir}"
+    )
+    add_dependencies(${target} SpContentCopy)
+endfunction()
+
+# ----- Example -----
+add_subdirectory(examples)
+
 # ----- TEST -----
 
 add_executable(SpTest tests/main.cpp)
 target_link_libraries(SpTest PRIVATE Spritter)
 target_link_libraries(SpTest PRIVATE stdc++)
+spritter_set_content(SpTest tests/Content Content)
