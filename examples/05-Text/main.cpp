@@ -9,24 +9,10 @@ class MyGame final : public Game
     std::unique_ptr<SpriteRenderer> _renderer;
     std::unique_ptr<Font> _font;
 
-    Vector2f _position{};
-    float _value{};
-
     void Initialize() override
     {
         _renderer = std::make_unique<SpriteRenderer>(*GraphicsDevice);
         _font = std::make_unique<Font>(*GraphicsDevice, "Content/NotoSansJP-Regular.ttf");
-    }
-
-    void Update(const float dt) override
-    {
-        _value += dt;
-
-        _position.X = 100 + (std::sin(_value) + 1) * 0.5f * 500;
-        _position.Y = 100 + (std::cos(_value * 3) + 1) * 0.5f * 200;
-
-        if (_value >= M_PI * 2)
-            _value -= M_PI * 2;
     }
 
     void Draw() override

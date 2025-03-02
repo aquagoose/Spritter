@@ -4,6 +4,8 @@ project(Spritter)
 set(CMAKE_CXX_STANDARD 17)
 
 option(SP_USE_GRABS "Use the experimental GRABS API" OFF)
+option(SP_BUILD_TEST "Build the Spritter test project" OFF)
+option(SP_BUILD_EXAMPLES "Build the Spritter examples" ON)
 
 add_library(Spritter STATIC
         src/Game.cpp
@@ -93,11 +95,15 @@ function(spritter_set_content target srcdir destdir)
 endfunction()
 
 # ----- Example -----
-add_subdirectory(examples)
+if (SP_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif()
 
 # ----- TEST -----
 
-add_executable(SpTest tests/main.cpp)
-target_link_libraries(SpTest PRIVATE Spritter)
-target_link_libraries(SpTest PRIVATE stdc++)
-spritter_set_content(SpTest tests/Content Content)
+if (SP_BUILD_TEST)
+    add_executable(SpTest tests/main.cpp)
+    target_link_libraries(SpTest PRIVATE Spritter)
+    target_link_libraries(SpTest PRIVATE stdc++)
+    spritter_set_content(SpTest ${CMAKE_SOURCE_DIR}/tests/Content ${CMAKE_BINARY_DIR}/Content)
+endif()
