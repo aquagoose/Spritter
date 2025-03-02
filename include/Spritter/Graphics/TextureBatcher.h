@@ -11,8 +11,6 @@
 #include "GraphicsDevice.h"
 #include "Spritter/Math/Math.h"
 
-using namespace Spritter::Math;
-
 namespace Spritter::Graphics
 {
     class TextureBatcher
@@ -25,20 +23,20 @@ namespace Spritter::Graphics
 
         struct Vertex
         {
-            Vector2f Position;
-            Vector2f TexCoord;
-            Color Tint;
+            Math::Vector2f Position;
+            Math::Vector2f TexCoord;
+            Math::Color Tint;
         };
 
         struct BatchItem
         {
             Graphics::Texture* Texture;
-            Vector2f TopLeft;
-            Vector2f TopRight;
-            Vector2f BottomLeft;
-            Vector2f BottomRight;
-            std::optional<Rectangle> Source;
-            Color Tint;
+            Math::Vector2f TopLeft;
+            Math::Vector2f TopRight;
+            Math::Vector2f BottomLeft;
+            Math::Vector2f BottomRight;
+            std::optional<Math::Rectangle> Source;
+            Math::Color Tint;
         };
 
         GraphicsDevice& _device;
@@ -54,24 +52,33 @@ namespace Spritter::Graphics
     public:
         explicit TextureBatcher(GraphicsDevice& device);
 
-        void Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft,
-                  const Vector2f& bottomRight, const std::optional<Rectangle>& source, const Color& tint);
+        void Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
+                  const Math::Vector2f& bottomLeft, const Math::Vector2f& bottomRight,
+                  const std::optional<Math::Rectangle>& source, const Math::Color& tint);
 
-        void Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source = {}, const Color& tint = Color::White());
+        void Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source = {},
+                  const Math::Color& tint = Math::Color::White());
 
-        void Draw(Texture* texture, const Matrixf& matrix, const std::optional<Rectangle>& source = {}, const Color& tint = Color::White());
+        void Draw(Texture* texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source = {},
+                  const Math::Color& tint = Math::Color::White());
 
-        void Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source, const Color& tint, float rotation, const Vector2f& scale = Vector2f::One(), const Vector2f& origin = Vector2f::Zero())
+        void Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
+                  const Math::Color& tint, float rotation, const Math::Vector2f& scale = Math::Vector2f::One(),
+                  const Math::Vector2f& origin = Math::Vector2f::Zero())
         {
-            Draw(texture, Matrixf::Translate(-origin.X, -origin.Y, 0) * Matrixf::Scale(scale.X, scale.Y, 0) * Matrixf::RotateZ(rotation) * Matrixf::Translate(position.X, position.Y, 0), source, tint);
+            Draw(texture,
+                 Math::Matrixf::Translate(-origin.X, -origin.Y, 0) * Math::Matrixf::Scale(scale.X, scale.Y, 0) *
+                 Math::Matrixf::RotateZ(rotation) * Math::Matrixf::Translate(position.X, position.Y, 0), source, tint);
         }
 
-        void Draw(Texture* texture, const Vector2f& position, const float rotation, const Vector2f& scale = Vector2f::One(), const Vector2f& origin = Vector2f::Zero())
+        void Draw(Texture* texture, const Math::Vector2f& position, const float rotation,
+                  const Math::Vector2f& scale = Math::Vector2f::One(),
+                  const Math::Vector2f& origin = Math::Vector2f::Zero())
         {
-            Draw(texture, position, {}, Color::White(), rotation, scale, origin);
+            Draw(texture, position, {}, Math::Color::White(), rotation, scale, origin);
         }
 
-        void Render(const Matrixf& transform = Matrixf::Identity());
+        void Render(const Math::Matrixf& transform = Math::Matrixf::Identity());
 
     private:
         void Flush(Texture* texture, uint32_t numDraws);

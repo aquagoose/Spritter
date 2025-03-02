@@ -59,7 +59,8 @@ namespace Spritter::Graphics
         Font(GraphicsDevice& device, const std::string& path);
         ~Font();
 
-        void Draw(TextureBatcher& batcher, const Math::Vector2f& position, const std::string& text, uint32_t size);
+        void Draw(TextureBatcher& batcher, const Math::Vector2f& position, const std::string& text, uint32_t size,
+                  const Math::Color& color = Math::Color::White());
 
     private:
         Character GetCharacter(uint32_t c, uint32_t size);

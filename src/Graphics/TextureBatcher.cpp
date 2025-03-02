@@ -44,8 +44,8 @@ void main()
 
 struct CameraMatrices
 {
-    Matrixf Projection;
-    Matrixf Transform;
+    Spritter::Math::Matrixf Projection;
+    Spritter::Math::Matrixf Transform;
 };
 
 namespace Spritter::Graphics
@@ -98,59 +98,59 @@ namespace Spritter::Graphics
         _renderable = device.CreateRenderable(definition);
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight,
-                              const Vector2f& bottomLeft, const Vector2f& bottomRight,
-                              const std::optional<Rectangle>& source, const Color& tint)
+    void TextureBatcher::Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
+                              const Math::Vector2f& bottomLeft, const Math::Vector2f& bottomRight,
+                              const std::optional<Math::Rectangle>& source, const Math::Color& tint)
     {
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Vector2f& position, const std::optional<Rectangle>& source,
-        const Color& tint)
+    void TextureBatcher::Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
+        const Math::Color& tint)
     {
-        Size size;
+        Math::Size size;
         if (source.has_value())
             size = source.value().Size;
         else
             size = texture->Size();
 
-        const Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
+        const Math::Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
 
-        const Vector2f topLeft = position;
-        const Vector2f topRight = position + Vector2f(fSize.X, 0);
-        const Vector2f bottomLeft = position + Vector2f(0, fSize.Y);
-        const Vector2f bottomRight = position + fSize;
+        const Math::Vector2f topLeft = position;
+        const Math::Vector2f topRight = position + Math::Vector2f(fSize.X, 0);
+        const Math::Vector2f bottomLeft = position + Math::Vector2f(0, fSize.Y);
+        const Math::Vector2f bottomRight = position + fSize;
 
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Draw(Texture* texture, const Matrixf& matrix, const std::optional<Rectangle>& source,
-        const Color& tint)
+    void TextureBatcher::Draw(Texture* texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source,
+        const Math::Color& tint)
     {
-        Size size;
+        Math::Size size;
         if (source.has_value())
             size = source.value().Size;
         else
             size = texture->Size();
 
-        const Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
+        const Math::Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
 
-        const Vector2f topLeft = Vector2f::Zero() * matrix;
-        const Vector2f topRight = Vector2f(fSize.X, 0) * matrix;
-        const Vector2f bottomLeft = Vector2f(0, fSize.Y) * matrix;
-        const Vector2f bottomRight = fSize * matrix;
+        const Math::Vector2f topLeft = Math::Vector2f::Zero() * matrix;
+        const Math::Vector2f topRight = Math::Vector2f(fSize.X, 0) * matrix;
+        const Math::Vector2f bottomLeft = Math::Vector2f(0, fSize.Y) * matrix;
+        const Math::Vector2f bottomRight = fSize * matrix;
 
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void TextureBatcher::Render(const Matrixf& transform)
+    void TextureBatcher::Render(const Math::Matrixf& transform)
     {
-        const Rectangle viewport = _device.Viewport();
+        const Math::Rectangle viewport = _device.Viewport();
 
         CameraMatrices matrices
         {
             // TODO: Make adjust to viewport size
-            Matrixf::OrthographicProjection(0, static_cast<float>(viewport.Width()), static_cast<float>(viewport.Height()), 0, -1, 1),
+            Math::Matrixf::OrthographicProjection(0, static_cast<float>(viewport.Width()), static_cast<float>(viewport.Height()), 0, -1, 1),
             transform
         };
         _renderable->PushUniformData(0, sizeof(CameraMatrices), &matrices);
@@ -173,8 +173,8 @@ namespace Spritter::Graphics
             const uint32_t vOffset = NumVertices * currentItem;
             const uint32_t iOffset = NumIndices * currentItem;
 
-            const Size texSize = item.Texture->Size();
-            const Rectangle source = item.Source.value_or(Rectangle(0, 0, texSize.Width, texSize.Height));
+            const Math::Size texSize = item.Texture->Size();
+            const Math::Rectangle source = item.Source.value_or(Math::Rectangle(0, 0, texSize.Width, texSize.Height));
 
             const float texX = static_cast<float>(source.X()) / static_cast<float>(texSize.Width);
             const float texY = static_cast<float>(source.Y()) / static_cast<float>(texSize.Height);

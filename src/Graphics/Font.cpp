@@ -41,19 +41,19 @@ namespace Spritter::Graphics
     }
 
     void Font::Draw(TextureBatcher& batcher, const Math::Vector2f& position, const std::string& text,
-        uint32_t size)
+        uint32_t size, const Math::Color& color)
     {
         const std::u32string str(text.begin(), text.end());
 
         // TODO: Work out a way to align the text properly to the position.
-        Vector2f pos = position + Vector2f(0, size);
+        Math::Vector2f pos = position + Math::Vector2f(0, _face->size->metrics.ascender >> 6);
 
         for (const auto c : str)
         {
             const Character character = GetCharacter(c, size);
             Texture* texture = _textures[character.TextureIndex].get();
 
-            Vector2f drawPos = pos + Vector2i(character.Bearing.X, -character.Bearing.Y).As<float>();
+            Math::Vector2f drawPos = pos + Math::Vector2i(character.Bearing.X, -character.Bearing.Y).As<float>();
             batcher.Draw(texture, drawPos, character.Source);
 
             pos.X += character.Advance;
@@ -87,7 +87,7 @@ namespace Spritter::Graphics
 
         if (_currentPosition.Y + texSize.Height >= SP_FONT_TEXTURE_SIZE)
         {
-            _currentPosition = Vector2i::Zero();
+            _currentPosition = Math::Vector2i::Zero();
             _maxHeightOnThisLine = 0;
             std::cout << "Texture full, creating new texture" << std::endl;
             _textures.push_back(_device.CreateTexture(SP_FONT_TEXTURE_SIZE, SP_FONT_TEXTURE_SIZE, PixelFormat::R8G8B8A8_UNorm, nullptr));
