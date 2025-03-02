@@ -20,7 +20,7 @@ class TestGame final : public Game
         //Time::SetTargetFPS(120);
         //GraphicsDevice->SetVSyncMode(false);
 
-        _batcher = std::make_unique<TextureBatcher>(GraphicsDevice.get());
+        _batcher = std::make_unique<TextureBatcher>(*GraphicsDevice);
         _texture = GraphicsDevice->CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
         _font = std::make_unique<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
     }
@@ -60,7 +60,7 @@ class TestGame final : public Game
 
         _batcher->Draw(_texture.get(), _position);
 
-        _font->Draw(*_batcher, { 0, 0 }, "oh dear.", 512);
+        _font->Draw(*_batcher, { 0, 0 }, "Hello!", 32);
 
         _batcher->Render();
     }
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         /* Size: */ { 1280, 720 },
 
         /* Resizable: */ true,
-        /* FullscreenMode: */ FullscreenMode::BorderlessFullscreen,
+        /* FullscreenMode: */ FullscreenMode::Windowed,
 
         /* VSync: */ true,
         /* TargetFPS: */ 0 // Unlimited FPS, ignored if VSync enabled

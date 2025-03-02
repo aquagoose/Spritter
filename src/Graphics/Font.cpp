@@ -30,6 +30,8 @@ namespace Spritter::Graphics
 
     Font::~Font()
     {
+        FT_CHECK(FT_Done_Face(_face));
+
         _libraryReferences--;
         if (_libraryReferences == 0)
         {

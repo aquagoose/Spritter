@@ -41,7 +41,7 @@ namespace Spritter::Graphics
             Color Tint;
         };
 
-        GraphicsDevice* _device;
+        GraphicsDevice& _device;
 
         std::array<Vertex, MaxVertices> _vertices{};
         std::array<uint32_t, MaxIndices> _indices{};
@@ -52,7 +52,7 @@ namespace Spritter::Graphics
         std::vector<BatchItem> _items;
 
     public:
-        explicit TextureBatcher(GraphicsDevice* device);
+        explicit TextureBatcher(GraphicsDevice& device);
 
         void Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight, const Vector2f& bottomLeft,
                   const Vector2f& bottomRight, const std::optional<Rectangle>& source, const Color& tint);

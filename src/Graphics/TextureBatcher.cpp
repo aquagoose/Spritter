@@ -50,16 +50,14 @@ struct CameraMatrices
 
 namespace Spritter::Graphics
 {
-    TextureBatcher::TextureBatcher(GraphicsDevice* device)
+    TextureBatcher::TextureBatcher(GraphicsDevice& device) : _device(device)
     {
-        _device = device;
-
         ShaderAttachment attachments[]
         {
             { ShaderStage::Vertex, TBVertexShader },
             { ShaderStage::Pixel, TBPixelShader }
         };
-        _defaultShader = device->CreateShader(attachments, 2);
+        _defaultShader = device.CreateShader(attachments, 2);
 
         ShaderAttribute attributes[]
         {
@@ -97,7 +95,7 @@ namespace Spritter::Graphics
             1,
             true
         };
-        _renderable = device->CreateRenderable(definition);
+        _renderable = device.CreateRenderable(definition);
     }
 
     void TextureBatcher::Draw(Texture* texture, const Vector2f& topLeft, const Vector2f& topRight,
@@ -147,7 +145,7 @@ namespace Spritter::Graphics
 
     void TextureBatcher::Render(const Matrixf& transform)
     {
-        const Rectangle viewport = _device->Viewport();
+        const Rectangle viewport = _device.Viewport();
 
         CameraMatrices matrices
         {
