@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <locale>
 
 #define FT_CHECK(Operation) {\
     FT_Error err = Operation;\
@@ -40,14 +41,13 @@ namespace Spritter::Graphics
         }
     }
 
-    void Font::Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::u32string& text,
+    void Font::Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::string& text,
         uint32_t size, const Math::Color& color)
     {
         //const std::u32string str(text.begin(), text.end());
 
         // TODO: Work out a way to align the text properly to the position.
         Math::Vector2f pos = position + Math::Vector2f(0, _face->size->metrics.ascender >> 6);
-
         for (const auto c : text)
         {
             const Character character = GetCharacter(c, size);
