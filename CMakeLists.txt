@@ -3,9 +3,14 @@ project(Spritter)
 
 set(CMAKE_CXX_STANDARD 17)
 
+option(SP_ENABLE_D3D11 "Enable DirectX 11 support" OFF)
 option(SP_USE_GRABS "Use the experimental GRABS API" OFF)
 option(SP_BUILD_TEST "Build the Spritter test project" OFF)
 option(SP_BUILD_EXAMPLES "Build the Spritter examples" ON)
+
+if (WIN32)
+    set(SP_ENABLE_D3D11 ON)
+endif()
 
 add_library(Spritter STATIC
         src/Game.cpp
@@ -80,6 +85,13 @@ endif()
 
 add_subdirectory(lib/glad)
 target_link_libraries(Spritter PUBLIC glad)
+
+# ---------- D3D11 ----------
+
+if (SP_ENABLE_D3D11)
+    target_link_libraries(Spritter PUBLIC d3d11 dxgi d3dcompiler)
+    add_compile_definitions(SP_ENABLE_D3D11)
+endif()
 
 # ---------- STB ----------
 

@@ -1,13 +1,20 @@
 ﻿#pragma once
 
 #include <SDL3/SDL.h>
+#include <d3d11.h>
 
 #include "Spritter/Graphics/GraphicsDevice.h"
 
 namespace Spritter::Graphics::D3D11
 {
-    class D3D11GraphicsDevice : public GraphicsDevice
+    class D3D11GraphicsDevice final : public GraphicsDevice
     {
+        ID3D11Device* _device{};
+        ID3D11DeviceContext* _context{};
+        IDXGISwapChain* _swapchain{};
+        ID3D11Texture2D* _swapchainTexture{};
+        ID3D11RenderTargetView* _swapchainTarget{};
+
     public:
         explicit D3D11GraphicsDevice(SDL_Window* window);
         ~D3D11GraphicsDevice() override;

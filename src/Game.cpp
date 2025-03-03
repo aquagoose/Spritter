@@ -1,5 +1,7 @@
 #include "Spritter/Game.h"
 
+#include <iostream>
+
 #include "Spritter/Input.h"
 #include "SDLUtils.h"
 #include "Spritter/Time.h"
@@ -10,14 +12,29 @@
 #include "Graphics/GL/GLGraphicsDevice.h"
 #endif
 
+#ifdef SP_ENABLE_D3D11
+#include "Graphics/D3D11/D3D11GraphicsDevice.h"
+#endif
+
 namespace Spritter {
     void Game::Run(const GameOptions& options)
     {
         Window = std::make_unique<Spritter::Window>(options.Name, options.Size);
         Window->SetResizable(options.Resizable);
 
-#ifdef SP_ENABLE_GRABS
+#if defined(SP_ENABLE_GRABS)
         GraphicsDevice = std::make_unique<Graphics::Grabs::GrabsGraphicsDevice>(Window->Handle(), Window->Size());
+#elif defined(SP_ENABLE_D3D11)
+        try
+        {
+            std::cout << "Creating D3D11 device." << std::endl;
+            GraphicsDevice = std::make_unique<Graphics::D3D11::D3D11GraphicsDevice>(Window->Handle());
+        }
+        catch (const std::exception& e)
+        {
+            std::cout << "Failed with error: " << e.what() << "\nCreating GL device instead." << std::endl;
+            GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
+        }
 #else
         GraphicsDevice = std::make_unique<Graphics::GL::GLGraphicsDevice>(Window->Handle());
 #endif
