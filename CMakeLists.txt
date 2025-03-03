@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(SP_ENABLE_D3D11 "Enable DirectX 11 support" OFF)
 option(SP_ENABLE_GRABS "Use the experimental GRABS API" OFF)
-option(SP_BUILD_TEST "Build the Spritter test project" OFF)
+option(SP_BUILD_TEST "Build the Spritter test project" ON)
 option(SP_BUILD_EXAMPLES "Build the Spritter examples" ON)
 
 if (WIN32)
@@ -52,6 +52,7 @@ add_library(Spritter STATIC
         src/Graphics/D3D11/D3D11GraphicsDevice.h
         src/Graphics/D3D11/D3D11Renderable.cpp
         src/Graphics/D3D11/D3D11Renderable.h
+        src/Graphics/D3D11/D3D11Utils.h
 )
 
 target_include_directories(Spritter PUBLIC include)
@@ -120,6 +121,5 @@ endif()
 if (SP_BUILD_TEST)
     add_executable(SpTest tests/main.cpp)
     target_link_libraries(SpTest PRIVATE Spritter)
-    target_link_libraries(SpTest PRIVATE stdc++)
-    spritter_set_content(SpTest ${CMAKE_SOURCE_DIR}/tests/Content ${CMAKE_BINARY_DIR}/Content)
+    #target_link_libraries(SpTest PRIVATE stdc++)
 endif()
