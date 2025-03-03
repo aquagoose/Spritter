@@ -1,12 +1,6 @@
 ﻿#include "D3D11GraphicsDevice.h"
 
-#include <stdexcept>
-
-#define D3D11_CHECK(Operation) {\
-    HRESULT res = Operation;\
-    if (FAILED(res))\
-        throw std::runtime_error("D3D11 operation failed.");\
-}
+#include "D3D11Utils.h"
 
 namespace Spritter::Graphics::D3D11
 {
