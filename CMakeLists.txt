@@ -4,13 +4,13 @@ project(Spritter)
 set(CMAKE_CXX_STANDARD 17)
 
 option(SP_ENABLE_D3D11 "Enable DirectX 11 support" OFF)
-option(SP_USE_GRABS "Use the experimental GRABS API" OFF)
+option(SP_ENABLE_GRABS "Use the experimental GRABS API" OFF)
 option(SP_BUILD_TEST "Build the Spritter test project" OFF)
 option(SP_BUILD_EXAMPLES "Build the Spritter examples" ON)
 
-#if (WIN32)
-#    set(SP_ENABLE_D3D11 ON)
-#endif()
+if (WIN32)
+    set(SP_ENABLE_D3D11 ON)
+endif()
 
 add_library(Spritter STATIC
         src/Game.cpp
@@ -48,6 +48,10 @@ add_library(Spritter STATIC
         src/Time.cpp
         include/Spritter/Graphics/Font.h
         src/Graphics/Font.cpp
+        src/Graphics/D3D11/D3D11GraphicsDevice.cpp
+        src/Graphics/D3D11/D3D11GraphicsDevice.h
+        src/Graphics/D3D11/D3D11Renderable.cpp
+        src/Graphics/D3D11/D3D11Renderable.h
 )
 
 target_include_directories(Spritter PUBLIC include)
@@ -73,7 +77,7 @@ target_link_libraries(Spritter PUBLIC freetype)
 
 
 # ---------- GRABS ----------
-if (SP_USE_GRABS)
+if (SP_ENABLE_GRABS)
     add_compile_definitions(SP_ENABLE_GRABS)
     add_subdirectory(lib/grabs.Native)
     target_link_libraries(Spritter PUBLIC grabs)
