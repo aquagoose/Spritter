@@ -43,6 +43,8 @@ add_library(Spritter STATIC
         src/Time.cpp
         include/Spritter/Graphics/Font.h
         src/Graphics/Font.cpp
+        src/Graphics/D3D11/D3D11GraphicsDevice.cpp
+        src/Graphics/D3D11/D3D11GraphicsDevice.h
 )
 
 target_include_directories(Spritter PUBLIC include)

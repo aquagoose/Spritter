@@ -21,6 +21,7 @@ class MyGame final : public Game
 
         _font->Draw(*_renderer, { 50, 50 }, "Hello! This is some text.", 48);
         _font->Draw(*_renderer, { 50, 120 }, "Here's some text in a different size.", 70);
+        _font->Draw(*_renderer, { 50, 190 }, "Here's some red text.", 48, Color::Red());
         //_font->Draw(*_renderer, { 50, 190 }, "これは日本語のテキストです！", 48);
         _renderer->Render();
     }
