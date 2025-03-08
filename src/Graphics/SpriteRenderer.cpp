@@ -98,21 +98,21 @@ namespace Spritter::Graphics
         _renderable = device.CreateRenderable(definition);
     }
 
-    void SpriteRenderer::Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
+    void SpriteRenderer::Draw(Texture& texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
                               const Math::Vector2f& bottomLeft, const Math::Vector2f& bottomRight,
                               const std::optional<Math::Rectangle>& source, const Math::Color& tint)
     {
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void SpriteRenderer::Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
+    void SpriteRenderer::Draw(Texture& texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
         const Math::Color& tint)
     {
         Math::Size size;
         if (source.has_value())
             size = source.value().Size;
         else
-            size = texture->Size();
+            size = texture.Size();
 
         const Math::Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
 
@@ -124,14 +124,14 @@ namespace Spritter::Graphics
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
-    void SpriteRenderer::Draw(Texture* texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source,
+    void SpriteRenderer::Draw(Texture& texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source,
         const Math::Color& tint)
     {
         Math::Size size;
         if (source.has_value())
             size = source.value().Size;
         else
-            size = texture->Size();
+            size = texture.Size();
 
         const Math::Vector2f fSize = { static_cast<float>(size.Width), static_cast<float>(size.Height) };
 
@@ -162,18 +162,20 @@ namespace Spritter::Graphics
         Texture* currentTexture = nullptr;
         for (const auto& item : _items)
         {
-            if (item.Texture != currentTexture || currentItem >= SP_TEXTUREBATCHER_MAXDRAWS)
+            Texture* texture = &item.Texture;
+
+            if (texture != currentTexture || currentItem >= SP_TEXTUREBATCHER_MAXDRAWS)
             {
                 Flush(currentTexture, currentItem);
                 currentItem = 0;
             }
 
-            currentTexture = item.Texture;
+            currentTexture = texture;
 
             const uint32_t vOffset = NumVertices * currentItem;
             const uint32_t iOffset = NumIndices * currentItem;
 
-            const Math::Size texSize = item.Texture->Size();
+            const Math::Size texSize = item.Texture.Size();
             const Math::Rectangle source = item.Source.value_or(Math::Rectangle(0, 0, texSize.Width, texSize.Height));
 
             const float texX = static_cast<float>(source.X()) / static_cast<float>(texSize.Width);

@@ -55,7 +55,7 @@ class MyGame final : public Game
     {
         GraphicsDevice->Clear(Color::CornflowerBlue());
 
-        _renderer->Draw(_sprite.get(), _position);
+        _renderer->Draw(*_sprite, _position);
         _renderer->Render();
     }
 };

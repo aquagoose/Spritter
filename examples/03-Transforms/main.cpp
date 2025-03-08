@@ -33,7 +33,7 @@ class MyGame final : public Game
     {
         GraphicsDevice->Clear(Color::CornflowerBlue());
 
-        _renderer->Draw(_sprite.get(), _position, _value, { 2, 1 });
+        _renderer->Draw(*_sprite, _position, _value, { 2, 1 });
         _renderer->Render();
     }
 };

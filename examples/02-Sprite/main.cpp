@@ -27,7 +27,7 @@ class MyGame final : public Game
 
         // Add the sprite to the draw queue, at position { 0, 0 }. This will place it at the top-left corner of the
         // screen.
-        _renderer->Draw(_sprite.get(), Vector2f::Zero());
+        _renderer->Draw(*_sprite, Vector2f::Zero());
 
         // After we've drawn everything, finally tell the renderer to draw everything to the screen.
         _renderer->Render();

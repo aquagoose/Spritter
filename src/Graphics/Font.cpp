@@ -51,7 +51,7 @@ namespace Spritter::Graphics
         for (const auto c : text)
         {
             const Character character = GetCharacter(c, size);
-            Texture* texture = _textures[character.TextureIndex].get();
+            Texture& texture = *_textures[character.TextureIndex];
 
             Math::Vector2f drawPos = pos + Math::Vector2i(character.Bearing.X, -character.Bearing.Y).As<float>();
             batcher.Draw(texture, drawPos, character.Source, color);

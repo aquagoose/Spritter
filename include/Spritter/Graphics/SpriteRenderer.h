@@ -30,7 +30,7 @@ namespace Spritter::Graphics
 
         struct BatchItem
         {
-            Graphics::Texture* Texture;
+            Graphics::Texture& Texture;
             Math::Vector2f TopLeft;
             Math::Vector2f TopRight;
             Math::Vector2f BottomLeft;
@@ -52,17 +52,17 @@ namespace Spritter::Graphics
     public:
         explicit SpriteRenderer(GraphicsDevice& device);
 
-        void Draw(Texture* texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
+        void Draw(Texture& texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
                   const Math::Vector2f& bottomLeft, const Math::Vector2f& bottomRight,
                   const std::optional<Math::Rectangle>& source, const Math::Color& tint);
 
-        void Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source = {},
+        void Draw(Texture& texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source = {},
                   const Math::Color& tint = Math::Color::White());
 
-        void Draw(Texture* texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source = {},
+        void Draw(Texture& texture, const Math::Matrixf& matrix, const std::optional<Math::Rectangle>& source = {},
                   const Math::Color& tint = Math::Color::White());
 
-        void Draw(Texture* texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
+        void Draw(Texture& texture, const Math::Vector2f& position, const std::optional<Math::Rectangle>& source,
                   const Math::Color& tint, float rotation, const Math::Vector2f& scale = Math::Vector2f::One(),
                   const Math::Vector2f& origin = Math::Vector2f::Zero())
         {
@@ -71,7 +71,7 @@ namespace Spritter::Graphics
                  Math::Matrixf::RotateZ(rotation) * Math::Matrixf::Translate(position.X, position.Y, 0), source, tint);
         }
 
-        void Draw(Texture* texture, const Math::Vector2f& position, const float rotation,
+        void Draw(Texture& texture, const Math::Vector2f& position, const float rotation,
                   const Math::Vector2f& scale = Math::Vector2f::One(),
                   const Math::Vector2f& origin = Math::Vector2f::Zero())
         {
