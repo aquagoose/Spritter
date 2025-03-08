@@ -14,4 +14,8 @@
       <ProjectReference Include="..\..\lib\grabs\src\grabs.Windowing\grabs.Windowing.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Render\" />
+    </ItemGroup>
+
 </Project>
