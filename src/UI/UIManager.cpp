@@ -8,6 +8,11 @@ namespace Spritter::UI
         _baseControl = nullptr;
     }
 
+    void UIManager::SetBaseControl(std::unique_ptr<Control> control)
+    {
+        _baseControl = std::move(control);
+    }
+
     void UIManager::Update(const float dt) const
     {
         if (!_baseControl)

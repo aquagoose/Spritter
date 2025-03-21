@@ -21,10 +21,7 @@ namespace Spritter::UI
             return *_baseControl;
         }
 
-        void SetBaseControl(std::unique_ptr<Control> control)
-        {
-            _baseControl = std::move(control);
-        }
+        void SetBaseControl(std::unique_ptr<Control> control);
 
         void Update(float dt) const;
         void Draw() const;

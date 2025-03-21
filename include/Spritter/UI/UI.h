@@ -4,4 +4,6 @@
 #include "Control.h"
 #include "Common.h"
 
+#include "AnchorLayout.h"
+
 #include "Label.h"

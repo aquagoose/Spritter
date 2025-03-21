@@ -55,6 +55,8 @@ add_library(Spritter STATIC
         include/Spritter/UI/UI.h
         src/UI/UIManager.cpp
         src/UI/Label.cpp
+        include/Spritter/UI/AnchorLayout.h
+        src/UI/AnchorLayout.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)
