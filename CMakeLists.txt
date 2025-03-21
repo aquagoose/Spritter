@@ -48,6 +48,8 @@ add_library(Spritter STATIC
         src/Time.cpp
         include/Spritter/Graphics/Font.h
         src/Graphics/Font.cpp
+        include/Spritter/UI/Control.h
+        include/Spritter/UI/UI.h
 )
 
 target_include_directories(Spritter PUBLIC include)
