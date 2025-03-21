@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 option(SP_ENABLE_D3D11 "Enable DirectX 11 support" OFF)
 option(SP_USE_GRABS "Use the experimental GRABS API" OFF)
-option(SP_BUILD_TEST "Build the Spritter test project" OFF)
+option(SP_BUILD_TEST "Build the Spritter test project" ON)
 option(SP_BUILD_EXAMPLES "Build the Spritter examples" ON)
 
 #if (WIN32)
@@ -50,6 +50,7 @@ add_library(Spritter STATIC
         src/Graphics/Font.cpp
         include/Spritter/UI/Control.h
         include/Spritter/UI/UI.h
+        include/Spritter/UI/Label.h
 )
 
 target_include_directories(Spritter PUBLIC include)

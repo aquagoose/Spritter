@@ -59,7 +59,7 @@ namespace Spritter::Graphics
         Font(GraphicsDevice& device, const std::string& path);
         ~Font();
 
-        void Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::string& text, uint32_t size,
+        void Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::wstring& text, uint32_t size,
                   const Math::Color& color = Math::Color::White());
 
     private:

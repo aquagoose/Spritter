@@ -41,7 +41,7 @@ namespace Spritter::Graphics
         }
     }
 
-    void Font::Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::string& text,
+    void Font::Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::wstring& text,
         uint32_t size, const Math::Color& color)
     {
         //const std::u32string str(text.begin(), text.end());
