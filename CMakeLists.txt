@@ -49,8 +49,12 @@ add_library(Spritter STATIC
         include/Spritter/Graphics/Font.h
         src/Graphics/Font.cpp
         include/Spritter/UI/Control.h
-        include/Spritter/UI/UI.h
+        include/Spritter/UI/UIManager.h
         include/Spritter/UI/Label.h
+        include/Spritter/UI/Common.h
+        include/Spritter/UI/UI.h
+        src/UI/UIManager.cpp
+        src/UI/Label.cpp
 )
 
 target_include_directories(Spritter PUBLIC include)

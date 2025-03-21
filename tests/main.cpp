@@ -1,68 +1,38 @@
 #include <iostream>
 
 #include <Spritter/Spritter.h>
+#include <Spritter/UI/UI.h>
 
 using namespace Spritter;
 using namespace Spritter::Graphics;
 using namespace Spritter::Math;
+using namespace Spritter::UI;
 
 class TestGame final : public Game
 {
-    std::unique_ptr<SpriteRenderer> _renderer;
-    std::unique_ptr<Texture> _texture;
     std::unique_ptr<Font> _font;
-
-    Vector2f _position{};
-    float _rot{};
+    std::unique_ptr<UIManager> _ui;
 
     void Initialize() override
     {
-        //Time::SetTargetFPS(120);
-        //GraphicsDevice->SetVSyncMode(false);
-
-        _renderer = std::make_unique<SpriteRenderer>(*GraphicsDevice);
-        _texture = GraphicsDevice->CreateTexture("Content/DEBUG.png");
         _font = std::make_unique<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
+
+        _ui = std::make_unique<UIManager>(*GraphicsDevice, Theme::DefaultLight(*_font));
+
+        auto label = std::make_unique<Label>(*_ui, L"Hello World!", 48);
+        _ui->SetBaseControl(std::move(label));
     }
 
     void Update(const float dt) override
     {
-        std::cout << Time::TotalFrames() << std::endl;
-
-        const float moveSpeed = 100 * dt;
-
-        if (Input::IsKeyDown(Key::Up))
-            _position.Y -= moveSpeed;
-        if (Input::IsKeyDown(Key::Down))
-            _position.Y += moveSpeed;
-        if (Input::IsKeyDown(Key::Left))
-            _position.X -= moveSpeed;
-        if (Input::IsKeyDown(Key::Right))
-            _position.X += moveSpeed;
-
-        if (Input::IsKeyPressed(Key::Space))
-            std::cout << "Space" << std::endl;
-
-        if (Input::IsMouseButtonDown(MouseButton::Left))
-            _position += Input::MouseDelta();
-        if (Input::IsMouseButtonPressed(MouseButton::Right))
-            _position = Input::MousePosition();
-
-        if (Input::IsKeyPressed(Key::Escape))
-            Close();
-
-        _rot += dt;
+        _ui->Update(dt);
     }
 
     void Draw() override
     {
         GraphicsDevice->Clear(Color::RebeccaPurple());
 
-        _renderer->Draw(*_texture, _position);
-
-        _font->Draw(*_renderer, { 0, 0 }, "Hello!", 32);
-
-        _renderer->Render();
+        _ui->Draw();
     }
 };
 
