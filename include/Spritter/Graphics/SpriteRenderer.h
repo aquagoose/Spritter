@@ -47,6 +47,8 @@ namespace Spritter::Graphics
         std::unique_ptr<Shader> _defaultShader;
         std::unique_ptr<Renderable> _renderable;
 
+        std::unique_ptr<Texture> _whiteTexture;
+
         std::vector<BatchItem> _items;
 
     public:
@@ -76,6 +78,13 @@ namespace Spritter::Graphics
                   const Math::Vector2f& origin = Math::Vector2f::Zero())
         {
             Draw(texture, position, {}, Math::Color::White(), rotation, scale, origin);
+        }
+
+        void DrawRectangle(const Math::Vector2f& position, const Math::Size& size, const Math::Color& color)
+        {
+            Draw(*_whiteTexture, position, position + Math::Vector2f(size.Width, 0),
+                 position + Math::Vector2f(0, size.Height), position + Math::Vector2f(size.Width, size.Height), {},
+                 color);
         }
 
         void Render(const Math::Matrixf& transform = Math::Matrixf::Identity());

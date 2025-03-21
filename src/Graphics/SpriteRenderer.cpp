@@ -96,6 +96,9 @@ namespace Spritter::Graphics
             true
         };
         _renderable = device.CreateRenderable(definition);
+
+        uint8_t textureData[] = { 255, 255, 255, 255 };
+        _whiteTexture = device.CreateTexture(1, 1, PixelFormat::R8G8B8A8_UNorm, textureData);
     }
 
     void SpriteRenderer::Draw(Texture& texture, const Math::Vector2f& topLeft, const Math::Vector2f& topRight,
