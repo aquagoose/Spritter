@@ -21,7 +21,7 @@ namespace Spritter::UI
     }
 
 
-    void AnchorLayout::Update(float dt)
+    void AnchorLayout::Update(float dt, const Math::Vector2i& position, bool* mouseCaptured)
     {
         Math::Size size = { 1280, 720 };
 
@@ -64,14 +64,16 @@ namespace Spritter::UI
                         break;
                 }
 
-                position += control.Offset;
+                const Math::Size controlSize = control.Control->Size();
+
+                position += control.Offset - Math::Vector2i( controlSize.Width, controlSize.Height);
 
                 control.AbsPosition = position;
             }
         }
 
         for (const auto& control : _controls)
-            control.Control->Update(dt);
+            control.Control->Update(dt, control.AbsPosition + position, mouseCaptured);
     }
 
     void AnchorLayout::Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position)

@@ -19,12 +19,11 @@ class TestGame final : public Game
 
         _ui = std::make_unique<UIManager>(*GraphicsDevice, Theme::DefaultLight(*_font));
 
-        auto layout = std::make_unique<AnchorLayout>(*_ui);
+        auto layout = std::make_shared<AnchorLayout>(*_ui);
+        _ui->SetBaseControl(layout);
 
         auto label = std::make_shared<Label>(*_ui, L"Hello World!", 48);
         layout->AddControl("label", AnchorPoint::MiddleCenter, { 0, 0 }, label);
-
-        _ui->SetBaseControl(std::move(layout));
     }
 
     void Update(const float dt) override

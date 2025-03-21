@@ -11,6 +11,7 @@ namespace Spritter::UI
     {
         std::wstring _text;
         uint32_t _fontSize;
+        Math::Size _size;
 
     public:
         Label(const UIManager& manager, const std::wstring& text, uint32_t fontSize);
@@ -33,6 +34,11 @@ namespace Spritter::UI
         void SetFontSize(uint32_t size)
         {
             _fontSize = size;
+        }
+
+        Math::Size Size() override
+        {
+            return _size;
         }
 
         void Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position) override;

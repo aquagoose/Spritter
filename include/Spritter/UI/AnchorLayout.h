@@ -48,7 +48,12 @@ namespace Spritter::UI
 
         void AddControl(const std::string& name, AnchorPoint anchor, const Math::Vector2i& offset, const std::shared_ptr<Control>& control);
 
-        void Update(float dt) override;
+        Math::Size Size() override
+        {
+            return { 0, 0 };
+        }
+
+        void Update(float dt, const Math::Vector2i& position, bool* mouseCaptured) override;
         void Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position) override;
     };
 }

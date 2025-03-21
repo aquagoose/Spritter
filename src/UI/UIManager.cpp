@@ -1,5 +1,7 @@
 #include "Spritter/UI/UIManager.h"
 
+#include <iostream>
+
 namespace Spritter::UI
 {
     UIManager::UIManager(Graphics::GraphicsDevice& device, const UI::Theme& theme) : Theme(theme)
@@ -8,9 +10,9 @@ namespace Spritter::UI
         _baseControl = nullptr;
     }
 
-    void UIManager::SetBaseControl(std::unique_ptr<Control> control)
+    void UIManager::SetBaseControl(const std::shared_ptr<Control>& control)
     {
-        _baseControl = std::move(control);
+        _baseControl = control;
     }
 
     void UIManager::Update(const float dt) const
@@ -18,7 +20,10 @@ namespace Spritter::UI
         if (!_baseControl)
             return;
 
-        _baseControl->Update(dt);
+        bool mouseCaptured = false;
+        _baseControl->Update(dt, Math::Vector2i::Zero(), &mouseCaptured);
+
+        std::cout << mouseCaptured << std::endl;
     }
 
     void UIManager::Draw() const
