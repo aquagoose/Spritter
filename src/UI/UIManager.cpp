@@ -2,9 +2,9 @@
 
 namespace Spritter::UI
 {
-    UIManager::UIManager(Graphics::GraphicsDevice& device, const UI::Theme& theme) : Theme(theme)
+    UIManager::UIManager(Graphics::GraphicsDevice& device, const UI::Theme& theme) : _device(device), Theme(theme)
     {
-        _spriteRenderer = std::make_unique<Graphics::SpriteRenderer>(device);
+        _spriteRenderer = std::make_unique<Graphics::SpriteRenderer>(_device);
         _baseControl = nullptr;
     }
 
@@ -13,13 +13,15 @@ namespace Spritter::UI
         _baseControl = control;
     }
 
-    void UIManager::Update(const float dt) const
+    void UIManager::Update(const float dt)
     {
         if (!_baseControl)
             return;
 
+        _baseSize = _device.Viewport().Size;
+
         bool mouseCaptured = false;
-        _baseControl->Update(dt, Math::Vector2i::Zero(), &mouseCaptured);
+        _baseControl->Update(dt, Math::Vector2i::Zero(), _baseSize, &mouseCaptured);
     }
 
     void UIManager::Draw() const

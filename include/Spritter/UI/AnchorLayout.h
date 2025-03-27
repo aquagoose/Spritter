@@ -37,6 +37,7 @@ namespace Spritter::UI
     {
         std::vector<AnchorControl> _controls;
         bool _invalidateLayout{};
+        Math::Size _layoutSize{};
 
     public:
         explicit AnchorLayout(const UIManager& manager);
@@ -50,10 +51,10 @@ namespace Spritter::UI
 
         Math::Size Size() override
         {
-            return { 0, 0 };
+            return _layoutSize;
         }
 
-        void Update(float dt, const Math::Vector2i& position, bool* mouseCaptured) override;
+        void Update(float dt, const Math::Vector2i& position, const Math::Size& parentSize, bool* mouseCaptured) override;
         void Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position) override;
     };
 }

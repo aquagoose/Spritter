@@ -20,5 +20,15 @@ namespace Spritter::Math
             Width = width;
             Height = height;
         }
+
+        friend bool operator ==(const Size& left, const Size& right)
+        {
+            return left.Width == right.Width && left.Height == right.Height;
+        }
+
+        friend bool operator !=(const Size& left, const Size& right)
+        {
+            return left.Width != right.Width || left.Height != right.Height;
+        }
     };
 }

@@ -12,7 +12,7 @@ namespace Spritter::UI
         Math::Size _size;
 
     protected:
-        bool IsHovered;
+        bool IsHovered{};
 
     public:
         UI::Theme Theme;
@@ -21,7 +21,7 @@ namespace Spritter::UI
 
         [[nodiscard]] virtual Math::Size Size() = 0;
 
-        virtual void Update(float dt, const Math::Vector2i& position, bool* mouseCaptured);
+        virtual void Update(float dt, const Math::Vector2i& position, const Math::Size& parentSize, bool* mouseCaptured);
 
         virtual void Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position) = 0;
 

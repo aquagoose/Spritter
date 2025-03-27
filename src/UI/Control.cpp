@@ -4,7 +4,7 @@
 
 namespace Spritter::UI
 {
-    void Control::Update(float dt, const Math::Vector2i& position, bool* mouseCaptured)
+    void Control::Update(float dt, const Math::Vector2i& position, const Math::Size& parentSize, bool* mouseCaptured)
     {
         auto mousePos = Input::MousePosition();
         auto size = Size();

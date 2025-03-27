@@ -8,8 +8,11 @@ namespace Spritter::UI
 {
     class UIManager
     {
+        Graphics::GraphicsDevice& _device;
         std::unique_ptr<Graphics::SpriteRenderer> _spriteRenderer;
         std::shared_ptr<Control> _baseControl;
+
+        Math::Size _baseSize{};
 
     public:
         UI::Theme Theme;
@@ -23,7 +26,7 @@ namespace Spritter::UI
 
         void SetBaseControl(const std::shared_ptr<Control>& control);
 
-        void Update(float dt) const;
+        void Update(float dt);
         void Draw() const;
     };
 }

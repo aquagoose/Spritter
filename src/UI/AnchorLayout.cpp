@@ -2,10 +2,7 @@
 
 namespace Spritter::UI
 {
-    AnchorLayout::AnchorLayout(const UIManager& manager) : Control(manager.Theme)
-    {
-        InvalidateLayout();
-    }
+    AnchorLayout::AnchorLayout(const UIManager& manager) : Control(manager.Theme) { }
 
     void AnchorLayout::AddControl(const std::string& name, AnchorPoint anchor, const Math::Vector2i& offset, const std::shared_ptr<Control>& control)
     {
@@ -20,10 +17,10 @@ namespace Spritter::UI
         _controls.push_back(anchorControl);
     }
 
-
-    void AnchorLayout::Update(float dt, const Math::Vector2i& position, bool* mouseCaptured)
+    void AnchorLayout::Update(float dt, const Math::Vector2i& position, const Math::Size& parentSize, bool* mouseCaptured)
     {
-        Math::Size size = { 1280, 720 };
+        if (parentSize != _layoutSize)
+            InvalidateLayout();
 
         if (_invalidateLayout)
         {
@@ -40,28 +37,28 @@ namespace Spritter::UI
                         position = { 0, 0 };
                         break;
                     case AnchorPoint::TopCenter:
-                        position = { size.Width / 2 - controlSize.Width / 2, 0 };
+                        position = { parentSize.Width / 2 - controlSize.Width / 2, 0 };
                         break;
                     case AnchorPoint::TopRight:
-                        position = { size.Width - controlSize.Width, 0 };
+                        position = { parentSize.Width - controlSize.Width, 0 };
                         break;
                     case AnchorPoint::MiddleLeft:
-                        position = { 0, size.Height / 2 - controlSize.Height / 2 };
+                        position = { 0, parentSize.Height / 2 - controlSize.Height / 2 };
                         break;
                     case AnchorPoint::MiddleCenter:
-                        position = { size.Width / 2 - controlSize.Width / 2, size.Height / 2 - controlSize.Height / 2 };
+                        position = { parentSize.Width / 2 - controlSize.Width / 2, parentSize.Height / 2 - controlSize.Height / 2 };
                         break;
                     case AnchorPoint::MiddleRight:
-                        position = { size.Width - controlSize.Width, size.Height / 2 - controlSize.Height / 2 };
+                        position = { parentSize.Width - controlSize.Width, parentSize.Height / 2 - controlSize.Height / 2 };
                         break;
                     case AnchorPoint::BottomLeft:
-                        position = { 0, size.Height - controlSize.Height };
+                        position = { 0, parentSize.Height - controlSize.Height };
                         break;
                     case AnchorPoint::BottomCenter:
-                        position = { size.Width / 2 - controlSize.Width / 2, size.Height - controlSize.Height };
+                        position = { parentSize.Width / 2 - controlSize.Width / 2, parentSize.Height - controlSize.Height };
                         break;
                     case AnchorPoint::BottomRight:
-                        position = { size.Width - controlSize.Width, size.Height - controlSize.Height };
+                        position = { parentSize.Width - controlSize.Width, parentSize.Height - controlSize.Height };
                         break;
                 }
 
@@ -73,7 +70,7 @@ namespace Spritter::UI
 
         for (auto control = _controls.rbegin(); control != _controls.rend(); ++control)
         {
-            control->Control->Update(dt, control->AbsPosition + position, mouseCaptured);
+            control->Control->Update(dt, control->AbsPosition + position, parentSize, mouseCaptured);
         }
     }
 
