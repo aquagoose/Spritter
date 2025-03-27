@@ -2,7 +2,7 @@
 
 namespace Spritter::UI
 {
-    Button::Button(UIManager& manager, const std::wstring& text, const Math::Size& size) : Control(manager.Theme)
+    Button::Button(const UI::Theme& theme, const std::wstring& text, const Math::Size& size) : Control(theme)
     {
         _size = size;
     }

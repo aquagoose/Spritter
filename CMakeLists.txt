@@ -60,6 +60,7 @@ add_library(Spritter STATIC
         src/UI/Control.cpp
         include/Spritter/UI/Button.h
         src/UI/Button.cpp
+        include/Spritter/UI/Panel.h
 )
 
 target_include_directories(Spritter PUBLIC include)

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Control.h"
-#include "UIManager.h"
 
 namespace Spritter::UI
 {
@@ -10,7 +9,7 @@ namespace Spritter::UI
         Math::Size _size;
 
     public:
-        Button(UIManager& manager, const std::wstring& text, const Math::Size& size);
+        Button(const UI::Theme& theme, const std::wstring& text, const Math::Size& size);
 
         Math::Size Size() override
         {

@@ -11,7 +11,7 @@ namespace Spritter::UI
 
         IsHovered = false;
 
-        if (!*mouseCaptured &&
+        if (!*mouseCaptured && !AllowClickthrough &&
             mousePos.X >= position.X && mousePos.X < position.X + size.Width &&
             mousePos.Y >= position.Y && mousePos.Y < position.Y + size.Height)
         {

@@ -6,9 +6,9 @@ namespace Spritter::UI
 {
     struct Theme
     {
-        Graphics::Font& Font;
+        std::shared_ptr<Graphics::Font> Font;
 
-        static Theme DefaultLight(Graphics::Font& font)
+        static Theme DefaultLight(std::shared_ptr<Graphics::Font> font)
         {
             return
             {

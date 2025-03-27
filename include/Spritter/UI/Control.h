@@ -13,6 +13,7 @@ namespace Spritter::UI
 
     protected:
         bool IsHovered{};
+        bool AllowClickthrough{};
 
     public:
         UI::Theme Theme;
@@ -27,5 +28,6 @@ namespace Spritter::UI
 
     protected:
         explicit Control(const UI::Theme& theme) : Theme(theme) { }
+        Control() : Theme({}) { }
     };
 }

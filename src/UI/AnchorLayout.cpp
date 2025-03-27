@@ -2,8 +2,6 @@
 
 namespace Spritter::UI
 {
-    AnchorLayout::AnchorLayout(const UIManager& manager) : Control(manager.Theme) { }
-
     void AnchorLayout::AddControl(const std::string& name, AnchorPoint anchor, const Math::Vector2i& offset, const std::shared_ptr<Control>& control)
     {
         auto anchorControl = AnchorControl

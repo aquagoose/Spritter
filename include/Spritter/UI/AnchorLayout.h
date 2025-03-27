@@ -40,8 +40,6 @@ namespace Spritter::UI
         Math::Size _layoutSize{};
 
     public:
-        explicit AnchorLayout(const UIManager& manager);
-
         void InvalidateLayout()
         {
             _invalidateLayout = true;

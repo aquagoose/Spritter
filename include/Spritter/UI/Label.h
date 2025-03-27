@@ -14,7 +14,7 @@ namespace Spritter::UI
         Math::Size _size;
 
     public:
-        Label(const UIManager& manager, const std::wstring& text, uint32_t fontSize);
+        Label(const UI::Theme& theme, const std::wstring& text, uint32_t fontSize);
 
         [[nodiscard]] const std::wstring& Text() const
         {
