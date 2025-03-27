@@ -6,7 +6,7 @@ namespace Spritter::UI
     {
         _text = text;
         _fontSize = fontSize;
-        _size = { 100, 100 };
+        _size = Theme.Font.MeasureString(text, fontSize);
     }
 
     void Label::Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position)

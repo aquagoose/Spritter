@@ -62,6 +62,8 @@ namespace Spritter::Graphics
         void Draw(SpriteRenderer& batcher, const Math::Vector2f& position, const std::wstring& text, uint32_t size,
                   const Math::Color& color = Math::Color::White());
 
+        Math::Size MeasureString(const std::wstring& text, uint32_t size);
+
     private:
         Character GetCharacter(uint32_t c, uint32_t size);
     };

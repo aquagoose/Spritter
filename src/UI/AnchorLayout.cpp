@@ -71,10 +71,9 @@ namespace Spritter::UI
             }
         }
 
-        for (size_t i = _controls.size() - 1; i > 0; i--)
+        for (auto control = _controls.rbegin(); control != _controls.rend(); ++control)
         {
-            const auto& control = _controls[i];
-            control.Control->Update(dt, control.AbsPosition + position, mouseCaptured);
+            control->Control->Update(dt, control->AbsPosition + position, mouseCaptured);
         }
     }
 

@@ -114,13 +114,19 @@ namespace Spritter::Graphics::GL
 
     void GLRenderable::Update(const RenderableUpdateInfo& info)
     {
-        glBindVertexArray(_vao);
+        glBindVertexArray(0);
 
         if (info.NumVertices > 0)
+        {
+            glBindBuffer(GL_ARRAY_BUFFER, _vbo);
             glBufferSubData(GL_ARRAY_BUFFER, 0, info.NumVertices, info.Vertices);
+        }
 
         if (info.NumIndices > 0)
+        {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, static_cast<GLsizeiptr>(info.NumIndices * sizeof(uint32_t)), info.Indices);
+        }
     }
 
     void GLRenderable::Draw(uint32_t numDraws)

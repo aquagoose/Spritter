@@ -10,20 +10,20 @@ using namespace Spritter::UI;
 
 class TestGame final : public Game
 {
+    std::unique_ptr<SpriteRenderer> _renderer;
     std::unique_ptr<Font> _font;
     std::unique_ptr<UIManager> _ui;
 
     void Initialize() override
     {
+        _renderer = std::make_unique<SpriteRenderer>(*GraphicsDevice);
+
         _font = std::make_unique<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
 
         _ui = std::make_unique<UIManager>(*GraphicsDevice, Theme::DefaultLight(*_font));
 
         auto layout = std::make_shared<AnchorLayout>(*_ui);
         _ui->SetBaseControl(layout);
-
-        auto label = std::make_shared<Label>(*_ui, L"Hello World!", 48);
-        layout->AddControl("label", AnchorPoint::TopLeft, { 0, 0 }, label);
 
         layout->AddControl("tlbutton", AnchorPoint::TopLeft, {0, 0},
                            std::make_shared<Button>(*_ui, L"Test", Size(100, 100)));
@@ -43,6 +43,12 @@ class TestGame final : public Game
                            std::make_shared<Button>(*_ui, L"Test", Size(100, 100)));
         layout->AddControl("brbutton", AnchorPoint::BottomRight, {0, 0},
                            std::make_shared<Button>(*_ui, L"Test", Size(100, 100)));
+
+        auto label = std::make_shared<Label>(*_ui, L"Hello World!", 48);
+        layout->AddControl("label", AnchorPoint::TopLeft, { 0, 0 }, label);
+
+        auto label2 = std::make_shared<Label>(*_ui, L"Testing", 32);
+        layout->AddControl("label2", AnchorPoint::BottomRight, { 0, 0 }, label2);
 
         layout->AddControl("sneakybutton", AnchorPoint::MiddleCenter, { -50, -50 }, std::make_shared<Button>(*_ui, L"Hello", Size(100, 100)));
     }

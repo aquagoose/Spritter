@@ -46,8 +46,16 @@ namespace Spritter::Graphics
     {
         //const std::u32string str(text.begin(), text.end());
 
+        int32_t maxHeight = 0;
+        for (const auto c : text)
+        {
+            const Character character = GetCharacter(c, size);
+            if (character.Source.Height() > maxHeight)
+                maxHeight = character.Source.Height();
+        }
+
         // TODO: Work out a way to align the text properly to the position.
-        Math::Vector2f pos = position + Math::Vector2f(0, _face->size->metrics.ascender >> 6);
+        Math::Vector2f pos = position + Math::Vector2f(0, maxHeight);
         for (const auto c : text)
         {
             const Character character = GetCharacter(c, size);
@@ -58,6 +66,28 @@ namespace Spritter::Graphics
 
             pos.X += character.Advance;
         }
+    }
+
+    Math::Size Font::MeasureString(const std::wstring& text, uint32_t size)
+    {
+        int32_t maxHeight = 0;
+        for (const auto c : text)
+        {
+            const Character character = GetCharacter(c, size);
+            if (character.Source.Height() > maxHeight)
+                maxHeight = character.Source.Height();
+        }
+
+        Math::Size finalSize { 0, maxHeight };
+
+        for (const auto c : text)
+        {
+            const Character character = GetCharacter(c, size);
+
+            finalSize.Width += character.Advance;
+        }
+
+        return finalSize;
     }
 
     Font::Character Font::GetCharacter(const uint32_t c, const uint32_t size)
