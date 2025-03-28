@@ -146,6 +146,22 @@ namespace Spritter::Graphics
         _items.push_back({ texture, topLeft, topRight, bottomLeft, bottomRight, source, tint });
     }
 
+    void SpriteRenderer::DrawFilledRectangle(const Math::Vector2f& position, const Math::Size& size, const Math::Color& color)
+    {
+        Draw(*_whiteTexture, position, position + Math::Vector2f(size.Width, 0),
+                 position + Math::Vector2f(0, size.Height), position + Math::Vector2f(size.Width, size.Height), {},
+                 color);
+    }
+
+    void SpriteRenderer::DrawBorderRectangle(const Math::Vector2f& position, const Math::Size& size,
+                                             int32_t borderSize, const Math::Color& color)
+    {
+        DrawFilledRectangle(position, { size.Width, borderSize }, color);
+        DrawFilledRectangle(position, { borderSize, size.Height }, color);
+        DrawFilledRectangle(position + Math::Vector2f(0, size.Height - borderSize), { size.Width, borderSize }, color);
+        DrawFilledRectangle(position + Math::Vector2f(size.Width - borderSize, 0), { borderSize, size.Height }, color);
+    }
+
     void SpriteRenderer::Render(const Math::Matrixf& transform)
     {
         const Math::Rectangle viewport = _device.Viewport();

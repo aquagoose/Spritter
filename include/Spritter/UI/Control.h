@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 #include "Spritter/Graphics/SpriteRenderer.h"
 #include "Spritter/Math/Math.h"
 
@@ -13,10 +15,14 @@ namespace Spritter::UI
 
     protected:
         bool IsHovered{};
+        bool IsHeld{};
+        bool IsClicked{};
         bool AllowClickthrough{};
 
     public:
         UI::Theme Theme;
+
+        std::function<void()> OnClicked;
 
         virtual ~Control() = default;
 

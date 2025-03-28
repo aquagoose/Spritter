@@ -20,29 +20,29 @@ class TestGame final : public Game
 
         _font = std::make_shared<Font>(*GraphicsDevice, "/home/aqua/Documents/Roboto-Regular.ttf");
 
-        _ui = std::make_unique<UIManager>(*GraphicsDevice, Theme::DefaultLight(_font));
+        _ui = std::make_unique<UIManager>(*GraphicsDevice, Theme::DefaultDark(_font));
 
         auto layout = std::make_shared<AnchorLayout>();
         _ui->SetBaseControl(layout);
 
         layout->AddControl("tlbutton", AnchorPoint::TopLeft, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Top Left Button" << std::endl; }));
         layout->AddControl("tcbutton", AnchorPoint::TopCenter, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Top Center Button" << std::endl; }));
         layout->AddControl("trbutton", AnchorPoint::TopRight, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Top Right Button" << std::endl; }));
         layout->AddControl("mlbutton", AnchorPoint::MiddleLeft, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Middle Left Button" << std::endl; }));
         layout->AddControl("mcbutton", AnchorPoint::MiddleCenter, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Middle Center Button" << std::endl; }));
         layout->AddControl("mrbutton", AnchorPoint::MiddleRight, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Middle Right Button" << std::endl; }));
         layout->AddControl("blbutton", AnchorPoint::BottomLeft, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Bottom Left Button" << std::endl; }));
         layout->AddControl("bcbutton", AnchorPoint::BottomCenter, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Bottom Center Button" << std::endl; }));
         layout->AddControl("brbutton", AnchorPoint::BottomRight, {0, 0},
-                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100)));
+                           std::make_shared<Button>(_ui->Theme, L"Test", Size(100, 100), [] { std::cout << "Bottom Right Button" << std::endl; }));
 
         auto label = std::make_shared<Label>(_ui->Theme, L"Hello World!", 48);
         layout->AddControl("label", AnchorPoint::TopLeft, { 0, 0 }, label);
@@ -50,7 +50,9 @@ class TestGame final : public Game
         auto label2 = std::make_shared<Label>(_ui->Theme, L"Testing", 32);
         layout->AddControl("label2", AnchorPoint::BottomRight, { 0, 0 }, label2);
 
-        layout->AddControl("sneakybutton", AnchorPoint::MiddleCenter, { -50, -50 }, std::make_shared<Button>(_ui->Theme, L"Hello", Size(100, 100)));
+        layout->AddControl("sneakybutton", AnchorPoint::MiddleCenter, {-50, -50},
+                           std::make_shared<Button>(_ui->Theme, L"Hello", Size(100, 100),
+                                                    [] { std::cout << "Sneaky Button" << std::endl; }));
     }
 
     void Update(const float dt) override

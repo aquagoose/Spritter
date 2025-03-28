@@ -10,6 +10,7 @@ namespace Spritter::UI
         auto size = Size();
 
         IsHovered = false;
+        IsClicked = false;
 
         if (!*mouseCaptured && !AllowClickthrough &&
             mousePos.X >= position.X && mousePos.X < position.X + size.Width &&
@@ -17,6 +18,16 @@ namespace Spritter::UI
         {
             *mouseCaptured = true;
             IsHovered = true;
+
+            if (Input::IsMouseButtonDown(MouseButton::Left))
+                IsHeld = true;
+            else if (IsHeld)
+            {
+                IsHeld = false;
+                IsClicked = true;
+                if (OnClicked)
+                    OnClicked();
+            }
         }
     }
 }

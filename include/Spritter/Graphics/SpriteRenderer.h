@@ -80,11 +80,13 @@ namespace Spritter::Graphics
             Draw(texture, position, {}, Math::Color::White(), rotation, scale, origin);
         }
 
-        void DrawRectangle(const Math::Vector2f& position, const Math::Size& size, const Math::Color& color)
+        void DrawFilledRectangle(const Math::Vector2f& position, const Math::Size& size, const Math::Color& color);
+        void DrawBorderRectangle(const Math::Vector2f& position, const Math::Size& size, int32_t borderSize, const Math::Color& color);
+
+        void DrawRectangle(const Math::Vector2f& position, const Math::Size& size, const Math::Color& fillColor, int32_t borderSize, const Math::Color& borderColor)
         {
-            Draw(*_whiteTexture, position, position + Math::Vector2f(size.Width, 0),
-                 position + Math::Vector2f(0, size.Height), position + Math::Vector2f(size.Width, size.Height), {},
-                 color);
+            DrawFilledRectangle(position, size, fillColor);
+            DrawBorderRectangle(position, size, borderSize, borderColor);
         }
 
         void Render(const Math::Matrixf& transform = Math::Matrixf::Identity());

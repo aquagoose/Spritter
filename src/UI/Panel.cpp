@@ -14,6 +14,6 @@ namespace Spritter::UI
 
     void Panel::Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position)
     {
-        renderer.DrawRectangle(position.As<float>(), { 100, 100 }, Theme.BackgroundColor);
+        renderer.DrawFilledRectangle(position.As<float>(), { 100, 100 }, Theme.BackgroundColor);
     }
 }

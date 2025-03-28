@@ -11,6 +11,6 @@ namespace Spritter::UI
 
     void Label::Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position)
     {
-        Theme.Font->Draw(renderer, position.As<float>(), _text, _fontSize, Theme.TextColor);
+        Theme.Font->Draw(renderer, position.As<float>(), _text, _fontSize, Theme.LabelColor);
     }
 }

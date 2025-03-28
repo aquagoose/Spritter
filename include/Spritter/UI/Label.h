@@ -33,6 +33,7 @@ namespace Spritter::UI
 
         void SetFontSize(uint32_t size)
         {
+            _size = Theme.Font->MeasureString(_text, size);
             _fontSize = size;
         }
 
