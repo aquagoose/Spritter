@@ -9,10 +9,10 @@ namespace Spritter::UI
 
     void Button::Draw(Graphics::SpriteRenderer& renderer, const Math::Vector2i& position)
     {
-        Math::Color color = Math::Color::Gray();
+        Math::Color color = Theme.ButtonBackground;
 
         if (IsHovered)
-            color = Math::Color::White();
+            color = Theme.ButtonHovered;
 
         renderer.DrawRectangle(position.As<float>(), _size, color);
     }
