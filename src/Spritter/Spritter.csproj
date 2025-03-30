@@ -9,7 +9,7 @@
 
     <ItemGroup>
       <PackageReference Include="Pie" Version="0.10.1" />
-      <PackageReference Include="ppy.SDL3-CS" Version="2025.220.0" />
+      <PackageReference Include="Pie.Windowing" Version="0.10.1" />
     </ItemGroup>
 
 </Project>
