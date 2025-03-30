@@ -8,8 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Pie" Version="0.10.1" />
-      <PackageReference Include="Pie.Windowing" Version="0.10.1" />
+      <ProjectReference Include="..\..\lib\grabs\src\grabs.Graphics.D3D11\grabs.Graphics.D3D11.csproj" />
+      <ProjectReference Include="..\..\lib\grabs\src\grabs.Graphics.Vulkan\grabs.Graphics.Vulkan.csproj" />
+      <ProjectReference Include="..\..\lib\grabs\src\grabs.Graphics\grabs.Graphics.csproj" />
+      <ProjectReference Include="..\..\lib\grabs\src\grabs.Windowing\grabs.Windowing.csproj" />
     </ItemGroup>
 
 </Project>

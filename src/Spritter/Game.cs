@@ -1,7 +1,3 @@
-using Pie;
-using Pie.Windowing;
-using Pie.Windowing.Events;
-
 namespace Spritter;
 
 public abstract class Game : IDisposable
@@ -12,10 +8,8 @@ public abstract class Game : IDisposable
     
     public Game(in GameOptions options)
     {
-        Window = new WindowBuilder()
-            .Title(options.Name)
-            .Size(options.Size.Width, options.Size.Height)
-            .Build(out GraphicsDevice device);
+        Window = new Window(options.Name, options.Size);
+        Window.Close += Close;
     }
 
     public void Run()
@@ -27,15 +21,7 @@ public abstract class Game : IDisposable
 
         while (_isRunning)
         {
-            while (Window.PollEvent(out IWindowEvent winEvent))
-            {
-                switch (winEvent)
-                {
-                    case QuitEvent:
-                        _isRunning = false;
-                        break;
-                }
-            }
+            Window.ProcessEvents();
         }
     }
 
