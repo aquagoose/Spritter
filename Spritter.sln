@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spritter", "src\Spritter\Spritter.csproj", "{D7BD99B9-EA94-4002-A378-E5AAC0C740C7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EEABFECD-4E25-4CAF-8CEB-288EA74D67F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spritter.Tests", "tests\Spritter.Tests\Spritter.Tests.csproj", "{CEB332F8-FC7C-4E88-8AB6-B386A5C03A32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,12 @@ Global
 		{D7BD99B9-EA94-4002-A378-E5AAC0C740C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7BD99B9-EA94-4002-A378-E5AAC0C740C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7BD99B9-EA94-4002-A378-E5AAC0C740C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB332F8-FC7C-4E88-8AB6-B386A5C03A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB332F8-FC7C-4E88-8AB6-B386A5C03A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB332F8-FC7C-4E88-8AB6-B386A5C03A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB332F8-FC7C-4E88-8AB6-B386A5C03A32}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CEB332F8-FC7C-4E88-8AB6-B386A5C03A32} = {EEABFECD-4E25-4CAF-8CEB-288EA74D67F0}
 	EndGlobalSection
 EndGlobal

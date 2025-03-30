@@ -2,7 +2,7 @@ using Pie;
 
 namespace Spritter;
 
-public class Game : IDisposable
+public abstract class Game : IDisposable
 {
     public readonly Window Window;
     
