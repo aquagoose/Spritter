@@ -18,16 +18,26 @@ public abstract class Game : IDisposable
         GraphicsDevice = new GraphicsDevice(options.Name, Window);
     }
 
+    protected virtual void Initialize() { }
+    protected virtual void Update(float dt) { }
+    protected virtual void Draw() { }
+
     public void Run()
     {
         if (_isRunning)
             return;
+        
+        Initialize();
 
         _isRunning = true;
 
         while (_isRunning)
         {
             Window.ProcessEvents();
+            
+            Update(1.0f / 60f);
+            Draw();
+            
             GraphicsDevice.Present();
         }
     }
