@@ -11,6 +11,7 @@ public class GraphicsDevice : IDisposable
     private readonly Surface _surface;
     private readonly Device _device;
     private readonly Swapchain _swapchain;
+    private readonly CommandList _cl;
 
     public GraphicsDevice(string appName, Window window)
     {
@@ -35,16 +36,25 @@ public class GraphicsDevice : IDisposable
         {
             Surface = _surface,
             Format = _surface.GetOptimalSwapchainFormat(_device.Adapter),
-            Size = new Size2D(1280, 720),
+            Size = window.GrabsWindow.SizeInPixels,
             PresentMode = PresentMode.Fifo,
             NumBuffers = 2
         };
 
         _swapchain = _device.CreateSwapchain(in swapchainInfo);
+
+        _cl = _device.CreateCommandList();
+    }
+
+    public void Present()
+    {
+        _swapchain.Present();
     }
     
     public void Dispose()
     {
+        _cl.Dispose();
+        _swapchain.Dispose();
         _device.Dispose();
         _surface.Dispose();
         _instance.Dispose();

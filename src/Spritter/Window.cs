@@ -11,6 +11,16 @@ public class Window : IDisposable
     
     internal readonly grabs.Windowing.Window GrabsWindow;
 
+    public Size Size
+    {
+        get
+        {
+            Size2D size = GrabsWindow.SizeInPixels;
+            return new Size((int) size.Width, (int) size.Height);
+        }
+        set => GrabsWindow.Size = new Size2D((uint) value.Width, (uint) value.Height);
+    }
+
     public Window(string title, Size size)
     {
         WindowInfo info = new WindowInfo(new Size2D((uint) size.Width, (uint) size.Height), title);

@@ -1,3 +1,5 @@
+using Spritter.Graphics;
+
 namespace Spritter;
 
 public abstract class Game : IDisposable
@@ -5,11 +7,15 @@ public abstract class Game : IDisposable
     private bool _isRunning;
 
     public readonly Window Window;
+
+    public readonly GraphicsDevice GraphicsDevice;
     
     public Game(in GameOptions options)
     {
         Window = new Window(options.Name, options.Size);
         Window.Close += Close;
+
+        GraphicsDevice = new GraphicsDevice(options.Name, Window);
     }
 
     public void Run()
@@ -22,6 +28,7 @@ public abstract class Game : IDisposable
         while (_isRunning)
         {
             Window.ProcessEvents();
+            GraphicsDevice.Present();
         }
     }
 
@@ -32,6 +39,7 @@ public abstract class Game : IDisposable
     
     public virtual void Dispose()
     {
+        GraphicsDevice.Dispose();
         Window.Dispose();
     }
 }
