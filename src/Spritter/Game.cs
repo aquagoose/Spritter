@@ -17,17 +17,15 @@ public abstract class Game : IDisposable
 
         GraphicsDevice = new GraphicsDevice(options.Name, Window);
     }
-
-    protected virtual void Initialize() { }
+    
     protected virtual void Update(float dt) { }
+    
     protected virtual void Draw() { }
 
     public void Run()
     {
         if (_isRunning)
             return;
-        
-        Initialize();
 
         _isRunning = true;
 

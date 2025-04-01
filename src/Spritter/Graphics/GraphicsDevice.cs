@@ -53,6 +53,11 @@ public class GraphicsDevice : IDisposable
         _currentSwapchainTexture = _swapchain.GetNextTexture();
     }
 
+    public Shader CreateShader(params ReadOnlySpan<ShaderAttachment> attachments)
+    {
+        return new Shader(_device, in attachments);
+    }
+
     public void Clear(Color color)
     {
         if (_isInRenderPass)
