@@ -4,7 +4,7 @@ namespace Spritter.Graphics;
 
 public class Shader : IDisposable
 {
-    internal Dictionary<ShaderStage, ShaderModule> ShaderModules;
+    internal readonly Dictionary<ShaderStage, ShaderModule> ShaderModules;
     
     internal Shader(Device device, ref readonly ReadOnlySpan<ShaderAttachment> attachments)
     {

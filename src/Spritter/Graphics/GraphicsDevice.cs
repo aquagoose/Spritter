@@ -10,15 +10,19 @@ public class GraphicsDevice : IDisposable
 {
     private readonly Instance _instance;
     private readonly Surface _surface;
-    private readonly Device _device;
     private readonly Swapchain _swapchain;
-    private readonly CommandList _cl;
 
     private Texture _currentSwapchainTexture;
     private bool _isInRenderPass;
 
+    internal readonly Device Device;
+    internal readonly CommandList CommandList;
+    internal GraphicsState CurrentState;
+
     public GraphicsDevice(string appName, Window window)
     {
+        CurrentState = new GraphicsState();
+        
         if (OperatingSystem.IsWindows())
             Instance.RegisterBackend<D3D11Backend>();
         Instance.RegisterBackend<VulkanBackend>();
@@ -34,34 +38,35 @@ public class GraphicsDevice : IDisposable
         _instance = Instance.Create(in instanceInfo);
         _surface = window.GrabsWindow.CreateSurface(_instance);
 
-        _device = _instance.CreateDevice(_surface);
+        Device = _instance.CreateDevice(_surface);
 
         SwapchainInfo swapchainInfo = new()
         {
             Surface = _surface,
-            Format = _surface.GetOptimalSwapchainFormat(_device.Adapter),
+            Format = _surface.GetOptimalSwapchainFormat(Device.Adapter),
             Size = window.GrabsWindow.SizeInPixels,
             PresentMode = PresentMode.Fifo,
             NumBuffers = 2
         };
 
-        _swapchain = _device.CreateSwapchain(in swapchainInfo);
+        _swapchain = Device.CreateSwapchain(in swapchainInfo);
 
-        _cl = _device.CreateCommandList();
+        CommandList = Device.CreateCommandList();
         
-        _cl.Begin();
+        CommandList.Begin();
         _currentSwapchainTexture = _swapchain.GetNextTexture();
+        CurrentState.RenderPassFormat = _swapchain.SwapchainFormat;
     }
 
     public Shader CreateShader(params ReadOnlySpan<ShaderAttachment> attachments)
     {
-        return new Shader(_device, in attachments);
+        return new Shader(Device, in attachments);
     }
 
     public void Clear(Color color)
     {
         if (_isInRenderPass)
-            _cl.EndRenderPass();
+            CommandList.EndRenderPass();
         
         _isInRenderPass = true;
 
@@ -80,33 +85,33 @@ public class GraphicsDevice : IDisposable
             ]
         };
         
-        _cl.BeginRenderPass(in info);
+        CommandList.BeginRenderPass(in info);
     }
 
     public void Present()
     {
         if (_isInRenderPass)
         {
-            _cl.EndRenderPass();
+            CommandList.EndRenderPass();
             _isInRenderPass = false;
         }
         
-        _cl.End();
-        _device.ExecuteCommandList(_cl);
+        CommandList.End();
+        Device.ExecuteCommandList(CommandList);
 
         _swapchain.Present();
         
-        _cl.Begin();
+        CommandList.Begin();
         _currentSwapchainTexture = _swapchain.GetNextTexture();
     }
     
     public void Dispose()
     {
-        _device.WaitForIdle();
+        Device.WaitForIdle();
         
-        _cl.Dispose();
+        CommandList.Dispose();
         _swapchain.Dispose();
-        _device.Dispose();
+        Device.Dispose();
         _surface.Dispose();
         _instance.Dispose();
     }
