@@ -1,4 +1,5 @@
 using System.Drawing;
+using System.Numerics;
 using Spritter.Graphics;
 
 namespace Spritter.Tests;
@@ -23,11 +24,16 @@ struct PSOutput
     float4 Color: SV_Target0;
 };
 
+cbuffer TransformMatrix : register(b0)
+{
+    float4x4 Transform;
+}
+
 VSOutput VSMain(const in VSInput input)
 {
     VSOutput output;
 
-    output.Position = float4(input.Position, 0.0, 1.0);
+    output.Position = mul(Transform, float4(input.Position, 0.0, 1.0));
     output.Color = input.Color;
 
     return output;
@@ -73,10 +79,20 @@ PSOutput PSMain(const in VSOutput input)
             Indices = indices,
             Shader = _shader,
             ShaderLayout = [new ShaderAttribute(AttributeType.Float2, 0), new ShaderAttribute(AttributeType.Float3, 8)],
-            ShaderStride = 5 * sizeof(float)
+            ShaderStride = 5 * sizeof(float),
+            Uniforms = [new ShaderUniform(UniformType.ConstantBuffer, 0, 64)]
         };
 
         _renderable = GraphicsDevice.CreateRenderable(in info);
+    }
+
+    private float _value;
+
+    protected override void Update(float dt)
+    {
+        base.Update(dt);
+
+        _value += dt;
     }
 
     protected override void Draw()
@@ -85,6 +101,7 @@ PSOutput PSMain(const in VSOutput input)
         
         GraphicsDevice.Clear(Color.CornflowerBlue);
         
+        _renderable.PushUniformData(0, Matrix4x4.CreateRotationZ(_value));
         _renderable.Draw(6);
     }
 

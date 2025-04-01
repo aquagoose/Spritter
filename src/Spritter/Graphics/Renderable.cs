@@ -11,9 +11,14 @@ public class Renderable : IDisposable
     private readonly Buffer _indexBuffer;
 
     private readonly Shader _shader;
-
+    
     private readonly ShaderAttribute[] _shaderLayout;
     private readonly uint _stride;
+    
+    private readonly ShaderUniform[] _uniforms;
+    private readonly Dictionary<uint, Buffer> _constantBuffers;
+    
+    private readonly DescriptorLayout _descriptorLayout;
     
     private RenderableState _currentState;
     private Dictionary<RenderableState, Pipeline> _pipelineStates;
@@ -23,18 +28,74 @@ public class Renderable : IDisposable
         _gd = gd;
         Device device = gd.Device;
 
-        BufferUsage usage = 0;
+        BufferUsage usage = info.Dynamic ? BufferUsage.Dynamic : 0;
 
         _vertexBuffer = device.CreateBuffer(usage | BufferUsage.Vertex, info.Vertices);
         _indexBuffer = device.CreateBuffer(usage | BufferUsage.Index, info.Indices);
 
         _shader = info.Shader;
-        _stride = info.ShaderStride;
 
         _shaderLayout = info.ShaderLayout.ToArray();
+        _stride = info.ShaderStride;
+        
+        _uniforms = info.Uniforms.ToArray();
+        _constantBuffers = new Dictionary<uint, Buffer>();
 
+        Span<DescriptorBinding> descriptorBindings = stackalloc DescriptorBinding[_uniforms.Length];
+
+        int i = 0;
+        foreach (ShaderUniform uniform in _uniforms)
+        {
+            DescriptorType type;
+            
+            switch (uniform.Type)
+            {
+                case UniformType.ConstantBuffer:
+                {
+                    _constantBuffers.Add(uniform.BindPoint,
+                        device.CreateBuffer(new BufferInfo(BufferUsage.Constant | BufferUsage.Dynamic,
+                            uniform.BufferSize)));
+
+                    type = DescriptorType.ConstantBuffer;
+                    
+                    break;
+                }
+
+                case UniformType.Texture:
+                {
+                    type = DescriptorType.Texture;
+                    break;
+                }
+                
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            
+            descriptorBindings[i] = new DescriptorBinding((uint) i, DescriptorType.ConstantBuffer,
+                grabs.Graphics.ShaderStage.VertexPixel);
+
+            i++;
+        }
+
+        _descriptorLayout = device.CreateDescriptorLayout(new DescriptorLayoutInfo(descriptorBindings));
+        
         _pipelineStates = new Dictionary<RenderableState, Pipeline>();
     }
+
+    public void PushUniformData<T>(uint bindPoint, in ReadOnlySpan<T> data) where T : unmanaged
+    {
+        CommandList cl = _gd.CommandList;
+        
+        cl.UpdateBuffer(_constantBuffers[bindPoint], in data);
+        
+        cl.PushDescriptor(0, GetOrCreatePipeline(), new Descriptor(bindPoint, DescriptorType.ConstantBuffer, buffer: _constantBuffers[bindPoint]));
+    }
+
+    public void PushUniformData<T>(uint bindPoint, T[] data) where T : unmanaged
+        => PushUniformData<T>(bindPoint, data.AsSpan());
+
+    public void PushUniformData<T>(uint bindPoint, T data) where T : unmanaged
+        => PushUniformData(bindPoint, new ReadOnlySpan<T>(ref data));
 
     public void Draw(uint numDraws)
     {
@@ -53,6 +114,11 @@ public class Renderable : IDisposable
     {
         foreach ((_, Pipeline pipeline) in _pipelineStates)
             pipeline.Dispose();
+     
+        _descriptorLayout.Dispose();
+        
+        foreach ((_, Buffer buffer) in _constantBuffers)
+            buffer.Dispose();
         
         _indexBuffer.Dispose();
         _vertexBuffer.Dispose();
@@ -91,7 +157,8 @@ public class Renderable : IDisposable
                 PixelShader = _shader.ShaderModules[ShaderStage.Pixel],
 
                 ColorAttachmentFormats = [_gd.CurrentState.RenderPassFormat],
-                InputLayout = inputLayout
+                InputLayout = inputLayout,
+                Descriptors = [_descriptorLayout]
             };
 
             pipeline = _gd.Device.CreatePipeline(in pipelineInfo);
