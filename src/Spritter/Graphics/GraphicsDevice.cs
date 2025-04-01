@@ -97,6 +97,8 @@ public class GraphicsDevice : IDisposable
     
     public void Dispose()
     {
+        _device.WaitForIdle();
+        
         _cl.Dispose();
         _swapchain.Dispose();
         _device.Dispose();

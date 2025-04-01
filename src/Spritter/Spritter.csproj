@@ -11,6 +11,7 @@
       <ProjectReference Include="..\..\lib\grabs\src\grabs.Graphics.D3D11\grabs.Graphics.D3D11.csproj" />
       <ProjectReference Include="..\..\lib\grabs\src\grabs.Graphics.Vulkan\grabs.Graphics.Vulkan.csproj" />
       <ProjectReference Include="..\..\lib\grabs\src\grabs.Graphics\grabs.Graphics.csproj" />
+      <ProjectReference Include="..\..\lib\grabs\src\grabs.ShaderCompiler\grabs.ShaderCompiler.csproj" />
       <ProjectReference Include="..\..\lib\grabs\src\grabs.Windowing\grabs.Windowing.csproj" />
     </ItemGroup>
 
