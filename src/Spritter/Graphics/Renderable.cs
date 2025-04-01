@@ -12,6 +12,9 @@ public class Renderable : IDisposable
 
     private readonly Shader _shader;
 
+    private readonly ShaderAttribute[] _shaderLayout;
+    private readonly uint _stride;
+    
     private RenderableState _currentState;
     private Dictionary<RenderableState, Pipeline> _pipelineStates;
     
@@ -26,6 +29,24 @@ public class Renderable : IDisposable
         _indexBuffer = device.CreateBuffer(usage | BufferUsage.Index, info.Indices);
 
         _shader = info.Shader;
+        _stride = info.ShaderStride;
+
+        _shaderLayout = info.ShaderLayout.ToArray();
+
+        _pipelineStates = new Dictionary<RenderableState, Pipeline>();
+    }
+
+    public void Draw(uint numDraws)
+    {
+        CommandList cl = _gd.CommandList;
+
+        Pipeline pipeline = GetOrCreatePipeline();
+        
+        cl.SetPipeline(pipeline);
+        cl.SetVertexBuffer(0, _vertexBuffer, _stride);
+        cl.SetIndexBuffer(_indexBuffer, Format.R32_UInt);
+        
+        cl.DrawIndexed(numDraws);
     }
     
     public void Dispose()
@@ -43,14 +64,38 @@ public class Renderable : IDisposable
 
         if (!_pipelineStates.TryGetValue(_currentState, out Pipeline pipeline))
         {
+            Span<InputElement> inputLayout = stackalloc InputElement[_shaderLayout.Length];
+
+            for (int i = 0; i < _shaderLayout.Length; i++)
+            {
+                ref readonly ShaderAttribute attrib = ref _shaderLayout[i];
+
+                inputLayout[i] = new InputElement()
+                {
+                    Format = attrib.Type switch
+                    {
+                        AttributeType.Float => Format.R32_Float,
+                        AttributeType.Float2 => Format.R32G32_Float,
+                        AttributeType.Float3 => Format.R32G32B32_Float,
+                        AttributeType.Float4 => Format.R32G32B32A32_Float,
+                        _ => throw new ArgumentOutOfRangeException()
+                    },
+                    Offset = attrib.ByteOffset,
+                    Slot = 0
+                };
+            }
+
             PipelineInfo pipelineInfo = new()
             {
                 VertexShader = _shader.ShaderModules[ShaderStage.Vertex],
                 PixelShader = _shader.ShaderModules[ShaderStage.Pixel],
-                
+
                 ColorAttachmentFormats = [_gd.CurrentState.RenderPassFormat],
-                
-            }
+                InputLayout = inputLayout
+            };
+
+            pipeline = _gd.Device.CreatePipeline(in pipelineInfo);
+            _pipelineStates.Add(_currentState, pipeline);
         }
 
         return pipeline;

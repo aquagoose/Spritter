@@ -43,7 +43,8 @@ PSOutput PSMain(const in VSOutput input)
 }
 ";
     
-    private Shader _shader;
+    private readonly Shader _shader;
+    private readonly Renderable _renderable;
 
     public TestGame(in GameOptions options) : base(in options)
     {
@@ -51,6 +52,31 @@ PSOutput PSMain(const in VSOutput input)
             ShaderAttachment.FromHLSL(ShaderStage.Vertex, ShaderCode, "VSMain"),
             ShaderAttachment.FromHLSL(ShaderStage.Pixel, ShaderCode, "PSMain")
         );
+        
+        Span<float> vertices = 
+        [
+            -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+            -0.5f, +0.5f, 0.0f, 1.0f, 0.0f,
+            +0.5f, +0.5f, 0.0f, 0.0f, 1.0f,
+            +0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+        ];
+
+        Span<uint> indices =
+        [
+            0, 1, 3,
+            1, 2, 3
+        ];
+
+        RenderableInfo info = new()
+        {
+            Vertices = vertices,
+            Indices = indices,
+            Shader = _shader,
+            ShaderLayout = [new ShaderAttribute(AttributeType.Float2, 0), new ShaderAttribute(AttributeType.Float3, 8)],
+            ShaderStride = 5 * sizeof(float)
+        };
+
+        _renderable = GraphicsDevice.CreateRenderable(in info);
     }
 
     protected override void Draw()
@@ -58,10 +84,13 @@ PSOutput PSMain(const in VSOutput input)
         base.Draw();
         
         GraphicsDevice.Clear(Color.CornflowerBlue);
+        
+        _renderable.Draw(6);
     }
 
     public override void Dispose()
     {
+        _renderable.Dispose();
         _shader.Dispose();
         
         base.Dispose();

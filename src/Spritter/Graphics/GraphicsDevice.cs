@@ -63,6 +63,11 @@ public class GraphicsDevice : IDisposable
         return new Shader(Device, in attachments);
     }
 
+    public Renderable CreateRenderable(in RenderableInfo info)
+    {
+        return new Renderable(this, in info);
+    }
+
     public void Clear(Color color)
     {
         if (_isInRenderPass)
@@ -84,6 +89,8 @@ public class GraphicsDevice : IDisposable
                 }
             ]
         };
+        
+        CommandList.SetViewport(new Viewport(0, 0, _swapchain.Size.Width, _swapchain.Size.Height));
         
         CommandList.BeginRenderPass(in info);
     }
