@@ -12,7 +12,7 @@ public class GraphicsDevice : IDisposable
     private readonly Surface _surface;
     private readonly Swapchain _swapchain;
 
-    private Texture _currentSwapchainTexture;
+    private GrabsTexture _currentSwapchainTexture;
     private bool _isInRenderPass;
 
     internal readonly Device Device;
@@ -63,6 +63,11 @@ public class GraphicsDevice : IDisposable
         return new Shader(Device, in attachments);
     }
 
+    public Texture CreateTexture(Size size, byte[] data, PixelFormat format = PixelFormat.R8G8B8A8_UNorm)
+    {
+        return new Texture(Device, size, data.AsSpan(), format);
+    }
+
     public Renderable CreateRenderable(in RenderableInfo info)
     {
         return new Renderable(this, in info);
@@ -75,7 +80,7 @@ public class GraphicsDevice : IDisposable
         
         _isInRenderPass = true;
 
-        Texture texture = _currentSwapchainTexture;
+        GrabsTexture texture = _currentSwapchainTexture;
 
         RenderPassInfo info = new()
         {

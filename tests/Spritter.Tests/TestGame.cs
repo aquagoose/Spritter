@@ -103,6 +103,9 @@ PSOutput PSMain(const in VSOutput input)
         
         _renderable.PushUniformData(0, Matrix4x4.CreateRotationZ(_value));
         _renderable.Draw(6);
+        
+        _renderable.PushUniformData(0, Matrix4x4.CreateRotationZ(-_value));
+        _renderable.Draw(6);
     }
 
     public override void Dispose()
