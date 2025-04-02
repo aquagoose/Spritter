@@ -70,9 +70,8 @@ public class Renderable : IDisposable
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            descriptorBindings[i] = new DescriptorBinding((uint) i, DescriptorType.ConstantBuffer,
-                grabs.Graphics.ShaderStage.VertexPixel);
+
+            descriptorBindings[i] = new DescriptorBinding((uint) i, type, grabs.Graphics.ShaderStage.VertexPixel);
 
             i++;
         }
@@ -87,8 +86,9 @@ public class Renderable : IDisposable
         CommandList cl = _gd.CommandList;
         
         cl.UpdateBuffer(_constantBuffers[bindPoint], in data);
-        
-        cl.PushDescriptor(0, GetOrCreatePipeline(), new Descriptor(bindPoint, DescriptorType.ConstantBuffer, buffer: _constantBuffers[bindPoint]));
+
+        cl.PushDescriptor(0, GetOrCreatePipeline(),
+            new Descriptor(bindPoint, DescriptorType.ConstantBuffer, buffer: _constantBuffers[bindPoint]));
     }
 
     public void PushUniformData<T>(uint bindPoint, T[] data) where T : unmanaged
@@ -96,6 +96,13 @@ public class Renderable : IDisposable
 
     public void PushUniformData<T>(uint bindPoint, T data) where T : unmanaged
         => PushUniformData(bindPoint, new ReadOnlySpan<T>(ref data));
+
+    public void PushTextureData(uint bindPoint, Texture texture)
+    {
+        CommandList cl = _gd.CommandList;
+        cl.PushDescriptor(0, GetOrCreatePipeline(),
+            new Descriptor(bindPoint, DescriptorType.Texture, texture: texture.GrabsTexture));
+    }
 
     public void Draw(uint numDraws)
     {

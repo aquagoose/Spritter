@@ -3,6 +3,7 @@ using grabs.Core;
 using grabs.Graphics;
 using grabs.Graphics.D3D11;
 using grabs.Graphics.Vulkan;
+using StbImageSharp;
 
 namespace Spritter.Graphics;
 
@@ -66,6 +67,14 @@ public class GraphicsDevice : IDisposable
     public Texture CreateTexture(Size size, byte[] data, PixelFormat format = PixelFormat.R8G8B8A8_UNorm)
     {
         return new Texture(Device, size, data.AsSpan(), format);
+    }
+
+    public Texture CreateTexture(string path)
+    {
+        using FileStream stream = File.OpenRead(path);
+        ImageResult result = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+
+        return new Texture(Device, new Size(result.Width, result.Height), result.Data, PixelFormat.R8G8B8A8_UNorm);
     }
 
     public Renderable CreateRenderable(in RenderableInfo info)

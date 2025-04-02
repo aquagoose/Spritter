@@ -10,13 +10,13 @@ public class TestGame : Game
 struct VSInput
 {
     float2 Position: POSITION0;
-    float3 Color:    COLOR0;
+    float2 TexCoord: TEXCOORD0;
 };
 
 struct VSOutput
 {
     float4 Position: SV_Position;
-    float3 Color:    COLOR0;
+    float2 TexCoord: TEXCOORD0;
 };
 
 struct PSOutput
@@ -29,12 +29,15 @@ cbuffer TransformMatrix : register(b0)
     float4x4 Transform;
 }
 
+Texture2D Texture : register(t1);
+SamplerState State : register(s1);
+
 VSOutput VSMain(const in VSInput input)
 {
     VSOutput output;
 
     output.Position = mul(Transform, float4(input.Position, 0.0, 1.0));
-    output.Color = input.Color;
+    output.TexCoord = input.TexCoord;
 
     return output;
 }
@@ -43,7 +46,7 @@ PSOutput PSMain(const in VSOutput input)
 {
     PSOutput output;
 
-    output.Color = float4(input.Color, 1.0);
+    output.Color = Texture.Sample(State, input.TexCoord);
 
     return output;
 }
@@ -51,6 +54,7 @@ PSOutput PSMain(const in VSOutput input)
     
     private readonly Shader _shader;
     private readonly Renderable _renderable;
+    private readonly Texture _texture;
 
     public TestGame(in GameOptions options) : base(in options)
     {
@@ -61,10 +65,10 @@ PSOutput PSMain(const in VSOutput input)
         
         Span<float> vertices = 
         [
-            -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-            -0.5f, +0.5f, 0.0f, 1.0f, 0.0f,
-            +0.5f, +0.5f, 0.0f, 0.0f, 1.0f,
-            +0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+            -0.5f, -0.5f, 0.0f, 0.0f,
+            -0.5f, +0.5f, 0.0f, 1.0f,
+            +0.5f, +0.5f, 1.0f, 1.0f,
+            +0.5f, -0.5f, 1.0f, 0.0f
         ];
 
         Span<uint> indices =
@@ -78,12 +82,14 @@ PSOutput PSMain(const in VSOutput input)
             Vertices = vertices,
             Indices = indices,
             Shader = _shader,
-            ShaderLayout = [new ShaderAttribute(AttributeType.Float2, 0), new ShaderAttribute(AttributeType.Float3, 8)],
-            ShaderStride = 5 * sizeof(float),
-            Uniforms = [new ShaderUniform(UniformType.ConstantBuffer, 0, 64)]
+            ShaderLayout = [new ShaderAttribute(AttributeType.Float2, 0), new ShaderAttribute(AttributeType.Float2, 8)],
+            ShaderStride = 4 * sizeof(float),
+            Uniforms = [new ShaderUniform(UniformType.ConstantBuffer, 0, 64), new ShaderUniform(UniformType.Texture, 1, 0)]
         };
 
         _renderable = GraphicsDevice.CreateRenderable(in info);
+
+        _texture = GraphicsDevice.CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
     }
 
     private float _value;
@@ -102,6 +108,7 @@ PSOutput PSMain(const in VSOutput input)
         GraphicsDevice.Clear(Color.CornflowerBlue);
         
         _renderable.PushUniformData(0, Matrix4x4.CreateRotationZ(_value));
+        _renderable.PushTextureData(1, _texture);
         _renderable.Draw(6);
         
         _renderable.PushUniformData(0, Matrix4x4.CreateRotationZ(-_value));
@@ -110,6 +117,7 @@ PSOutput PSMain(const in VSOutput input)
 
     public override void Dispose()
     {
+        _texture.Dispose();
         _renderable.Dispose();
         _shader.Dispose();
         
