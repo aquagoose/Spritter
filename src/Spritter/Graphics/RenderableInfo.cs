@@ -1,17 +1,17 @@
 namespace Spritter.Graphics;
 
 public ref struct RenderableInfo(
-    ReadOnlySpan<float> vertices,
-    ReadOnlySpan<uint> indices,
+    ReadOnlySpan<byte> vertices,
+    ReadOnlySpan<byte> indices,
     Shader shader,
     uint shaderStride,
     ReadOnlySpan<ShaderAttribute> shaderLayout,
     ReadOnlySpan<ShaderUniform> uniforms,
     bool dynamic)
 {
-    public ReadOnlySpan<float> Vertices = vertices;
+    public ReadOnlySpan<byte> Vertices = vertices;
 
-    public ReadOnlySpan<uint> Indices = indices;
+    public ReadOnlySpan<byte> Indices = indices;
 
     public Shader Shader = shader;
 

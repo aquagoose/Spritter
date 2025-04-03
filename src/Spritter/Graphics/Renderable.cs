@@ -104,15 +104,22 @@ public class Renderable : IDisposable
             new Descriptor(bindPoint, DescriptorType.Texture, texture: texture.GrabsTexture));
     }
 
-    public void Draw(uint numDraws)
+    public void Draw(uint numDraws, IndexFormat format)
     {
         CommandList cl = _gd.CommandList;
 
         Pipeline pipeline = GetOrCreatePipeline();
+
+        Format fmt = format switch
+        {
+            IndexFormat.UShort => Format.R16_UInt,
+            IndexFormat.UInt => Format.R32_UInt,
+            _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
+        };
         
         cl.SetPipeline(pipeline);
         cl.SetVertexBuffer(0, _vertexBuffer, _stride);
-        cl.SetIndexBuffer(_indexBuffer, Format.R32_UInt);
+        cl.SetIndexBuffer(_indexBuffer, fmt);
         
         cl.DrawIndexed(numDraws);
     }
@@ -151,6 +158,12 @@ public class Renderable : IDisposable
                         AttributeType.Float2 => Format.R32G32_Float,
                         AttributeType.Float3 => Format.R32G32B32_Float,
                         AttributeType.Float4 => Format.R32G32B32A32_Float,
+                        AttributeType.Byte => Format.R8_UInt,
+                        AttributeType.Byte2 => Format.R8G8_UInt,
+                        AttributeType.Byte4 => Format.R8G8B8A8_UInt,
+                        AttributeType.Norm => Format.R8_UNorm,
+                        AttributeType.Norm2 => Format.R8G8_UNorm,
+                        AttributeType.Norm4 => Format.R8G8B8A8_UNorm,
                         _ => throw new ArgumentOutOfRangeException()
                     },
                     Offset = attrib.ByteOffset,
