@@ -81,6 +81,18 @@ public class Renderable : IDisposable
         _pipelineStates = new Dictionary<RenderableState, Pipeline>();
     }
 
+    public void UpdateVertices<T>(in ReadOnlySpan<T> vertices) where T : unmanaged
+    {
+        CommandList cl = _gd.CommandList;
+        cl.UpdateBuffer(_vertexBuffer, in vertices);
+    }
+
+    public void UpdateIndices<T>(in ReadOnlySpan<T> indices) where T : unmanaged
+    {
+        CommandList cl = _gd.CommandList;
+        cl.UpdateBuffer(_indexBuffer, in indices);
+    }
+
     public void PushUniformData<T>(uint bindPoint, in ReadOnlySpan<T> data) where T : unmanaged
     {
         CommandList cl = _gd.CommandList;
@@ -97,7 +109,7 @@ public class Renderable : IDisposable
     public void PushUniformData<T>(uint bindPoint, T data) where T : unmanaged
         => PushUniformData(bindPoint, new ReadOnlySpan<T>(ref data));
 
-    public void PushTextureData(uint bindPoint, Texture texture)
+    public void PushTexture(uint bindPoint, Texture texture)
     {
         CommandList cl = _gd.CommandList;
         cl.PushDescriptor(0, GetOrCreatePipeline(),

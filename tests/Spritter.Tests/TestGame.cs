@@ -25,7 +25,10 @@ public class TestGame : Game
         base.Draw();
         
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        
+        _renderer.Draw(_texture, new Vector2(0, 0), new Vector2(512, 0), new Vector2(0, 512), new Vector2(512, 512),
+            Color.White);
+
+        _renderer.Render();
     }
 
     public override void Dispose()
