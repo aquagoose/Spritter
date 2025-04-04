@@ -9,8 +9,12 @@ public class Texture : IDisposable
 {
     internal GrabsTexture GrabsTexture;
 
+    public readonly Size Size;
+
     internal Texture(Device device, Size size, ref readonly ReadOnlySpan<byte> data, PixelFormat format)
     {
+        Size = size;
+        
         Format fmt = format switch
         {
             PixelFormat.R8G8B8A8_UNorm => Format.R8G8B8A8_UNorm,

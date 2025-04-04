@@ -59,10 +59,48 @@ public class SpriteRenderer : IDisposable
     }
 
     public void Draw(Texture texture, in Vector2 topLeft, in Vector2 topRight, in Vector2 bottomLeft,
-        in Vector2 bottomRight, Color tint)
+        in Vector2 bottomRight, Rectangle? source, Color tint)
     {
-        _drawQueue.Add(new DrawItem(texture, topLeft, topRight, bottomLeft, bottomRight, null, tint));
+        _drawQueue.Add(new DrawItem(texture, topLeft, topRight, bottomLeft, bottomRight, source, tint));
     }
+
+    public void Draw(Texture texture, in Vector2 position, Rectangle? source = null, Color? tint = null)
+    {
+        Size size = texture.Size;
+        
+        Vector2 topLeft = position;
+        Vector2 topRight = position + new Vector2(size.Width, 0);
+        Vector2 bottomLeft = position + new Vector2(0, size.Height);
+        Vector2 bottomRight = position + new Vector2(size.Width, size.Height);
+
+        _drawQueue.Add(new DrawItem(texture, topLeft, topRight, bottomLeft, bottomRight, source, tint ?? Color.White));
+    }
+
+    public void Draw(Texture texture, Matrix3x2 matrix, Rectangle? source = null, Color? tint = null)
+    {
+        Size size = texture.Size;
+
+        Vector2 topLeft = Vector2.Transform(Vector2.Zero, matrix);
+        Vector2 topRight = Vector2.Transform(new Vector2(size.Width, 0), matrix);
+        Vector2 bottomLeft = Vector2.Transform(new Vector2(0, size.Height), matrix);
+        Vector2 bottomRight = Vector2.Transform(new Vector2(size.Width, size.Height), matrix);
+
+        _drawQueue.Add(new DrawItem(texture, topLeft, topRight, bottomLeft, bottomRight, source, tint ?? Color.White));
+    }
+
+    public void Draw(Texture texture, Vector2 position, Rectangle? source, Color tint, float rotation, Vector2 scale,
+        Vector2 origin)
+    {
+        Matrix3x2 matrix = Matrix3x2.CreateTranslation(-origin) *
+                           Matrix3x2.CreateScale(scale) *
+                           Matrix3x2.CreateRotation(rotation) *
+                           Matrix3x2.CreateTranslation(position);
+        
+        Draw(texture, matrix, source, tint);
+    }
+
+    public void Draw(Texture texture, Vector2 position, float rotation, Vector2? scale = null, Vector2? origin = null)
+        => Draw(texture, position, null, Color.White, rotation, scale ?? Vector2.One, origin ?? Vector2.Zero);
 
     public void Render(Matrix4x4? transform = null, Matrix4x4? projection = null)
     {
@@ -90,7 +128,7 @@ public class SpriteRenderer : IDisposable
             uint iOffset = numDraws * NumIndices;
 
             Color tint = item.Tint;
-            uint packedTint = (uint) ((tint.R << 24) | (tint.G << 16) | (tint.B << 8) | tint.A);
+            uint packedTint = (uint) (tint.R | (tint.G << 8) | (tint.B << 16) | (tint.A << 24));
 
             _vertices[vOffset + 0] = new Vertex(item.TopLeft, new Vector2(0, 0), packedTint);
             _vertices[vOffset + 1] = new Vertex(item.TopRight, new Vector2(1, 0), packedTint);
