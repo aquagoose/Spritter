@@ -39,7 +39,9 @@ namespace Spritter::Graphics
 
         std::unique_ptr<Texture> CreateTexture(const std::string& path);
 
-        virtual void Clear(const Math::Color& color) = 0;
+        virtual void BeginRendering(const Math::Color& color) = 0;
+
+        virtual void EndRendering() = 0;
 
         virtual void Present() = 0;
 

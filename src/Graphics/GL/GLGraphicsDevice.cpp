@@ -1,5 +1,6 @@
 #include "GLGraphicsDevice.h"
 
+#include <assert.h>
 #include <stdexcept>
 
 #include <glad/glad.h>
@@ -100,10 +101,19 @@ namespace Spritter::Graphics::GL
         return std::make_unique<GLTexture>(width, height, format, data);
     }
 
-    void GLGraphicsDevice::Clear(const Math::Color& color)
+    void GLGraphicsDevice::BeginRendering(const Math::Color& color)
     {
+        assert(_isRendering == false);
+        _isRendering = true;
+
         glClearColor(color.R, color.G, color.B, color.A);
         glClear(GL_COLOR_BUFFER_BIT);
+    }
+
+    void GLGraphicsDevice::EndRendering()
+    {
+        assert(_isRendering == true);
+        _isRendering = false;
     }
 
     void GLGraphicsDevice::Present()

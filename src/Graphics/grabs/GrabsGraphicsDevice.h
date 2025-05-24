@@ -36,7 +36,7 @@ namespace Spritter::Graphics::Grabs
         std::unique_ptr<Renderable> CreateRenderable(const RenderableDefinition& definition) override;
         std::unique_ptr<Texture> CreateTexture(uint32_t width, uint32_t height, PixelFormat format, void* data) override;
 
-        void Clear(const Math::Color& color) override;
+        void BeginRendering(const Math::Color& color) override;
 
         void Present() override;
 

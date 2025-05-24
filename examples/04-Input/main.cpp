@@ -53,10 +53,12 @@ class MyGame final : public Game
 
     void Draw() override
     {
-        GraphicsDevice->Clear(Color::CornflowerBlue());
+        GraphicsDevice->BeginRendering(Color::CornflowerBlue());
 
         _renderer->Draw(*_sprite, _position);
         _renderer->Render();
+
+        GraphicsDevice->EndRendering();
     }
 };
 

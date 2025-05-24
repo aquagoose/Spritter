@@ -23,7 +23,7 @@ class MyGame final : public Game
 
     void Draw() override
     {
-        GraphicsDevice->Clear(Color::CornflowerBlue());
+        GraphicsDevice->BeginRendering(Color::CornflowerBlue());
 
         // Add the sprite to the draw queue, at position { 0, 0 }. This will place it at the top-left corner of the
         // screen.
@@ -31,6 +31,8 @@ class MyGame final : public Game
 
         // After we've drawn everything, finally tell the renderer to draw everything to the screen.
         _renderer->Render();
+
+        GraphicsDevice->EndRendering();
     }
 };
 

@@ -23,7 +23,8 @@ class MyGame final : public Game
     void Draw() override
     {
         // Clear the window to a cornflower blue color.
-        GraphicsDevice->Clear(Color::CornflowerBlue());
+        GraphicsDevice->BeginRendering(Color::CornflowerBlue());
+        GraphicsDevice->EndRendering();
     }
 };
 

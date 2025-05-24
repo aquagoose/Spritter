@@ -62,8 +62,9 @@ class TestGame final : public Game
 
     void Draw() override
     {
-        GraphicsDevice->Clear(Color::RebeccaPurple());
+        GraphicsDevice->BeginRendering(Color::RebeccaPurple());
         _ui->Draw();
+        GraphicsDevice->EndRendering();
     }
 };
 

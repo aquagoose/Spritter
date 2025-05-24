@@ -12,6 +12,7 @@ namespace Spritter::Graphics::GL
         SDL_Window* _window;
         SDL_GLContext _context;
         bool _vsync{};
+        bool _isRendering{};
 
     public:
         explicit GLGraphicsDevice(SDL_Window* window);
@@ -32,7 +33,8 @@ namespace Spritter::Graphics::GL
 
         std::unique_ptr<Texture> CreateTexture(uint32_t width, uint32_t height, PixelFormat format, void* data) override;
 
-        void Clear(const Math::Color& color) override;
+        void BeginRendering(const Math::Color& color) override;
+        void EndRendering() override;
 
         void Present() override;
 

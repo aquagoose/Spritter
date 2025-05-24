@@ -17,13 +17,15 @@ class MyGame final : public Game
 
     void Draw() override
     {
-        GraphicsDevice->Clear(Color::CornflowerBlue());
+        GraphicsDevice->BeginRendering(Color::CornflowerBlue());
 
         _font->Draw(*_renderer, { 50, 50 }, L"Hello! This is some text.", 48);
         _font->Draw(*_renderer, { 50, 120 }, L"Here's some text in a different size.", 70);
         _font->Draw(*_renderer, { 50, 170 }, L"Here's some red text.", 48, Color::Red());
         _font->Draw(*_renderer, { 50, 230 }, L"これは日本語のテキストです！", 48);
         _renderer->Render();
+
+        GraphicsDevice->EndRendering();
     }
 };
 

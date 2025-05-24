@@ -121,7 +121,7 @@ namespace Spritter::Graphics::Grabs
         return nullptr;
     }
 
-    void GrabsGraphicsDevice::Clear(const Math::Color& color)
+    void GrabsGraphicsDevice::BeginRendering(const Math::Color& color)
     {
         if (_isInRenderPass)
             gsEndRenderPass(_commandList);
