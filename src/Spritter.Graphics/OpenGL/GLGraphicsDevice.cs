@@ -36,6 +36,11 @@ internal sealed class GLGraphicsDevice : GraphicsDevice
         return new GLRenderable(_gl, in info);
     }
 
+    public override Texture CreateTexture(byte[] data, Size size, PixelFormat format = PixelFormat.RGBA8)
+    {
+        return new GLTexture(_gl, data, size, format);
+    }
+
     public override void Clear(Color color)
     {
         _gl.ClearColor(color);

@@ -8,9 +8,9 @@ const string VertexShader = """
                             #version 330 core
 
                             in vec2 aPosition;
-                            in vec3 aColor;
+                            in vec2 aTexCoord;
 
-                            out vec3 frag_Color;
+                            out vec2 frag_TexCoord;
                             
                             layout (std140) uniform uTest
                             {
@@ -20,20 +20,22 @@ const string VertexShader = """
                             void main()
                             {
                                 gl_Position = Test * vec4(aPosition, 0.0, 1.0);
-                                frag_Color = aColor;
+                                frag_TexCoord = aTexCoord;
                             }
                             """;
 
 const string PixelShader = """
                            #version 330 core
 
-                           in vec3 frag_Color;
+                           in vec2 frag_TexCoord;
 
                            out vec4 out_Color;
+                           
+                           uniform sampler2D uTexture;
 
                            void main()
                            {
-                               out_Color = vec4(frag_Color, 1.0);
+                               out_Color = texture(uTexture, frag_TexCoord);
                            }
                            """;
 
@@ -43,12 +45,14 @@ GraphicsDevice device = GraphicsDevice.Create(window.Handle, Renderer.OpenGL);
 Shader shader = device.CreateShader(new ShaderAttachment(ShaderStage.Vertex, VertexShader, "main"),
     new ShaderAttachment(ShaderStage.Pixel, PixelShader, "main"));
 
+Texture texture = device.CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
+
 ReadOnlySpan<float> vertices =
 [
-    -0.5f, +0.5f, 1.0f, 0.0f, 0.0f,
-    +0.5f, +0.5f, 0.0f, 1.0f, 0.0f,
-    +0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+    -0.5f, +0.5f, 0.0f, 0.0f,
+    +0.5f, +0.5f, 1.0f, 0.0f,
+    +0.5f, -0.5f, 1.0f, 1.0f,
+    -0.5f, -0.5f, 0.0f, 1.0f
 ];
 
 ReadOnlySpan<uint> indices =
@@ -62,13 +66,17 @@ Renderable renderable = device.CreateRenderable(new RenderableInfo
     NumVertices = (uint) vertices.Length,
     NumIndices = (uint) indices.Length,
     Shader = shader,
-    VertexSize = 5 * sizeof(float),
+    VertexSize = 4 * sizeof(float),
     VertexLayout =
     [
         new VertexElement("aPosition", VertexElementType.Float2, 0),
-        new VertexElement("aColor", VertexElementType.Float3, 8)
+        new VertexElement("aTexCoord", VertexElementType.Float2, 8)
     ],
-    Uniforms = [new Uniform(UniformType.ConstantBuffer, "uTest", 64)]
+    Uniforms =
+    [
+        new Uniform(UniformType.ConstantBuffer, "uTest", 64),
+        new Uniform(UniformType.Texture, "uTexture")
+    ]
 });
 
 renderable.Update(vertices, indices);
@@ -88,6 +96,7 @@ while (alive)
         device.Clear(Color.CornflowerBlue);
         
         renderable.PushUniform("uTest", Matrix4x4.CreateRotationZ(1));
+        renderable.PushTexture("uTexture", texture);
         renderable.Draw(6);
         
         device.Present();
@@ -95,6 +104,7 @@ while (alive)
 }
 
 renderable.Dispose();
+texture.Dispose();
 shader.Dispose();
 device.Dispose();
 window.Dispose();

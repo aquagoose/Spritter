@@ -6,6 +6,8 @@ public abstract class Renderable : IDisposable
         where TVertex : unmanaged;
 
     public abstract void PushUniform<T>(string name, T data) where T : unmanaged;
+
+    public abstract void PushTexture(string name, Texture texture);
     
     public abstract void Draw(uint numIndices);
     

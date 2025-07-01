@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using Spritter.Graphics.OpenGL;
+using StbImageSharp;
 
 namespace Spritter.Graphics;
 
@@ -8,6 +9,15 @@ public abstract class GraphicsDevice : IDisposable
     public abstract Shader CreateShader(params ReadOnlySpan<ShaderAttachment> attachments);
 
     public abstract Renderable CreateRenderable(in RenderableInfo info);
+
+    public abstract Texture CreateTexture(byte[] data, Size size, PixelFormat format = PixelFormat.RGBA8);
+
+    public Texture CreateTexture(string path)
+    {
+        using FileStream stream = File.OpenRead(path);
+        ImageResult result = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+        return CreateTexture(result.Data, new Size(result.Width, result.Height), PixelFormat.RGBA8);
+    }
     
     public abstract void Clear(Color color);
     

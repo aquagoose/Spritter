@@ -80,9 +80,23 @@ internal sealed unsafe class GLRenderable : Renderable
             uint location = _gl.GetUniformBlockIndex(_shader.Program, uniform.Name);
             _gl.UniformBlockBinding(_shader.Program, location, binding);
 
-            uint buffer = _gl.GenBuffer();
-            _gl.BindBuffer(BufferTargetARB.UniformBuffer, buffer);
-            _gl.BufferData(BufferTargetARB.UniformBuffer, uniform.BufferSize, null, BufferUsageARB.DynamicDraw);
+            uint buffer;
+
+            switch (uniform.Type)
+            {
+                case UniformType.ConstantBuffer:
+                {
+                    buffer = _gl.GenBuffer();
+                    _gl.BindBuffer(BufferTargetARB.UniformBuffer, buffer);
+                    _gl.BufferData(BufferTargetARB.UniformBuffer, uniform.BufferSize, null, BufferUsageARB.DynamicDraw);
+                    break;
+                }
+                case UniformType.Texture:
+                    buffer = 0;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             
             _uniforms.Add(uniform.Name, (binding, buffer));
         }
@@ -108,11 +122,20 @@ internal sealed unsafe class GLRenderable : Renderable
         _gl.BindBuffer(BufferTargetARB.UniformBuffer, 0);
     }
 
+    public override void PushTexture(string name, Texture texture)
+    {
+        (uint binding, _) = _uniforms[name];
+
+        _gl.ActiveTexture(TextureUnit.Texture0 + (int) binding);
+        _gl.BindTexture(TextureTarget.Texture2D, ((GLTexture) texture).Texture);
+    }
+
     public override void Draw(uint numIndices)
     {
         _gl.BindVertexArray(_vao);
         _gl.UseProgram(_shader.Program);
         
+        // TODO: Bind textures as well.
         foreach ((_, (uint binding, uint buffer)) in _uniforms)
             _gl.BindBufferBase(BufferTargetARB.UniformBuffer, binding, buffer);
         
