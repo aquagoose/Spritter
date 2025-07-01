@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Silk.NET.OpenGL;
 
 namespace Spritter.Graphics.OpenGL;
@@ -12,6 +13,8 @@ internal sealed unsafe class GLRenderable : Renderable
     private readonly uint _indexBuffer;
 
     private readonly GLShader _shader;
+
+    private readonly Dictionary<string, (uint binding, uint buffer)> _uniforms;
 
     public GLRenderable(GL gl, ref readonly RenderableInfo info)
     {
@@ -65,6 +68,24 @@ internal sealed unsafe class GLRenderable : Renderable
                     throw new ArgumentOutOfRangeException();
             }
         }
+
+        _uniforms = [];
+        
+        for (int i = 0; i < info.Uniforms.Length; i++)
+        {
+            ref readonly Uniform uniform = ref info.Uniforms[i];
+
+            uint binding = (uint) i;
+            
+            uint location = _gl.GetUniformBlockIndex(_shader.Program, uniform.Name);
+            _gl.UniformBlockBinding(_shader.Program, location, binding);
+
+            uint buffer = _gl.GenBuffer();
+            _gl.BindBuffer(BufferTargetARB.UniformBuffer, buffer);
+            _gl.BufferData(BufferTargetARB.UniformBuffer, uniform.BufferSize, null, BufferUsageARB.DynamicDraw);
+            
+            _uniforms.Add(uniform.Name, (binding, buffer));
+        }
     }
 
     public override void Update<TVertex>(in ReadOnlySpan<TVertex> vertices, in ReadOnlySpan<uint> indices)
@@ -78,10 +99,23 @@ internal sealed unsafe class GLRenderable : Renderable
             _gl.BufferSubData(BufferTargetARB.ElementArrayBuffer, 0, (nuint) (indices.Length * sizeof(uint)), pIndices);
     }
 
+    public override void PushUniform<T>(string name, T data)
+    {
+        (uint binding, uint buffer) = _uniforms[name];
+        
+        _gl.BindBufferBase(BufferTargetARB.UniformBuffer, binding, buffer);
+        _gl.BufferSubData(BufferTargetARB.UniformBuffer, 0, (uint) sizeof(T), Unsafe.AsPointer(ref data));
+        _gl.BindBuffer(BufferTargetARB.UniformBuffer, 0);
+    }
+
     public override void Draw(uint numIndices)
     {
         _gl.BindVertexArray(_vao);
         _gl.UseProgram(_shader.Program);
+        
+        foreach ((_, (uint binding, uint buffer)) in _uniforms)
+            _gl.BindBufferBase(BufferTargetARB.UniformBuffer, binding, buffer);
+        
         _gl.DrawElements(PrimitiveType.Triangles, numIndices, DrawElementsType.UnsignedInt, (void*) 0);
     }
 

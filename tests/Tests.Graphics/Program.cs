@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Numerics;
 using SDL3;
 using Spritter;
 using Spritter.Graphics;
@@ -10,10 +11,15 @@ const string VertexShader = """
                             in vec3 aColor;
 
                             out vec3 frag_Color;
+                            
+                            layout (std140) uniform uTest
+                            {
+                                mat4 Test;
+                            };
 
                             void main()
                             {
-                                gl_Position = vec4(aPosition, 0.0, 1.0);
+                                gl_Position = Test * vec4(aPosition, 0.0, 1.0);
                                 frag_Color = aColor;
                             }
                             """;
@@ -61,7 +67,8 @@ Renderable renderable = device.CreateRenderable(new RenderableInfo
     [
         new VertexElement("aPosition", VertexElementType.Float2, 0),
         new VertexElement("aColor", VertexElementType.Float3, 8)
-    ]
+    ],
+    Uniforms = [new Uniform(UniformType.ConstantBuffer, "uTest", 64)]
 });
 
 renderable.Update(vertices, indices);
@@ -79,7 +86,10 @@ while (alive)
         }
         
         device.Clear(Color.CornflowerBlue);
+        
+        renderable.PushUniform("uTest", Matrix4x4.CreateRotationZ(1));
         renderable.Draw(6);
+        
         device.Present();
     }
 }
