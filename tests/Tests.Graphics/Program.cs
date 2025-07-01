@@ -37,6 +37,35 @@ GraphicsDevice device = GraphicsDevice.Create(window.Handle, Renderer.OpenGL);
 Shader shader = device.CreateShader(new ShaderAttachment(ShaderStage.Vertex, VertexShader, "main"),
     new ShaderAttachment(ShaderStage.Pixel, PixelShader, "main"));
 
+ReadOnlySpan<float> vertices =
+[
+    -0.5f, +0.5f, 1.0f, 0.0f, 0.0f,
+    +0.5f, +0.5f, 0.0f, 1.0f, 0.0f,
+    +0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+];
+
+ReadOnlySpan<uint> indices =
+[
+    0, 1, 3,
+    1, 2, 3
+];
+
+Renderable renderable = device.CreateRenderable(new RenderableInfo
+{
+    NumVertices = (uint) vertices.Length,
+    NumIndices = (uint) indices.Length,
+    Shader = shader,
+    VertexSize = 5 * sizeof(float),
+    VertexLayout =
+    [
+        new VertexElement("aPosition", VertexElementType.Float2, 0),
+        new VertexElement("aColor", VertexElementType.Float3, 8)
+    ]
+});
+
+renderable.Update(vertices, indices);
+
 bool alive = true;
 while (alive)
 {
@@ -50,10 +79,12 @@ while (alive)
         }
         
         device.Clear(Color.CornflowerBlue);
+        renderable.Draw(6);
         device.Present();
     }
 }
 
+renderable.Dispose();
 shader.Dispose();
 device.Dispose();
 window.Dispose();

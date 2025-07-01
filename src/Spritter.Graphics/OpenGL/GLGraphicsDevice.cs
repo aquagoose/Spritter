@@ -33,7 +33,7 @@ internal sealed class GLGraphicsDevice : GraphicsDevice
 
     public override Renderable CreateRenderable(in RenderableInfo info)
     {
-        throw new NotImplementedException();
+        return new GLRenderable(_gl, in info);
     }
 
     public override void Clear(Color color)
