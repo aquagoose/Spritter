@@ -31,6 +31,11 @@ internal sealed class GLGraphicsDevice : GraphicsDevice
         return new GLShader(_gl, in attachments);
     }
 
+    public override Renderable CreateRenderable(in RenderableInfo info)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void Clear(Color color)
     {
         _gl.ClearColor(color);
