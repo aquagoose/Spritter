@@ -8,8 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{21116AA7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Graphics", "tests\Tests.Graphics\Tests.Graphics.csproj", "{44ABCFD2-11B3-4E5B-8575-3403CB3C3744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Spritter.Graphics.OpenGL", "src\Spritter.Graphics.OpenGL\Spritter.Graphics.OpenGL.csproj", "{3D58CA3E-A8B6-486F-92E9-9D9FC3CC4262}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +26,6 @@ Global
 		{44ABCFD2-11B3-4E5B-8575-3403CB3C3744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44ABCFD2-11B3-4E5B-8575-3403CB3C3744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44ABCFD2-11B3-4E5B-8575-3403CB3C3744}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D58CA3E-A8B6-486F-92E9-9D9FC3CC4262}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D58CA3E-A8B6-486F-92E9-9D9FC3CC4262}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D58CA3E-A8B6-486F-92E9-9D9FC3CC4262}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D58CA3E-A8B6-486F-92E9-9D9FC3CC4262}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{44ABCFD2-11B3-4E5B-8575-3403CB3C3744} = {21116AA7-4A74-4EB0-88CE-4C91068FEDE3}
