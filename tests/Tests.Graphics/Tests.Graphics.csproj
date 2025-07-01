@@ -7,4 +7,10 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Spritter.Graphics.OpenGL\Spritter.Graphics.OpenGL.csproj" />
+      <ProjectReference Include="..\..\src\Spritter.Graphics\Spritter.Graphics.csproj" />
+      <ProjectReference Include="..\..\src\Spritter\Spritter.csproj" />
+    </ItemGroup>
+
 </Project>

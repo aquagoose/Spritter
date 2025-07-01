@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SDL3-CS" Version="3.2.16.4" />
+      <PackageReference Include="SDL3-CS.Native" Version="3.2.16" />
+    </ItemGroup>
+
 </Project>
