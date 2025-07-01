@@ -5,6 +5,8 @@ namespace Spritter.Graphics;
 
 public abstract class GraphicsDevice : IDisposable
 {
+    public abstract Shader CreateShader(params ReadOnlySpan<ShaderAttachment> attachments);
+    
     public abstract void Clear(Color color);
     
     public abstract void Present();
