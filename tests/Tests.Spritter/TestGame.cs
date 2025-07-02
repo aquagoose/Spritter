@@ -29,7 +29,7 @@ public class TestGame : Game
         //_renderer.Draw(_texture, Vector2.Zero, new Size(1280, 720));
         //_renderer.Draw(_texture, Vector2.Zero);
         //_renderer.Draw(_texture, Matrix3x2.CreateRotation(1) * Matrix3x2.CreateTranslation(100, 100));
-        _renderer.Draw(_texture, Vector2.Zero, 0.5f, null, new Vector2(2, 1), new Vector2(64));
+        _renderer.Draw(_texture, Vector2.Zero, 0.5f, null, new Vector2(2, 1), new Vector2(64), Color.Aqua);
         _renderer.Render();
     }
 

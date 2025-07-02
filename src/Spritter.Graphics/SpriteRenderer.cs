@@ -110,7 +110,7 @@ public class SpriteRenderer : IDisposable
 
             currentTexture = cmd.Texture;
 
-            uint tint = (uint) ((cmd.Tint.R << 24) | (cmd.Tint.G << 16) | (cmd.Tint.B << 8) | cmd.Tint.A);
+            uint tint = (uint) ((cmd.Tint.A << 24) | (cmd.Tint.B << 16) | (cmd.Tint.G << 8) | cmd.Tint.R);
             
             uint vOffset = numDraws * NumVertices;
             uint iOffset = numDraws * NumIndices;
