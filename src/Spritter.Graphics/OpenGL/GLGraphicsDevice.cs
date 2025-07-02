@@ -24,6 +24,10 @@ internal sealed class GLGraphicsDevice : GraphicsDevice
             throw new Exception($"Failed to make current: {SDL.GetError()}");
         
         _gl = GL.GetApi(s => Marshal.GetFunctionPointerForDelegate(SDL.GLGetProcAddress(s)));
+        
+        _gl.Disable(EnableCap.DepthTest);
+        
+        _gl.Disable(EnableCap.CullFace);
     }
 
     public override Shader CreateShader(params ReadOnlySpan<ShaderAttachment> attachments)

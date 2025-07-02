@@ -64,6 +64,18 @@ internal sealed unsafe class GLRenderable : Renderable
                     _gl.VertexAttribPointer((uint) location, 4, VertexAttribPointerType.Float, false, info.VertexSize,
                         (void*) element.ByteOffset);
                     break;
+                case VertexElementType.NByte:
+                    _gl.VertexAttribPointer((uint) location, 1, GLEnum.UnsignedByte, true, info.VertexSize,
+                        (void*) element.ByteOffset);
+                    break;
+                case VertexElementType.NByte2:
+                    _gl.VertexAttribPointer((uint) location, 2, GLEnum.UnsignedByte, true, info.VertexSize,
+                        (void*) element.ByteOffset);
+                    break;
+                case VertexElementType.NByte4:
+                    _gl.VertexAttribPointer((uint) location, 4, GLEnum.UnsignedByte, true, info.VertexSize,
+                        (void*) element.ByteOffset);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

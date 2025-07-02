@@ -9,7 +9,7 @@ internal sealed unsafe class GLTexture : Texture
 
     public readonly uint Texture;
 
-    public GLTexture(GL gl, ReadOnlySpan<byte> data, Size size, PixelFormat format)
+    public GLTexture(GL gl, ReadOnlySpan<byte> data, Size size, PixelFormat format) : base(size)
     {
         _gl = gl;
         
