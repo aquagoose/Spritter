@@ -53,8 +53,8 @@ public class SpriteRenderer : IDisposable
 
     public void Draw(Texture texture, Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight, Rectangle? source = null, Color? tint = null)
     {
-        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, source,
-            tint ?? Color.White));
+        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight,
+            source ?? new Rectangle(Point.Empty, texture.Size), tint ?? Color.White));
     }
     
     public void Draw(Texture texture, Vector2 position, Size size, Rectangle? source = null, Color? tint = null)
@@ -64,22 +64,23 @@ public class SpriteRenderer : IDisposable
         Vector2 bottomLeft = new Vector2(position.X, position.Y + size.Height);
         Vector2 bottomRight = new Vector2(position.X + size.Width, position.Y + size.Height);
 
-        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, source,
-            tint ?? Color.White));
+        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight,
+            source ?? new Rectangle(Point.Empty, texture.Size), tint ?? Color.White));
     }
 
     public void Draw(Texture texture, Vector2 position, Rectangle? source = null, Color? tint = null)
-        => Draw(texture, position, texture.Size, source, tint);
+        => Draw(texture, position, source?.Size ?? texture.Size, source, tint);
 
     public void Draw(Texture texture, Matrix3x2 matrix, Rectangle? source = null, Color? tint = null)
     {
+        Rectangle src = source ?? new Rectangle(Point.Empty, texture.Size);
+        
         Vector2 topLeft = Vector2.Transform(Vector2.Zero, matrix);
-        Vector2 topRight = Vector2.Transform(new Vector2(texture.Size.Width, 0), matrix);
-        Vector2 bottomLeft = Vector2.Transform(new Vector2(0, texture.Size.Height), matrix);
-        Vector2 bottomRight = Vector2.Transform(new Vector2(texture.Size.Width, texture.Size.Height), matrix);
+        Vector2 topRight = Vector2.Transform(new Vector2(src.Width, 0), matrix);
+        Vector2 bottomLeft = Vector2.Transform(new Vector2(0, src.Height), matrix);
+        Vector2 bottomRight = Vector2.Transform(new Vector2(src.Width, src.Height), matrix);
 
-        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, source,
-            tint ?? Color.White));
+        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, src, tint ?? Color.White));
     }
 
     public void Draw(Texture texture, Vector2 position, float rotation, Rectangle? source, Vector2 scale,
@@ -115,10 +116,18 @@ public class SpriteRenderer : IDisposable
             uint vOffset = numDraws * NumVertices;
             uint iOffset = numDraws * NumIndices;
 
-            _vertices[vOffset + 0] = new Vertex(cmd.TopLeft, new Vector2(0, 0), tint);
-            _vertices[vOffset + 1] = new Vertex(cmd.TopRight, new Vector2(1, 0), tint);
-            _vertices[vOffset + 2] = new Vertex(cmd.BottomRight, new Vector2(1, 1), tint);
-            _vertices[vOffset + 3] = new Vertex(cmd.BottomLeft, new Vector2(0, 1), tint);
+            Size texSize = cmd.Texture.Size;
+            Rectangle source = cmd.Source;
+
+            float texX = source.X / (float) texSize.Width;
+            float texY = source.Y / (float) texSize.Height;
+            float texW = source.Width / (float) texSize.Width;
+            float texH = source.Height / (float) texSize.Height;
+
+            _vertices[vOffset + 0] = new Vertex(cmd.TopLeft, new Vector2(texX, texY), tint);
+            _vertices[vOffset + 1] = new Vertex(cmd.TopRight, new Vector2(texX + texW, texY), tint);
+            _vertices[vOffset + 2] = new Vertex(cmd.BottomRight, new Vector2(texX + texW, texY + texH), tint);
+            _vertices[vOffset + 3] = new Vertex(cmd.BottomLeft, new Vector2(texX, texY + texH), tint);
 
             _indices[iOffset + 0] = 0 + vOffset;
             _indices[iOffset + 1] = 1 + vOffset;
@@ -162,11 +171,11 @@ public class SpriteRenderer : IDisposable
         public readonly Vector2 TopRight;
         public readonly Vector2 BottomLeft;
         public readonly Vector2 BottomRight;
-        public readonly Rectangle? Source;
+        public readonly Rectangle Source;
         public readonly Color Tint;
 
         public DrawCommand(Texture texture, Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight,
-            Rectangle? source, Color tint)
+            Rectangle source, Color tint)
         {
             Texture = texture;
             TopLeft = topLeft;
