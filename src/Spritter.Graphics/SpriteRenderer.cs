@@ -51,9 +51,45 @@ public class SpriteRenderer : IDisposable
         _renderable = device.CreateRenderable(in info);
     }
 
-    public void Draw(Texture texture, Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight, Color tint)
+    public void Draw(Texture texture, Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight, Rectangle? source = null, Color? tint = null)
     {
-        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, tint));
+        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, source,
+            tint ?? Color.White));
+    }
+    
+    public void Draw(Texture texture, Vector2 position, Size size, Rectangle? source = null, Color? tint = null)
+    {
+        Vector2 topLeft = position;
+        Vector2 topRight = new Vector2(position.X + size.Width, position.Y);
+        Vector2 bottomLeft = new Vector2(position.X, position.Y + size.Height);
+        Vector2 bottomRight = new Vector2(position.X + size.Width, position.Y + size.Height);
+
+        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, source,
+            tint ?? Color.White));
+    }
+
+    public void Draw(Texture texture, Vector2 position, Rectangle? source = null, Color? tint = null)
+        => Draw(texture, position, texture.Size, source, tint);
+
+    public void Draw(Texture texture, Matrix3x2 matrix, Rectangle? source = null, Color? tint = null)
+    {
+        Vector2 topLeft = Vector2.Transform(Vector2.Zero, matrix);
+        Vector2 topRight = Vector2.Transform(new Vector2(texture.Size.Width, 0), matrix);
+        Vector2 bottomLeft = Vector2.Transform(new Vector2(0, texture.Size.Height), matrix);
+        Vector2 bottomRight = Vector2.Transform(new Vector2(texture.Size.Width, texture.Size.Height), matrix);
+
+        _drawList.Add(new DrawCommand(texture, topLeft, topRight, bottomLeft, bottomRight, source,
+            tint ?? Color.White));
+    }
+
+    public void Draw(Texture texture, Vector2 position, float rotation, Rectangle? source, Vector2 scale,
+        Vector2 origin, Color? tint = null)
+    {
+        Draw(texture, Matrix3x2.CreateTranslation(-origin) *
+                      Matrix3x2.CreateScale(scale) *
+                      Matrix3x2.CreateRotation(rotation) *
+                      Matrix3x2.CreateTranslation(position), 
+            source, tint);
     }
 
     public void Render(Matrix4x4? transform = null, Matrix4x4? projection = null)
@@ -126,15 +162,18 @@ public class SpriteRenderer : IDisposable
         public readonly Vector2 TopRight;
         public readonly Vector2 BottomLeft;
         public readonly Vector2 BottomRight;
+        public readonly Rectangle? Source;
         public readonly Color Tint;
 
-        public DrawCommand(Texture texture, Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight, Color tint)
+        public DrawCommand(Texture texture, Vector2 topLeft, Vector2 topRight, Vector2 bottomLeft, Vector2 bottomRight,
+            Rectangle? source, Color tint)
         {
             Texture = texture;
             TopLeft = topLeft;
             TopRight = topRight;
             BottomLeft = bottomLeft;
             BottomRight = bottomRight;
+            Source = source;
             Tint = tint;
         }
     }

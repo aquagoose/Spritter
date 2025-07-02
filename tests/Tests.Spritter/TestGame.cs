@@ -16,7 +16,7 @@ public class TestGame : Game
 
         _renderer = new SpriteRenderer(GraphicsDevice);
 
-        _texture = GraphicsDevice.CreateTexture("/home/aqua/Pictures/awesomeface.png");
+        _texture = GraphicsDevice.CreateTexture("/home/aqua/Pictures/BAGELMIP.png");
     }
 
     protected override void Draw()
@@ -25,7 +25,11 @@ public class TestGame : Game
         
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        _renderer.Draw(_texture, new Vector2(0, 0), new Vector2(512, 0), new Vector2(0, 512), new Vector2(512, 512), Color.White);
+        //_renderer.Draw(_texture, new Vector2(0, 0), new Vector2(512, 0), new Vector2(0, 256), new Vector2(512, 512));
+        //_renderer.Draw(_texture, Vector2.Zero, new Size(1280, 720));
+        //_renderer.Draw(_texture, Vector2.Zero);
+        //_renderer.Draw(_texture, Matrix3x2.CreateRotation(1) * Matrix3x2.CreateTranslation(100, 100));
+        _renderer.Draw(_texture, Vector2.Zero, 0.5f, null, new Vector2(2, 1), new Vector2(64));
         _renderer.Render();
     }
 
